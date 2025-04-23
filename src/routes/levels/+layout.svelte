@@ -6,6 +6,7 @@
     <a href="/"> home </a>
     <a href= "/levels/level1"> level1</a>
 </nav>
+{@render children()}
 <h1> Das ist Level x</h1>
 <p> Das  </p>
 <input 
@@ -14,6 +15,7 @@ id = "name"
 name = "name"
 size = "200" 
 minlength="40"
-maxlength="100"/>
+maxlength="100"
+width = "100"
+height="100"/>
 
-{@render children()}
