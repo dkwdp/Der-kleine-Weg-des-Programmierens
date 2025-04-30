@@ -1,7 +1,9 @@
 <script>
+   import { goto } from '$app/navigation';
     // Funktion zum Weiterleiten zur nächsten Seite
     function startJourney() {
-      alert('Hier geht es bald weiter zur nächsten Seite!');
+    goto('/mapBackground');
+
       // Hier kannst du später die Navigation zur nächsten Seite implementieren.
     }
   </script>
