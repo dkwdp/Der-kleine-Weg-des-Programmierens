@@ -55,6 +55,14 @@
   
   <div class="container">
     <h1>Willkommen zum kleinen Weg des Programmierens</h1>
+    
+    <form action="/submit" method="post">
+        <label for="userInput">UserInput</label><br>
+        <input type="text" id="userInput" name="userInput">
+        <input type="submit" value="Submit">
+    </form>
+
     <p>Mach dich bereit, die spannende Welt des Programmierens zu entdecken!</p>
     <button on:click={startJourney}>Starte deine Reise</button>
   </div>
+
