@@ -1,6 +1,7 @@
 <script>
     let {children} = $props();
 </script>
+{@html '<script src="https://cdn.jsdelivr.net/pyodide/v0.27.5/full/pyodide.js"></script>'}
 
 <nav>
     <a href="/"> home </a>

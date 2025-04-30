@@ -12,9 +12,9 @@ export const nodes = [
 export const server_loads = [];
 
 export const dictionary = {
-		"/": [3],
-		"/levels/level1": [4,[2]],
-		"/levels/level2": [5,[2]]
+		"/levels/level1": [3,[2]],
+		"/levels/level2": [4,[2]],
+		"/mainpage": [5]
 	};
 
 export const hooks = {
