@@ -10,11 +10,11 @@
   
   <style>
     /* Hintergrundfarbe der gesamten Seite */
-    body {
+    :global(body) {
       margin: 0;
       padding: 0;
       font-family: Arial, sans-serif;
-      background-color: #f8aa48; /* Warme, einladende Grundfarbe */
+      background-color: #ffffff; /* Warme, einladende Grundfarbe */
     }
   
     /* Container für zentrierte Inhalte */

@@ -112,7 +112,7 @@
 </div>
 
 <div class="background">
-	<div class="map-container" on:mousemove={handleMouseMove}>
+	<div class="map-container" role="application" on:mousemove={handleMouseMove}>
 		<img src="/map.png" alt="Map" class="map-image" />
 
 		<!-- Buttons -->
@@ -129,6 +129,9 @@
 	</div>
 </div>
 
-<div class="mouse-coords">
-	Mausposition relativ zum Bild: X = {mouseX}% &nbsp; Y = {mouseY}%
+<div class="map-container" role="application" on:mousemove={handleMouseMove}>
+
+	<div class="mouse-coords">
+		Mausposition relativ zum Bild: X = {mouseX}% &nbsp; Y = {mouseY}%
+	</div>
 </div>
