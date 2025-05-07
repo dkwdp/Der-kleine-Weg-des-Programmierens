@@ -15,5 +15,9 @@
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
 		"svelte": "^5.0.0",
 		"vite": "^6.2.5"
+	},
+	"dependencies": {
+		"@codemirror/commands": "^6.8.1",
+		"@codemirror/lang-python": "^6.2.0"
 	}
 }
