@@ -1,5 +1,10 @@
 <script>
     // Falls du dynamische Dinge brauchst, kannst du hier noch später etwas einfügen
+    import { goto } from '$app/navigation';
+    function LevelJoin(level) {
+        goto(`/levels/level${level}`);
+    }
+    
   </script>
   
   <style>
@@ -69,17 +74,18 @@
     <div class="map-container">
       <img src="/map.png" alt="Map" class="map-image" />
       <div class="buttons">
-        <a id="level1" class="level-button" href="/level1">1</a>
-        <a id="level2" class="level-button" href="/level2">2</a>
-        <a id="level3" class="level-button" href="/level3">3</a>
-        <a id="level4" class="level-button" href="/level4">4</a>
-        <a id="level5" class="level-button" href="/level5">5</a>
-        <a id="level6" class="level-button" href="/level6">6</a>
-        <a id="level7" class="level-button" href="/level7">7</a>
-        <a id="level8" class="level-button" href="/level8">8</a>
-        <a id="level9" class="level-button" href="/level9">9</a>
-        <a id="level10" class="level-button" href="/level10">10</a>
+        <button id="level1" class="level-button" on:click={() => LevelJoin(1)}>1</button>
+        <button id="level2" class="level-button" on:click={() => LevelJoin(2)}>2</button>
+        <button id="level3" class="level-button" on:click={() => LevelJoin(3)}>3</button>
+        <button id="level4" class="level-button" on:click={() => LevelJoin(4)}>4</button>
+        <button id="level5" class="level-button" on:click={() => LevelJoin(5)}>5</button>
+        <button id="level6" class="level-button" on:click={() => LevelJoin(6)}>6</button>
+        <button id="level7" class="level-button" on:click={() => LevelJoin(7)}>7</button>
+        <button id="level8" class="level-button" on:click={() => LevelJoin(8)}>8</button>
+        <button id="level9" class="level-button" on:click={() => LevelJoin(9)}>9</button>
+        <button id="level10" class="level-button" on:click={() => LevelJoin(10)}>10</button>
+      </div>
       </div>
     </div>
-  </div>
+
   
