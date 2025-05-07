@@ -76,18 +76,6 @@
 
 <slot />
 
-<h1>Das ist Level X</h1>
-<p>Das</p>
-<input
-  type="text"
-  id="name"
-  name="name"
-  size="40"
-  minlength="3"
-  maxlength="100"
-  style="width: 200px; height: 30px;"
-/>
-
 <!-- Pyodide & CodeMirror UI -->
 <div class="pyodide-section">
   <h2>Python-Code Editor</h2>

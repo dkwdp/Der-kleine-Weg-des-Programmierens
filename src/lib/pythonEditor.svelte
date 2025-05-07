@@ -1,15 +1,17 @@
 <script>
     import { onMount, createEventDispatcher } from "svelte";
-    import { EditorState } from "@codemirror/state";
+    import { EditorState} from "@codemirror/state";
     import {
       EditorView,
       keymap,
       highlightSpecialChars,
       drawSelection,
-      highlightActiveLine
+      highlightActiveLine,
+      lineNumbers
     } from "@codemirror/view";
     import { defaultKeymap, indentWithTab } from "@codemirror/commands";
     import { python } from "@codemirror/lang-python";
+
   
     let editorDiv;
     const dispatch = createEventDispatcher();
@@ -23,10 +25,12 @@
             ...defaultKeymap
           ]),
           python(),
+          lineNumbers(),
           EditorView.editable.of(true),
           highlightSpecialChars(),
           drawSelection(),
           highlightActiveLine(),
+          
           EditorView.updateListener.of((update) => {
             if (update.docChanged) {
               dispatch("input", update.state.doc.toString());
