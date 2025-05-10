@@ -12,7 +12,7 @@
     lineNumbers
   } from "@codemirror/view";
   import { defaultKeymap, indentWithTab } from "@codemirror/commands";
-  import { python } from "@codemirror/lang-python";
+  import { python, pythonLanguage } from "@codemirror/lang-python";
 
 
   let editorDiv;
