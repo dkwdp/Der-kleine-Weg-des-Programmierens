@@ -4,6 +4,38 @@
       alert('Hier geht es bald weiter zur nächsten Seite!');
       // Hier kannst du später die Navigation zur nächsten Seite implementieren.
     }
+
+    let loading = false;
+  let error = '';
+  
+
+  let code = '';
+  let feedback = '';
+
+  async function submitCode() {
+  loading = true;
+  error = '';
+  feedback = '';
+
+  try {
+    const res = await fetch('http://localhost:3000/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code })
+    });
+
+    if (!res.ok) {
+      throw new Error(`Server error: ${res.status}`);
+    }
+
+    const data = await res.json();
+    feedback = data.feedback;
+  } catch (err) {
+    error = 'Something went wrong: ' + err.message;
+  } finally {
+    loading = false;
+  }
+}
   </script>
   
   <style>
@@ -55,14 +87,20 @@
   
   <div class="container">
     <h1>Willkommen zum kleinen Weg des Programmierens</h1>
-    
-    <form action="/submit" method="post">
-        <label for="userInput">UserInput</label><br>
-        <input type="text" id="userInput" name="userInput">
-        <input type="submit" value="Submit">
-    </form>
 
     <p>Mach dich bereit, die spannende Welt des Programmierens zu entdecken!</p>
     <button on:click={startJourney}>Starte deine Reise</button>
+
+    <textarea bind:value={code} placeholder="Enter your Python code..."></textarea>
+<button on:click={submitCode}>Submit</button>
+
+{#if loading}
+  <p>⏳ Reviewing...</p>
+{:else if feedback}
+  <h3>✅ Feedback</h3>
+  <pre>{feedback}</pre>
+{:else if error}
+  <p style="color: red;">❌ {error}</p>
+{/if}
   </div>
 
