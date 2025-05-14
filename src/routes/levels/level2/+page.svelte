@@ -1,10 +1,15 @@
 <script>
-   import { onMount } from 'svelte';
+  import { onMount } from 'svelte';
   import { myVariable } from '$lib/stores/editorStore';
 
-   onMount(() => {
-  myVariable.set("#funktioniierreeeee biiitteee2222");
-    }); // oder abhängig vom Level  
+  import Canvas from '$lib/Canvas/Canvas.svelte';
+
+  onMount(() => {
+    myVariable.set(`# Zeichne etwas im Canvas!`);
+  });
 </script>
-<h1>Level2</h1>
-<p>Aufgabe 2:</p>
+
+<h1>Level 2: Zeichnen!</h1>
+<p>Zeichne etwas im Canvas:</p>
+
+<Canvas color="black" />

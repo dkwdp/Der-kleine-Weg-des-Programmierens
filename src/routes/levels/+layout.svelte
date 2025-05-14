@@ -51,7 +51,7 @@
   <div class="editor-area">
     <h2>Python-Code Editor</h2>
     <PythonEditor />
-    <button on:click={runPython}>▶️ Ausführen</button>
+    <button on:click={runPython}> Ausführen</button>
 
     {#if output}
       <h3>Ausgabe:</h3>
