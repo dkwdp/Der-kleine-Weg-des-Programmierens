@@ -1,7 +1,9 @@
 <script>
-  import { onMount, createEventDispatcher } from "svelte";
-  import { syntaxHighlighting, defaultHighlightStyle } from "@codemirror/language";
-  import { EditorState } from "@codemirror/state";
+  import { onMount } from "svelte";
+  import { get, writable } from "svelte/store";
+  import {
+    EditorState
+  } from "@codemirror/state";
   import {
     EditorView,
     keymap,
@@ -12,15 +14,17 @@
     lineNumbers
   } from "@codemirror/view";
   import { defaultKeymap, indentWithTab } from "@codemirror/commands";
-  import { python, pythonLanguage } from "@codemirror/lang-python";
+  import { python } from "@codemirror/lang-python";
+  import { syntaxHighlighting, defaultHighlightStyle } from "@codemirror/language";
 
+  import { myVariable } from '$lib/stores/editorStore';
 
   let editorDiv;
-  const dispatch = createEventDispatcher();
+  let editor; // speichern wir hier rein
 
   onMount(() => {
     const state = EditorState.create({
-      doc: "",
+      doc: get(myVariable),
       extensions: [
         lineNumbers(),
         highlightActiveLineGutter(),
@@ -33,14 +37,30 @@
         EditorView.editable.of(true),
         EditorView.updateListener.of((update) => {
           if (update.docChanged) {
-            dispatch("input", update.state.doc.toString());
+            const newText = update.state.doc.toString();
+            myVariable.set(newText);
           }
-        })      ]
+        })
+      ]
     });
 
-    new EditorView({
+    editor = new EditorView({
       state,
       parent: editorDiv
+    });
+
+    // reagiere auf spätere Änderungen am Store (z. B. bei neuem Level)
+    myVariable.subscribe((newCode) => {
+      const currentText = editor.state.doc.toString();
+      if (newCode !== currentText) {
+        editor.dispatch({
+          changes: {
+            from: 0,
+            to: editor.state.doc.length,
+            insert: newCode
+          }
+        });
+      }
     });
   });
 </script>

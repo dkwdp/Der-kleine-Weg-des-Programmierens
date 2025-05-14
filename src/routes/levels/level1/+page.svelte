@@ -1,24 +1,9 @@
-<div class="sidebar" >
-    <h1>Leveltext:</h1>
-    <p>Hier die Aufgabe</p>
-</div>
-<style>
-    .sidebar {
-    background-color: var(--bg-light);
-    padding: 2rem;
-    width: 100%;
-    height: 90%;
-    box-shadow: inset -1px 0 0 var(--border-color);
-  }
+<!-- src/routes/page1.svelte -->
+<script>
+  import { myVariable } from '$lib/stores/editorStore';
 
-  .sidebar h1 {
-    font-size: 2rem;
-    color: var(--text-dark);
-  }
+  myVariable.set("#funktioniierreeeee biiitteee"); // oder abhängig vom Level  
+</script>
 
-  .sidebar p {
-    font-size: 1rem;
-    margin-top: 1.5rem;
-    color: var(--text-light);
-  }
-</style>
+<h1>Level1</h1>
+<p>Hier die Aufgabe</p>
