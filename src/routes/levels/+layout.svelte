@@ -1,13 +1,10 @@
 <script>
   import { onMount } from "svelte";
+  import { get } from "svelte/store";
+  import { myVariable } from "$lib/stores/editorStore";
   import PythonEditor from "$lib/PythonEditor.svelte";
-  import { page } from '$app/stores';
-  import { derived } from 'svelte/store';
-
-  const sidebar = derived(page, ($page) => $page.metadata?.sidebar || {});
 
   let pyodide = null;
-  let pythonInput = "";
   let output = "";
 
   async function loadScript(src) {
@@ -21,9 +18,7 @@
   }
 
   onMount(async () => {
-    await loadScript(
-      "https://cdn.jsdelivr.net/pyodide/v0.27.1/full/pyodide.js",
-    );
+    await loadScript("https://cdn.jsdelivr.net/pyodide/v0.27.1/full/pyodide.js");
     pyodide = await loadPyodide();
     console.log("✅ Pyodide geladen");
   });
@@ -34,48 +29,34 @@
       return;
     }
 
-    let captured = "";
-    let result;
+    const code = get(myVariable);
 
-    pyodide.setStdout({
-      batched: (s) => {
-        captured += s;
-      },
-    });
+    let captured = "";
+    pyodide.setStdout({ batched: (s) => (captured += s) });
 
     try {
-      result = await pyodide.runPythonAsync(pythonInput);
-      output = captured.trim() || String(result);
+      const result = await pyodide.runPythonAsync(code);
+      output = captured.trim() || String(result) || "✅ Ausgeführt";
     } catch (err) {
-      output = `❌ Fehler: ${err.message}`;
+      output = "❌ Fehler: " + err.message;
     }
   }
 </script>
 
 <main>
-
   <div class="sidebar">
     <slot />
   </div>
 
-  <div class="editor-section">
-    <nav>
-      <a href="/">home</a>
-      <a href="/levels/level1">level1</a>
-      <a href="/levels/level2">level2</a>
-    </nav>
+  <div class="editor-area">
+    <h2>Python-Code Editor</h2>
+    <PythonEditor />
+    <button on:click={runPython}>▶️ Ausführen</button>
 
-    <div class="pyodide-section">
-      <h2>Python-Code Editor</h2>
-      <PythonEditor on:input={e => pythonInput = e.detail} />
-      <br />
-      <button on:click={runPython}>Ausführen</button>
-
-      {#if output}
-        <h3>Ausgabe:</h3>
-        <input class="output-field" type="text" readonly bind:value={output} />
-      {/if}
-    </div>
+    {#if output}
+      <h3>Ausgabe:</h3>
+      <pre class="output">{output}</pre>
+    {/if}
   </div>
 </main>
 
@@ -87,27 +68,8 @@
     --text-light: #3a3a3a;
     --accent: #413C58;
     --accent-hover: #A3C4BC;
-    --code-bg: #e3f2fd59;
+    --code-bg: #f5f7fa;
     --border-color: #ccc;
-  }
-
-  .sidebar {
-    background-color: var(--bg-light);
-    padding: 2rem;
-    width: 100%;
-    height: 90%;
-    box-shadow: inset -1px 0 0 var(--border-color);
-  }
-
-  .sidebar h1 {
-    font-size: 2rem;
-    color: var(--text-dark);
-  }
-
-  .sidebar p {
-    font-size: 1rem;
-    margin-top: 1.5rem;
-    color: var(--text-light);
   }
 
   body {
@@ -122,50 +84,41 @@
     height: 100vh;
   }
 
-  .editor-section {
-    flex: 1;
+  .sidebar {
+    width: 40%;
+    background-color: var(--bg-light);
     padding: 2rem;
-    background-color: var(--bg-dark);
+    box-sizing: border-box;
+    color: var(--text-dark);
   }
 
-  nav {
-    margin-bottom: 1rem;
-  }
-
-  nav a {
-    margin-right: 1rem;
-    text-decoration: none;
-    color: var(--accent);
-  }
-
-  .pyodide-section {
-    margin-top: 1rem;
-    padding: 1rem;
+  .editor-area {
+    width: 60%;
+    padding: 2rem;
     background-color: var(--code-bg);
-    border-radius: 8px;
-    height: auto;
-  }
-
-  .output-field {
-    width: 100%;
-    margin-top: 0.5rem;
-    padding: 0.5rem;
-    font-family: monospace;
-    background: var(--bg-dark);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
+    box-sizing: border-box;
   }
 
   button {
+    margin-top: 1rem;
     padding: 0.5rem 1rem;
     background-color: var(--accent);
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
   }
 
   button:hover {
     background-color: var(--accent-hover);
+  }
+
+  pre.output {
+    margin-top: 1rem;
+    background: #fff;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-family: monospace;
   }
 </style>
