@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "title": "Einführung in die Addition1",
+        "description": "Berechne die Summe von 2+2",
+        "expectedOutput": "4",
+        "initialCode": "print(...)"
+    },
+    {
+        "id": 2,
+        "title": "Einführung in die Addition2",
+        "description": "Berechne die Summe von 1+2",
+        "expectedOutput": "3",
+        "initialCode": "print(...)"
+
+    }
+]
