@@ -35,7 +35,7 @@
   }
 </script>
 
-<canvas>
+<canvas
   bind:this={canvas}
   width="300"
   height="200"
@@ -44,4 +44,4 @@
   on:mouseleave={endDraw}
   on:mousemove={draw}
   style="border: 1px solid black;"
-</canvas>
+></canvas>
