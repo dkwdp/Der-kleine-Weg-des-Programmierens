@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import { get } from "svelte/store";
-  import { myVariable } from "$lib/stores/editorStore";
+  import { myVariable,pythonCode, pythonOutput } from "$lib/stores/editorStore";
   import PythonEditor from "$lib/PythonEditor.svelte";
 
   let pyodide = null;
@@ -37,9 +37,12 @@
     try {
       const result = await pyodide.runPythonAsync(code);
       output = captured.trim() || String(result) || "✅ Ausgeführt";
+    
     } catch (err) {
       output = "❌ Fehler: " + err.message;
     }
+    pythonOutput.set(output);
+    pythonCode.set(code)
   }
 </script>
 

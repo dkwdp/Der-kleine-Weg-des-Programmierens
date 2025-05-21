@@ -17,7 +17,7 @@
   import { python } from "@codemirror/lang-python";
   import { syntaxHighlighting, defaultHighlightStyle } from "@codemirror/language";
 
-  import { myVariable } from '$lib/stores/editorStore';
+  import { myVariable,pythonCode } from '$lib/stores/editorStore';
 
   let editorDiv;
   let editor; // speichern wir hier rein
