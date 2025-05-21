@@ -3,9 +3,11 @@
   import { get } from "svelte/store";
   import { myVariable } from "$lib/stores/editorStore";
   import PythonEditor from "$lib/PythonEditor.svelte";
+  import levels from '$data/levels.json'; //json datei mit level-lösungen
 
   let pyodide = null;
   let output = "";
+  let currentLevel = 0; //mit erstem level starten
 
   async function loadScript(src) {
     return new Promise((resolve, reject) => {
@@ -36,9 +38,24 @@
 
     try {
       const result = await pyodide.runPythonAsync(code);
-      output = captured.trim() || String(result) || "✅ Ausgeführt";
+      myVariable.set(currentLevel.initialCode); // setzen des initialen Codes im Editor
+      const trimmedOutput = captured.trim() || String(result);
+      const currrentExpectedOutput = levels[currentLevel].expectedOutput;
+      if(trimmedOutput === currrentExpectedOutput){
+        output = "richtig. dein ergebnis ist: " + trimmedOutput + " erwartetes ergebnis ist: " +  currrentExpectedOutput;
+      } else{
+        output = "falsch. dein ergebnis ist: " + trimmedOutput + " erwartetes ergebnis ist: " +  currrentExpectedOutput;
+      }
     } catch (err) {
-      output = "❌ Fehler: " + err.message;
+      output = "Fehler: " + err.message;
+    }
+  }
+
+  function advanceToNextLevel(){
+    if(currentLevel<levels.length-1){
+      currentLevel++;
+    } else {
+      output = "du bist am Ende angekommen";
     }
   }
 </script>

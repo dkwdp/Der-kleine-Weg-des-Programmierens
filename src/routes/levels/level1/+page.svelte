@@ -1,42 +1,38 @@
-<!-- src/routes/page1.svelte -->
 <script>
   import { myVariable } from '$lib/stores/editorStore';
+  import levels from '$data/levels.json';
+    import { onMount } from 'svelte';
 
-  myVariable.set("#funktioniierreeeee biiitteee"); // oder abhängig vom Level  
+  // Verwendung der Level-Daten aus der JSON-Datei:
+  let currentLevelIndex = 0; // starten beim ersten Level
+  let currentLevel = levels[currentLevelIndex];
 
-  // Aufgaben und dazugehörige Texte
-  let tasks = [
-    { title: 'Aufgabe 1.1', text: 'Dies ist der Text für Aufgabe 1.1' },
-    { title: 'Aufgabe 1.2', text: 'Dies ist der Text für Aufgabe 1.2' },
-    { title: 'Aufgabe 1.3', text: 'Dies ist der Text für Aufgabe 1.3' }
-  ];
-
-  let currentTaskIndex = 0;
-
+  // Funktion zum Weitergehen ist evtl. noch erforderlich:
   function nextTask() {
-    if (currentTaskIndex < tasks.length - 1) {
-      currentTaskIndex++;
+    if (currentLevelIndex < levels.length - 1) {
+      currentLevelIndex++;
+      currentLevel = levels[currentLevelIndex];
     }
   }
 </script>
-<main>
-<h1>Level1</h1>
-<p>Hier die Aufgabe</p>
-<h2>{tasks[currentTaskIndex].title}</h2>
-<p>{tasks[currentTaskIndex].text}</p>
 
-<button on:click={nextTask}>Weiter</button>
+<main>
+  <h1>{currentLevel.title}</h1>
+  <h2>Levelbeschreibung</h2>
+  <p>{currentLevel.description}</p>
+
+  <button on:click={nextTask}>Weiter</button>
 </main>
 
 <style>
-main {
-  padding: 20px;
-  text-align: center;
-}
+  main {
+    padding: 20px;
+    text-align: center;
+  }
 
-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-}
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
 </style>
