@@ -1,5 +1,9 @@
 <script>
 	import { goto } from '$app/navigation';
+	import Mascot from '../mascot/Mascot.svelte';
+
+	let mascotEmotion = 'neutral';
+	let mascotMessage = 'Willkommen!';
 
 	let mouseX = 0;
 	let mouseY = 0;
@@ -14,6 +18,8 @@
 		goto(`/levels/level${level}`);
 	}
 </script>
+
+<Mascot {mascotEmotion} {mascotMessage} />
 
 <style>
 .map-header {
