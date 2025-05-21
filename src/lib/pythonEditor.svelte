@@ -1,68 +1,68 @@
 <script>
-    import { onMount, createEventDispatcher } from "svelte";
-    import { EditorState} from "@codemirror/state";
-    import {
-      EditorView,
-      keymap,
-      highlightSpecialChars,
-      drawSelection,
-      highlightActiveLine,
-      lineNumbers
-    } from "@codemirror/view";
-    import { defaultKeymap, indentWithTab } from "@codemirror/commands";
-    import { python } from "@codemirror/lang-python";
+  import { onMount } from "svelte";
+  import { get, writable } from "svelte/store";
+  import {
+    EditorState
+  } from "@codemirror/state";
+  import {
+    EditorView,
+    keymap,
+    highlightSpecialChars,
+    drawSelection,
+    highlightActiveLine,
+    highlightActiveLineGutter,
+    lineNumbers
+  } from "@codemirror/view";
+  import { defaultKeymap, indentWithTab } from "@codemirror/commands";
+  import { python } from "@codemirror/lang-python";
+  import { syntaxHighlighting, defaultHighlightStyle } from "@codemirror/language";
 
-  
-    let editorDiv;
-    const dispatch = createEventDispatcher();
-  
-    onMount(() => {
-      const state = EditorState.create({
-        doc: "",
-        extensions: [
-          keymap.of([
-            indentWithTab,
-            ...defaultKeymap
-          ]),
-          python(),
-          lineNumbers(),
-          EditorView.editable.of(true),
-          highlightSpecialChars(),
-          drawSelection(),
-          highlightActiveLine(),
-          
-          EditorView.updateListener.of((update) => {
-            if (update.docChanged) {
-              dispatch("input", update.state.doc.toString());
-            }
-          })
-        ]
-      });
-  
-      new EditorView({
-        state,
-        parent: editorDiv
-      });
+  import { myVariable } from '$lib/stores/editorStore';
+
+  let editorDiv;
+  let editor; // speichern wir hier rein
+
+  onMount(() => {
+    const state = EditorState.create({
+      doc: get(myVariable),
+      extensions: [
+        lineNumbers(),
+        highlightActiveLineGutter(),
+        highlightSpecialChars(),
+        drawSelection(),
+        highlightActiveLine(),
+        keymap.of([indentWithTab, ...defaultKeymap]),
+        python(),
+        syntaxHighlighting(defaultHighlightStyle),
+        EditorView.editable.of(true),
+        EditorView.updateListener.of((update) => {
+          if (update.docChanged) {
+            const newText = update.state.doc.toString();
+            myVariable.set(newText);
+          }
+        })
+      ]
     });
-  </script>
-  
-  <style>
-    .editor {
-      height: 200px;
-      width: 100%;
-      border: 1px solid #ccc;
-      background: white;
-      font-family: monospace;
-    }
-  
-    .cm-editor {
-      height: 100%;
-    }
-  
-    .cm-scroller {
-      overflow: auto;
-    }
-  </style>
-  
-  <div class="editor" bind:this={editorDiv}></div>
-  
+
+    editor = new EditorView({
+      state,
+      parent: editorDiv
+    });
+
+    // reagiere auf spätere Änderungen am Store (z. B. bei neuem Level)
+    myVariable.subscribe((newCode) => {
+      const currentText = editor.state.doc.toString();
+      if (newCode !== currentText) {
+        editor.dispatch({
+          changes: {
+            from: 0,
+            to: editor.state.doc.length,
+            insert: newCode
+          }
+        });
+      }
+    });
+  });
+</script>
+
+<div class="editor" bind:this={editorDiv}></div>
