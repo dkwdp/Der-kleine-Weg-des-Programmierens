@@ -38,7 +38,6 @@
 
     try {
       const result = await pyodide.runPythonAsync(code);
-      myVariable.set(currentLevel.initialCode); // setzen des initialen Codes im Editor
       const trimmedOutput = captured.trim() || String(result);
       const currrentExpectedOutput = levels[currentLevel].expectedOutput;
       if(trimmedOutput === currrentExpectedOutput){

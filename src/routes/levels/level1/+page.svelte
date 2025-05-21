@@ -7,6 +7,10 @@
   let currentLevelIndex = 0; // starten beim ersten Level
   let currentLevel = levels[currentLevelIndex];
 
+  onMount(() => {
+    myVariable.set(currentLevel.initialCode); // setzen des initialen Codes im Editor
+  });
+
   // Funktion zum Weitergehen ist evtl. noch erforderlich:
   function nextTask() {
     if (currentLevelIndex < levels.length - 1) {

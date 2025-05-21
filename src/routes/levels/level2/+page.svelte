@@ -1,15 +1,42 @@
 <script>
-  import { onMount } from 'svelte';
   import { myVariable } from '$lib/stores/editorStore';
+  import levels from '$data/levels.json';
+    import { onMount } from 'svelte';
 
-  import Canvas from '$lib/Canvas/Canvas.svelte';
+  // Verwendung der Level-Daten aus der JSON-Datei:
+  let currentLevelIndex = 1; // starten beim ersten Level
+  let currentLevel = levels[currentLevelIndex];
 
   onMount(() => {
-    myVariable.set(`# Zeichne etwas im Canvas!`);
+    myVariable.set(currentLevel.initialCode); // setzen des initialen Codes im Editor
   });
+
+  // Funktion zum Weitergehen ist evtl. noch erforderlich:
+  function nextTask() {
+    if (currentLevelIndex < levels.length - 1) {
+      currentLevelIndex++;
+      currentLevel = levels[currentLevelIndex];
+    }
+  }
 </script>
 
-<h1>Level 2: Zeichnen!</h1>
-<p>Zeichne etwas im Canvas:</p>
+<main>
+  <h1>{currentLevel.title}</h1>
+  <h2>Levelbeschreibung</h2>
+  <p>{currentLevel.description}</p>
 
-<Canvas color="black" />
+  <button on:click={nextTask}>Weiter</button>
+</main>
+
+<style>
+  main {
+    padding: 20px;
+    text-align: center;
+  }
+
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+</style>
