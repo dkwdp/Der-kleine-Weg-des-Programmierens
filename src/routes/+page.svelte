@@ -1,4 +1,5 @@
 <script>
+ 
    import { goto } from '$app/navigation';
     // Funktion zum Weiterleiten zur nächsten Seite
     function startJourney() {
