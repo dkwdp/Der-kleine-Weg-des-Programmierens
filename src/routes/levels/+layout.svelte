@@ -1,49 +1,31 @@
 <script>
   import { onMount } from "svelte";
   import { get } from "svelte/store";
-  import { myVariable,pythonCode, pythonOutput } from "$lib/stores/editorStore";
-  import PythonEditor from "$lib/PythonEditor.svelte";
-
-  let pyodide = null;
+  import { myVariable} from "$lib/stores/editorStore";
+  import JavaScriptEditor from "$lib/JavaScriptEditor.svelte";
+ 
   let output = "";
+  async function runJavaScript() {
 
-  async function loadScript(src) {
-    return new Promise((resolve, reject) => {
-      const script = document.createElement("script");
-      script.src = src;
-      script.onload = resolve;
-      script.onerror = reject;
-      document.head.appendChild(script);
-    });
-  }
-
-  onMount(async () => {
-    await loadScript("https://cdn.jsdelivr.net/pyodide/v0.27.1/full/pyodide.js");
-    pyodide = await loadPyodide();
-    console.log("✅ Pyodide geladen");
-  });
-
-  async function runPython() {
-    if (!pyodide) {
-      output = "⏳ Pyodide lädt noch...";
-      return;
-    }
 
     const code = get(myVariable);
-
-    let captured = "";
-    pyodide.setStdout({ batched: (s) => (captured += s) });
-
+    // Capture console.log output
     try {
-      const result = await pyodide.runPythonAsync(code);
-      output = captured.trim() || String(result) || "✅ Ausgeführt";
-    
-    } catch (err) {
-      output = "❌ Fehler: " + err.message;
-    }
-    pythonOutput.set(output);
-    pythonCode.set(code)
+    let captured = "";
+    const originalLog = console.log;
+    console.log = (...args) => {
+      captured += args.join(" ") + "\n";
+    };
+
+    const result = eval(code);
+
+    console.log = originalLog;
+
+    output = captured.trim() || String(result) || "✅ Ausgeführt";
+  } catch (err) {
+    output = "❌ Fehler: " + err.message;
   }
+}
 </script>
 
 <main>
@@ -52,9 +34,9 @@
   </div>
 
   <div class="editor-area">
-    <h2>Python-Code Editor</h2>
-    <PythonEditor />
-    <button on:click={runPython}> Ausführen</button>
+    <h2>JavaScript Editor</h2>
+    <JavaScriptEditor />
+    <button on:click={runJavaScript}> Ausführen</button>
 
     {#if output}
       <h3>Ausgabe:</h3>
