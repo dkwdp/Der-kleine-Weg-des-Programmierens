@@ -15,11 +15,26 @@
     error = '';
     feedback = '';
 
+    // Construct the full prompt here
+    const prompt = `Dieser Javascript Code wurde von einem Anfänger geschrieben:
+
+\`\`\`javascript
+${code}
+\`\`\`
+
+Deine Aufgabe ist es:
+1. Auf **Deutsch** zu antworten.
+2. Den Code auf Fehler zu überprüfen.
+3. Jeden Fehler in **genau einem Satz** mit **nicht mehr als 20 Wörtern** zu erklären.
+4. Gib **keine unnötigen Einleitungen oder Zusammenfassungen**.
+
+Beginne jetzt mit der Analyse.`;
+
     try {
-      const res = await fetch('http://localhost:3000/analyze', {
+      const res = await fetch('141.45.153.208:5000/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code })
+        body: JSON.stringify({ prompt })
       });
 
       if (!res.ok) {
@@ -32,8 +47,8 @@
       error = 'Something went wrong: ' + err.message;
     } finally {
       loading = false;
+    }
   }
-}
 </script>
   
 <style>
@@ -42,7 +57,7 @@
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    background-color: #f8aa48; /* Warme, einladende Grundfarbe */
+    background-color: #f8aa48;
   }
   
   /* Container für zentrierte Inhalte */
@@ -53,7 +68,7 @@
     align-items: center;
     height: 100vh;
     text-align: center;
-    color: #413c58; /* Dunkle Textfarbe für hohen Kontrast */
+    color: #413c58;
   }
   
   h1 {
@@ -64,7 +79,7 @@
   p {
     font-size: 1.2em;
     margin-bottom: 40px;
-    color: #a3c4bc; /* Leichte, kontrastierende Farbe */
+    color: #a3c4bc;
   }
   
   button {
@@ -72,14 +87,14 @@
     font-size: 1.2em;
     border: none;
     border-radius: 5px;
-    background-color: #d64550; /* Auffällige Rotfarbe für den Button */
+    background-color: #d64550;
     color: #fff;
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
   
   button:hover {
-    background-color: #bfd7b5; /* Leichte Grünfarbe als Hover-Effekt */
+    background-color: #bfd7b5;
   }
 </style>
   
@@ -88,7 +103,7 @@
   <p>Mach dich bereit, die spannende Welt des Programmierens zu entdecken!</p>
   <button on:click={startJourney}>Starte deine Reise</button>
 
-  <textarea bind:value={code} placeholder="Enter your Python code..." spellcheck="false" rows=3></textarea>
+  <textarea bind:value={code} placeholder="Enter your javascript code..." spellcheck="false" rows=3></textarea>
   <button on:click={submitCode} disabled={loading}>
     {#if loading}
       ⏳ Reviewing...

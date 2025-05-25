@@ -4,32 +4,21 @@ import cors from 'cors';
 
 const app = express();
 app.use(cors());
-
-const PORT = 3000;
-const OLLAMA_URL = "http://localhost:11434/api/generate";
-
 app.use(express.json());
 
+const PORT = 5000;
+const OLLAMA_URL = "http://localhost:11434/api/generate";
+
 app.post('/analyze', async (req, res) => {
-  const userCode = req.body.code || "";
+  const prompt = req.body.prompt || "";
 
-  const prompt = `Dieser Python Code wurde von einem Anfänger geschrieben:
-
-                  \`\`\`python
-                  ${userCode}
-                  \`\`\`
-
-                  Deine Aufgabe ist es:
-                  1. Auf **Deutsch** zu antworten.
-                  2. Den Code auf Fehler zu überprüfen.
-                  3. Jeden Fehler in **genau einem Satz** mit **nicht mehr als 20 Wörtern** zu erklären.
-                  4. Gib **keine unnötigen Einleitungen oder Zusammenfassungen**.
-
-                  Beginne jetzt mit der Analyse.`;
+  if (!prompt.trim()) {
+    return res.status(400).json({ error: 'Prompt is required.' });
+  }
 
   try {
     const response = await axios.post(OLLAMA_URL, {
-      model: "mistral:7b-instruct-q4_0",
+      model: "llama3:8b",
       prompt: prompt,
       stream: false
     });
