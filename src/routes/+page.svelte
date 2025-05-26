@@ -22,16 +22,14 @@
 ${code}
 \`\`\`
 
-Deine Aufgabe ist es:
-1. Auf **Deutsch** zu antworten.
-2. Den Code auf Fehler zu überprüfen.
-3. Jeden Fehler in **genau einem Satz** mit **nicht mehr als 20 Wörtern** zu erklären.
-4. Gib **keine unnötigen Einleitungen oder Zusammenfassungen**.
+Deine Aufgabe ist es auf Deutsch und in Kinderfreundlicher Sprache:
+Den Code auf Fehler zu überprüfen und jeden Fehler in **genau einem Satz** mit **nicht mehr als 15 Wörtern** zu erklären und **keine unnötigen Einleitungen oder Zusammenfassungen** zu geben.
 
 Beginne jetzt mit der Analyse.`;
 
+console.log(prompt)
     try {
-      const res = await fetch('141.45.153.208:5000/analyze', {
+      const res = await fetch('http://141.45.153.208:5000/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt })
