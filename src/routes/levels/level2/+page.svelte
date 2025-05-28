@@ -1,7 +1,7 @@
 <script>
-  import { myVariable } from '$lib/stores/editorStore';
-  import levels from '$data/levels.json';
-    import { onMount } from 'svelte';
+  import { onMount } from 'svelte';
+  import { get } from "svelte/store";
+  import { myVariable, pythonCode, pythonOutput } from '$lib/stores/editorStore';
 
   // Verwendung der Level-Daten aus der JSON-Datei:
   let currentLevelIndex = 1; // starten beim ersten Level
@@ -10,20 +10,15 @@
   onMount(() => {
     myVariable.set(currentLevel.initialCode); // setzen des initialen Codes im Editor
   });
-
-  // Funktion zum Weitergehen ist evtl. noch erforderlich:
-  function nextTask() {
-    if (currentLevelIndex < levels.length - 1) {
-      currentLevelIndex++;
-      currentLevel = levels[currentLevelIndex];
-    }
-  }
+  $: output = $pythonOutput;
+  $: input = $pythonCode;
 </script>
 
-<main>
-  <h1>{currentLevel.title}</h1>
-  <h2>Levelbeschreibung</h2>
-  <p>{currentLevel.description}</p>
+<h1>Level 2: Zeichnen!</h1>
+<p>Zeichne etwas im Canvas:</p>
+
+<p>{output}</p>
+<p>{input}</p>
 
   <button on:click={nextTask}>Weiter</button>
 </main>

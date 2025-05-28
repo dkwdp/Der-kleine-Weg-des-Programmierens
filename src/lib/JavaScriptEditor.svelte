@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import { get, writable } from "svelte/store";
+  import { javascript } from "@codemirror/lang-javascript";
   import {
     EditorState
   } from "@codemirror/state";
@@ -14,10 +15,9 @@
     lineNumbers
   } from "@codemirror/view";
   import { defaultKeymap, indentWithTab } from "@codemirror/commands";
-  import { python } from "@codemirror/lang-python";
   import { syntaxHighlighting, defaultHighlightStyle } from "@codemirror/language";
 
-  import { myVariable } from '$lib/stores/editorStore';
+  import { myVariable,pythonCode } from '$lib/stores/editorStore';
 
   let editorDiv;
   let editor; // speichern wir hier rein
@@ -32,7 +32,7 @@
         drawSelection(),
         highlightActiveLine(),
         keymap.of([indentWithTab, ...defaultKeymap]),
-        python(),
+        javascript(),
         syntaxHighlighting(defaultHighlightStyle),
         EditorView.editable.of(true),
         EditorView.updateListener.of((update) => {
@@ -55,7 +55,7 @@
       if (newCode !== currentText) {
         editor.dispatch({
           changes: {
-            from: 0,
+            from: 0, 
             to: editor.state.doc.length,
             insert: newCode
           }
