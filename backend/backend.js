@@ -10,7 +10,7 @@ const PORT = 5000;
 const OLLAMA_URL = "http://localhost:11434/api/generate";
 
 app.post('/analyze', async (req, res) => {
-  const prompt = req.body.prompt || "deepseek-coder:6.7b-instruct";
+  const prompt = req.body.prompt || "";
 
   if (!prompt.trim()) {
     return res.status(400).json({ error: 'Prompt is required.' });
@@ -18,7 +18,7 @@ app.post('/analyze', async (req, res) => {
 
   try {
     const response = await axios.post(OLLAMA_URL, {
-      model: "",
+      model: "deepseek-coder:6.7b-instruct",
       prompt: prompt,
       stream: false
     });
