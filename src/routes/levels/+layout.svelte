@@ -5,37 +5,54 @@
   import JavaScriptEditor from "$lib/JavaScriptEditor.svelte";
   import levels from '$data/levels.json'; //json datei mit level-lösungen
   import Mascot from '../mascot/Mascot.svelte';
+  import P5Canvas from "$lib/Canvas/p5Canvas.svelte";
 
   let output = "";
   let currentLevel = 0; //mit erstem level starten
+  let canvasRef;
 
   async function runJavaScript() {
-
-
     const code = get(myVariable);
-    // Capture console.log output
+    
     try {
-    let captured = "";
-    const originalLog = console.log;
-    console.log = (...args) => {
-      captured += args.join(" ") + "\n";
-    };
+      let captured = "";
+      const originalLog = console.log;
+      console.log = (...args) => {
+        captured += args.join(" ") + "\n";
+      };
 
-    const result = eval(code);
-    const trimmedOutput = captured.trim() || String(result);
-    const currrentExpectedOutput = levels[currentLevel].expectedOutput;
+      // Für Zeichenlevel: Canvas-Code ausführen
+      const currentLevelData = levels[currentLevel];
+      if (currentLevelData && currentLevelData.type === 'drawing') {
+        if (canvasRef) {
+          canvasRef.runDrawingCode();
+        }
+        output = "Zeichnung ausgeführt!";
+      } else {
+        // Normaler JavaScript Code
+        const result = eval(code);
+        const trimmedOutput = captured.trim() || String(result);
+        const expectedOutput = levels[currentLevel].expectedOutput;
 
-    console.log = originalLog;
+        console.log = originalLog;
 
-      if(trimmedOutput === currrentExpectedOutput){
-        output = "richtig. dein ergebnis ist: " + trimmedOutput + " erwartetes ergebnis ist: " +  currrentExpectedOutput;
-      } else{
-        output = "falsch. dein ergebnis ist: " + trimmedOutput + " erwartetes ergebnis ist: " +  currrentExpectedOutput;
+        if(trimmedOutput === expectedOutput){
+          output = "Richtig! Dein Ergebnis ist: " + trimmedOutput + " | Erwartetes Ergebnis: " + expectedOutput;
+        } else{
+          output = "Falsch. Dein Ergebnis ist: " + trimmedOutput + " | Erwartetes Ergebnis: " + expectedOutput;
+        }
       }
-  } catch (err) {
-    output = "Fehler: " + err.message;
+    } catch (err) {
+      output = "Fehler: " + err.message;
+    }
   }
-}
+   // Hilfsfunktionen für Canvas verfügbar machen
+   function clearCanvas() {
+    if (canvasRef) {
+      canvasRef.clearCanvas();
+    }
+  }
+
 export let emotion = 'neutral';
   export let message = '';
 
@@ -61,8 +78,14 @@ export let emotion = 'neutral';
   <div class = "containerRight">
   <div class="editor-area">
     <h2>JavaScript Editor</h2>
+
     <JavaScriptEditor />
-    <button on:click={runJavaScript}> Ausführen</button>
+    <P5Canvas bind:this={canvasRef} />
+
+    <div class="controls">
+      <button on:click={runJavaScript}> Ausführen</button>
+      <button on:click={clearCanvas}>Canvas leeren</button>
+    </div>
 
     {#if output}
       <h3>Ausgabe:</h3>
