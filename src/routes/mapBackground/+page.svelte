@@ -21,6 +21,39 @@
 
 <Mascot {mascotEmotion} {mascotMessage} />
 
+
+<div class="map-header">
+	<h1>Willkommen im Abenteuerpfad!</h1>
+	<p>Wähle ein Level aus, um deine Reise zu beginnen.</p>
+</div>
+
+<div class="background">
+	<div class="map-container" role="application" on:mousemove={handleMouseMove}>
+		<img src="/map.png" alt="Map" class="map-image" />
+
+		<!-- Buttons -->
+		<button id="level1" class="level-button active" on:click={() => LevelJoin(1)}>1</button>
+		<button id="level2" class="level-button active" on:click={() => LevelJoin(2)}>2</button>
+		<button id="level3" class="level-button active" on:click={() => LevelJoin(3)}>3</button>
+		<button id="level4" class="level-button active" on:click={() => LevelJoin(4)}>4</button>
+		<button id="level5" class="level-button active" on:click={() => LevelJoin(5)}>5</button>
+		<button id="level6" class="level-button active" on:click={() => LevelJoin(6)}>6</button>
+		<button id="level7" class="level-button active" on:click={() => LevelJoin(7)}>7</button>
+		<button id="level8" class="level-button active" on:click={() => LevelJoin(8)}>8</button>
+		<button id="level9" class="level-button active" on:click={() => LevelJoin(9)}>9</button>
+		<button id="level10" class="level-button active" on:click={() => LevelJoin(10)}>10</button>
+		
+		<div class="mouse-coords">
+		Mausposition relativ zum Bild: X = {mouseX}% &nbsp; Y = {mouseY}%
+		</div>
+	</div>
+</div>
+
+<div class="map-container" role="application" on:mousemove={handleMouseMove}>
+
+	
+</div>
+
 <style>
 .map-header {
 	text-align: center;
@@ -111,33 +144,3 @@
 	margin: 0;
 }
 </style>
-
-<div class="map-header">
-	<h1>Willkommen im Abenteuerpfad!</h1>
-	<p>Wähle ein Level aus, um deine Reise zu beginnen.</p>
-</div>
-
-<div class="background">
-	<div class="map-container" role="application" on:mousemove={handleMouseMove}>
-		<img src="/map.png" alt="Map" class="map-image" />
-
-		<!-- Buttons -->
-		<button id="level1" class="level-button active" on:click={() => LevelJoin(1)}>1</button>
-		<button id="level2" class="level-button active" on:click={() => LevelJoin(2)}>2</button>
-		<button id="level3" class="level-button active" on:click={() => LevelJoin(3)}>3</button>
-		<button id="level4" class="level-button active" on:click={() => LevelJoin(4)}>4</button>
-		<button id="level5" class="level-button active" on:click={() => LevelJoin(5)}>5</button>
-		<button id="level6" class="level-button active" on:click={() => LevelJoin(6)}>6</button>
-		<button id="level7" class="level-button active" on:click={() => LevelJoin(7)}>7</button>
-		<button id="level8" class="level-button active" on:click={() => LevelJoin(8)}>8</button>
-		<button id="level9" class="level-button active" on:click={() => LevelJoin(9)}>9</button>
-		<button id="level10" class="level-button active" on:click={() => LevelJoin(10)}>10</button>
-	</div>
-</div>
-
-<div class="map-container" role="application" on:mousemove={handleMouseMove}>
-
-	<div class="mouse-coords">
-		Mausposition relativ zum Bild: X = {mouseX}% &nbsp; Y = {mouseY}%
-	</div>
-</div>
