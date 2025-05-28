@@ -1,11 +1,12 @@
 <script>
   import { onMount } from "svelte";
   import { get } from "svelte/store";
-  import { myVariable} from "$lib/stores/editorStore";
+  import { myVariable, isCurrentLevelDrawing } from "$lib/stores/editorStore";
   import JavaScriptEditor from "$lib/JavaScriptEditor.svelte";
-  import levels from '$data/levels.json'; //json datei mit level-lösungen
-  import Mascot from '../mascot/Mascot.svelte';
+  import levels from "$data/levels.json"; //json datei mit level-lösungen
+  import Mascot from "../mascot/Mascot.svelte";
   import P5Canvas from "$lib/Canvas/p5Canvas.svelte";
+  import { TreeIndentContext } from "@codemirror/language";
 
   let output = "";
   let currentLevel = 0; //mit erstem level starten
@@ -13,7 +14,7 @@
 
   async function runJavaScript() {
     const code = get(myVariable);
-    
+
     try {
       let captured = "";
       const originalLog = console.log;
@@ -23,7 +24,7 @@
 
       // Für Zeichenlevel: Canvas-Code ausführen
       const currentLevelData = levels[currentLevel];
-      if (currentLevelData && currentLevelData.type === 'drawing') {
+      if (currentLevelData && currentLevelData.type === "drawing") {
         if (canvasRef) {
           canvasRef.runDrawingCode();
         }
@@ -36,72 +37,80 @@
 
         console.log = originalLog;
 
-        if(trimmedOutput === expectedOutput){
-          output = "Richtig! Dein Ergebnis ist: " + trimmedOutput + " | Erwartetes Ergebnis: " + expectedOutput;
-        } else{
-          output = "Falsch. Dein Ergebnis ist: " + trimmedOutput + " | Erwartetes Ergebnis: " + expectedOutput;
+        if (trimmedOutput === expectedOutput) {
+          output =
+            "Richtig! Dein Ergebnis ist: " +
+            trimmedOutput +
+            " | Erwartetes Ergebnis: " +
+            expectedOutput;
+        } else {
+          output =
+            "Falsch. Dein Ergebnis ist: " +
+            trimmedOutput +
+            " | Erwartetes Ergebnis: " +
+            expectedOutput;
         }
       }
     } catch (err) {
       output = "Fehler: " + err.message;
     }
   }
-   // Hilfsfunktionen für Canvas verfügbar machen
-   function clearCanvas() {
+  // Hilfsfunktionen für Canvas verfügbar machen
+  function clearCanvas() {
     if (canvasRef) {
       canvasRef.clearCanvas();
     }
   }
-
-export let emotion = 'neutral';
-  export let message = '';
+  export let emotion = "neutral";
+  export let message = "";
 
   const emotionImages = {
-    happy: '/PinuHappy.png',
-    neutral: '/PinuNeutral.png',
-    sad: '/PinuSad.png',
-    think: '/PinuThink.png',
-    switch: '/PinuSwitch.png',
-    neutral2: '/PinuNeutral2.png',
+    happy: "/PinuHappy.png",
+    neutral: "/PinuNeutral.png",
+    sad: "/PinuSad.png",
+    think: "/PinuThink.png",
+    switch: "/PinuSwitch.png",
+    neutral2: "/PinuNeutral2.png",
   };
 
   $: imageSrc = emotionImages[emotion] || emotionImages.neutral;
 </script>
 
 <main>
-  <div class = "container">
-    
-  <div class="sidebar">
-    <slot />
-  </div>
-
-  <div class = "containerRight">
-  <div class="editor-area">
-    <h2>JavaScript Editor</h2>
-
-    <JavaScriptEditor />
-    <P5Canvas bind:this={canvasRef} />
-
-    <div class="controls">
-      <button on:click={runJavaScript}> Ausführen</button>
-      <button on:click={clearCanvas}>Canvas leeren</button>
+  <div class="container">
+    <div class="sidebar">
+      <slot />
     </div>
 
-    {#if output}
-      <h3>Ausgabe:</h3>
-      <pre class="output">{output}</pre>
-    {/if}
-  </div>
-  <div class = "speechArea">
-  <div class="mascot-container">
-  <img src={imageSrc} alt="Pinguin-Maskottchen" />
-  {#if message}
-    <div class="speech-bubble">{message}</div>
-  {/if}
-</div>
-</div>
-  </div>
+    <div class="containerRight">
+      <div class="editor-area">
+        <h2>JavaScript Editor</h2>
 
+        <JavaScriptEditor />
+
+        {#if !get(isCurrentLevelDrawing)}
+          <P5Canvas bind:this={canvasRef} />
+        {/if}
+        <div class="controls">
+          {#if get(isCurrentLevelDrawing)}
+          <button on:click={runJavaScript}> Ausführen</button>
+          {/if}
+        </div>
+
+        {#if output}
+          <h3>Ausgabe:</h3>
+          <pre class="output">{output}</pre>
+        {/if}
+      </div>
+      <div class="speechArea">
+        <div class="mascot-container">
+          <img src={imageSrc} alt="Pinguin-Maskottchen" />
+          {#if message}
+            <div class="speech-bubble">{message}</div>
+          {/if}
+        </div>
+      </div>
+    </div>
   </div>
 </main>
 
@@ -111,8 +120,8 @@ export let emotion = 'neutral';
     --bg-dark: #ffffff;
     --text-dark: #172c66;
     --text-light: #3a3a3a;
-    --accent: #413C58;
-    --accent-hover: #A3C4BC;
+    --accent: #413c58;
+    --accent-hover: #a3c4bc;
     --code-bg: #f5f7fa;
     --border-color: #ccc;
     --dojo-orange: #f8aa48;
@@ -121,8 +130,6 @@ export let emotion = 'neutral';
     --dojo-green: #bfd7b5;
     --dojo-red: #d64550;
   }
-  
-
 
   body {
     margin: 0;
@@ -137,10 +144,10 @@ export let emotion = 'neutral';
   }
 
   .container {
-      display: flex;
-      height: 100%;
-      width: 100%;
-    }
+    display: flex;
+    height: 100%;
+    width: 100%;
+  }
 
   .sidebar {
     flex: 1;
@@ -151,7 +158,7 @@ export let emotion = 'neutral';
     color: var(--text-dark);
   }
 
-  .containerRight{
+  .containerRight {
     flex: 2;
     width: 60%;
     height: auto;
@@ -170,10 +177,10 @@ export let emotion = 'neutral';
     background-color: var(--code-bg);
     box-sizing: border-box;
   }
-  .speechArea{
-    flex: 1;
+  .speechArea {
+    flex: 0.3;
     background-color: var(--dojo-violet);
-    height: 30%;
+    height: 5%;
   }
 
   .mascot-container {

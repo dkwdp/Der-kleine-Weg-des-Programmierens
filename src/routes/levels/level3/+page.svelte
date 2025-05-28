@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { myVariable } from '$lib/stores/editorStore';
+  import { myVariable, isCurrentLevelDrawing } from '$lib/stores/editorStore';
   import levels from '$data/levels.json';
 
   let currentLevelIndex = 2; // Level 3 (Index 2)
@@ -8,6 +8,7 @@
 
   onMount(() => {
     myVariable.set(currentLevel.initialCode);
+    isCurrentLevelDrawing.set(currentLevel.type == 'drawing');
   });
 
   function nextTask() {
@@ -23,6 +24,7 @@
       currentLevelIndex--;
       currentLevel = levels[currentLevelIndex];
       myVariable.set(currentLevel.initialCode);
+
     }
   }
 </script>

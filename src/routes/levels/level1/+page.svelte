@@ -1,14 +1,16 @@
 <script>
-  import { myVariable } from '$lib/stores/editorStore';
+  import { myVariable, isCurrentLevelDrawing } from '$lib/stores/editorStore';
   import levels from '$data/levels.json';
     import { onMount } from 'svelte';
 
   // Verwendung der Level-Daten aus der JSON-Datei:
   let currentLevelIndex = 0; // starten beim ersten Level
   let currentLevel = levels[currentLevelIndex];
-
+  
   onMount(() => {
-    myVariable.set(currentLevel.initialCode); // setzen des initialen Codes im Editor
+    myVariable.set(currentLevel.initialCode);
+    isCurrentLevelDrawing.set(currentLevel.type == 'drawing');
+ // setzen des initialen Codes im Editor
   });
 
   // Funktion zum Weitergehen ist evtl. noch erforderlich:
