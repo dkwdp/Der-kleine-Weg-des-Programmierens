@@ -3,40 +3,44 @@
   import { get } from "svelte/store";
   import { myVariable} from "$lib/stores/editorStore";
   import JavaScriptEditor from "$lib/JavaScriptEditor.svelte";
-  import levels from '$data/levels.json'; //json datei mit level-lösungen
+  import levels from '$data/levels.json';
   import Mascot from '../mascot/Mascot.svelte';
 
   let output = "";
-  let currentLevel = 0; //mit erstem level starten
+  let currentLevel = 0;
 
   async function runJavaScript() {
-
-
     const code = get(myVariable);
-    // Capture console.log output
     try {
-    let captured = "";
-    const originalLog = console.log;
-    console.log = (...args) => {
-      captured += args.join(" ") + "\n";
-    };
+      let captured = "";
+      const originalLog = console.log;
+      console.log = (...args) => {
+        captured += args.join(" ") + "\n";
+      };
 
-    const result = eval(code);
-    const trimmedOutput = captured.trim() || String(result);
-    const currrentExpectedOutput = levels[currentLevel].expectedOutput;
+      const result = eval(code);
+      const trimmedOutput = captured.trim() || String(result);
+      const currrentExpectedOutput = levels[currentLevel].expectedOutput;
 
-    console.log = originalLog;
+      console.log = originalLog;
 
       if(trimmedOutput === currrentExpectedOutput){
-        output = "richtig. dein ergebnis ist: " + trimmedOutput + " erwartetes ergebnis ist: " +  currrentExpectedOutput;
+        output = "🎉 Richtig! Dein Ergebnis: " + trimmedOutput;
+        emotion = 'happy';
+        message = 'Super gemacht! Weiter so!';
       } else{
-        output = "falsch. dein ergebnis ist: " + trimmedOutput + " erwartetes ergebnis ist: " +  currrentExpectedOutput;
+        output = "🤔 Fast! Dein Ergebnis: " + trimmedOutput + " - Erwartet: " +  currrentExpectedOutput;
+        emotion = 'think';
+        message = 'Fast geschafft! Versuch es nochmal!';
       }
-  } catch (err) {
-    output = "Fehler: " + err.message;
+    } catch (err) {
+      output = "❌ Oops! Fehler: " + err.message;
+      emotion = 'sad';
+      message = 'Kein Problem! Probieren wir es nochmal!';
+    }
   }
-}
-export let emotion = 'neutral';
+  
+  export let emotion = 'neutral';
   export let message = '';
 
   const emotionImages = {
@@ -52,155 +56,231 @@ export let emotion = 'neutral';
 </script>
 
 <main>
-  <div class = "container">
-    
-  <div class="sidebar">
-    <slot />
-  </div>
+  <div class="container">
+    <div class="sidebar">
+      <h1>👾 JavaScript Abenteuer</h1>
+      <div class="level-info">
+        <h2>Level {currentLevel + 1}</h2>
+        <div class="task-card">
+          {levels[currentLevel]?.task || "Schreibe Code um die Aufgabe zu lösen!"}
+        </div>
+      </div>
+      <slot />
+    </div>
 
-  <div class = "containerRight">
-  <div class="editor-area">
-    <h2>JavaScript Editor</h2>
-    <JavaScriptEditor />
-    <button on:click={runJavaScript}> Ausführen</button>
+    <div class="coding-area">
+      <div class="editor-container">
+        <h2><span class="icon">✏️</span> Code Editor</h2>
+        <JavaScriptEditor />
+        <button on:click={runJavaScript}>
+          <span class="icon">🚀</span> Code ausführen
+        </button>
 
-    {#if output}
-      <h3>Ausgabe:</h3>
-      <pre class="output">{output}</pre>
-    {/if}
-  </div>
-  <div class = "speechArea">
-  <div class="mascot-container">
-  <img src={imageSrc} alt="Pinguin-Maskottchen" />
-  {#if message}
-    <div class="speech-bubble">{message}</div>
-  {/if}
-</div>
-</div>
-  </div>
+        {#if output}
+          <div class="output-container">
+            <h3><span class="icon">📤</span> Ausgabe:</h3>
+            <pre class="output">{output}</pre>
+          </div>
+        {/if}
+      </div>
 
+      <div class="mascot-area">
+        <div class="mascot-container">
+          <img src={imageSrc} alt="Pinguin-Maskottchen" class="mascot" />
+          {#if message}
+            <div class="speech-bubble">{message}</div>
+          {/if}
+        </div>
+      </div>
+    </div>
   </div>
 </main>
 
 <style>
   :root {
-    --bg-light: #f8a948;
-    --bg-dark: #ffffff;
-    --text-dark: #172c66;
-    --text-light: #3a3a3a;
-    --accent: #413C58;
-    --accent-hover: #A3C4BC;
-    --code-bg: #f5f7fa;
-    --border-color: #ccc;
-    --dojo-orange: #f8aa48;
-    --dojo-violet: #413c58;
-    --dojo-gray: #a3c4bc;
-    --dojo-green: #bfd7b5;
-    --dojo-red: #d64550;
+    --primary: #6a5acd;       /* Lila */
+    --secondary: #ff9f43;     /* Orange */
+    --accent: #48dbfb;       /* Blau */
+    --light: #f9f9f9;        /* Hellgrau */
+    --dark: #2c3e50;         /* Dunkelblau */
+    --success: #1dd1a1;      /* Grün */
+    --error: #ff6b6b;        /* Rot */
+    --text: #333;            /* Dunkelgrau */
+    --border-radius: 12px;
   }
-  
-
 
   body {
     margin: 0;
-    font-family: "Helvetica Neue", sans-serif;
-    background-color: var(--bg-dark);
-    color: var(--text-light);
+    font-family: "Comic Sans MS", "Comic Neue", cursive;
+    background-color: var(--light);
+    color: var(--text);
   }
 
   main {
-    display: flex;
     height: 100vh;
+    overflow: hidden;
   }
 
   .container {
-      display: flex;
-      height: 100%;
-      width: 100%;
-    }
+    display: flex;
+    height: 100%;
+  }
 
   .sidebar {
-    flex: 1;
-    width: 40%;
-    background-color: var(--bg-light);
-    padding: 2rem;
-    box-sizing: border-box;
-    color: var(--text-dark);
+    width: 35%;
+    background-color: white;
+    padding: 1.5rem;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+    overflow-y: auto;
   }
 
-  .containerRight{
-    flex: 2;
-    width: 60%;
-    height: auto;
+  .sidebar h1 {
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
   }
 
-  .containerRight {
+  .level-info {
+    background-color: #f0f7ff;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1.5rem;
+    border: 2px dashed var(--accent);
+  }
+
+  .task-card {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    line-height: 1.5;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+
+  .coding-area {
+    width: 65%;
     display: flex;
     flex-direction: column;
+    background-color: #f5f7fa;
   }
 
-  .editor-area {
+  .editor-container {
     flex: 1;
-    width: 100%;
-    height: 70%;
-    padding: 2rem;
-    background-color: var(--code-bg);
-    box-sizing: border-box;
+    padding: 1.5rem;
+    overflow-y: auto;
   }
-  .speechArea{
-    flex: 1;
-    background-color: var(--dojo-violet);
-    height: 30%;
+
+  .editor-container h2 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+
+  button {
+    margin-top: 1rem;
+    padding: 0.7rem 1.5rem;
+    background-color: var(--secondary);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  }
+
+  button:hover {
+    background-color: #ff8c21;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+  }
+
+  .icon {
+    margin-right: 8px;
+  }
+
+  .output-container {
+    margin-top: 1.5rem;
+    background: white;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+
+  .output {
+    white-space: pre-wrap;
+    font-family: "Courier New", monospace;
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--accent);
+  }
+
+  .mascot-area {
+    background-color: var(--primary);
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
   }
 
   .mascot-container {
-    background-color: var(--dojo-red);
-    position: fixed;
-    bottom: 20px;
-    right: 200px;
-    width: 10%;
-    z-index: 1000;
+    position: relative;
+    width: 150px;
   }
 
-  .mascot-container img {
+  .mascot {
     width: 100%;
     height: auto;
+    transition: all 0.3s;
+  }
+
+  .mascot:hover {
+    transform: scale(1.05);
   }
 
   .speech-bubble {
     position: absolute;
     bottom: 100%;
-    right: 0;
-    margin-bottom: 10px;
-    padding: 10px;
-    background: #fff;
-    border: 2px solid #333;
-    border-radius: 10px;
-    max-width: 200px;
-    font-size: 14px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 15px;
+    padding: 12px;
+    background: white;
+    border-radius: 20px;
+    max-width: 250px;
+    font-size: 1rem;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    animation: bounce 2s infinite;
   }
 
-  button {
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    background-color: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  .speech-bubble:after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -10px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: white transparent transparent transparent;
   }
 
-  button:hover {
-    background-color: var(--accent-hover);
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-5px); }
   }
 
-  pre.output {
-    margin-top: 1rem;
-    background: #fff;
-    padding: 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    font-family: monospace;
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+    
+    .sidebar, .coding-area {
+      width: 100%;
+      height: auto;
+    }
   }
 </style>
