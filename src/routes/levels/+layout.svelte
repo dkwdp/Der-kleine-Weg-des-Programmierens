@@ -36,6 +36,19 @@
     output = "Fehler: " + err.message;
   }
 }
+export let emotion = 'neutral';
+  export let message = '';
+
+  const emotionImages = {
+    happy: '/PinuHappy.png',
+    neutral: '/PinuNeutral.png',
+    sad: '/PinuSad.png',
+    think: '/PinuThink.png',
+    switch: '/PinuSwitch.png',
+    neutral2: '/PinuNeutral2.png',
+  };
+
+  $: imageSrc = emotionImages[emotion] || emotionImages.neutral;
 </script>
 
 <main>
