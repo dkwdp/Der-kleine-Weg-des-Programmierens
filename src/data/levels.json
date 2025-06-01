@@ -4,7 +4,7 @@
         "title": "Einführung in die Addition1",
         "description": "Berechne die Summe von 2+2",
         "expectedOutput": "4",
-        "initialCode": "print(...)",
+        "initialCode": "console.log(...)",
         "type": "calculation"
     },
     {
@@ -12,7 +12,7 @@
         "title": "Einführung in die Addition2",
         "description": "Berechne die Summe von 1+2",
         "expectedOutput": "3",
-        "initialCode": "print(...)",
+        "initialCode": "console.log('hallo')",
         "type": "calculation"
 
     },
@@ -21,6 +21,18 @@
         "title": "Zeichne deinen ersten Kreis",
         "description": "Verwende draw_circle(x, y, radius, farbe) um einen blauen Kreis zu zeichnen. Beispiel: draw_circle(200, 150, 50, 'blue')",
         "initialCode": "set_background('lightblue');\ndraw_circle(200, 150, 50, 'blue');",
+        "type": "drawing",
+        "hints": [
+            "Die Koordinaten beginnen oben links bei (0,0)",
+            "Der Canvas ist 300px breit und 300px hoch",
+            "Verfügbare Farben: 'red', 'blue', 'green', 'yellow', 'purple', etc."
+        ]
+    },
+    {
+        "id": 5,
+        "title": "Zeichne deinen ersten Kreis",
+        "description": "Verwende draw_line(x1, y1, x2, y2, farbe) um eine Linie zu zeichnen.",
+        "initialCode": "set_background('white');\ndraw_circle(150, 150, 50, 'blue')\ndraw_line(180,120,160,140,'red');\ndraw_line(120,120,140,140,'red');\ndraw_circle(120,140,10,'lightblue');\ndraw_circle(180,140,10,'lightblue');\ndraw_text('f**k', 140,180,'black');",
         "type": "drawing",
         "hints": [
             "Die Koordinaten beginnen oben links bei (0,0)",

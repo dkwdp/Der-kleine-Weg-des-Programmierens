@@ -9,8 +9,6 @@
   
   onMount(() => {
     myVariable.set(currentLevel.initialCode);
-    isCurrentLevelDrawing.set(currentLevel.type == 'drawing');
- // setzen des initialen Codes im Editor
   });
 
   // Funktion zum Weitergehen ist evtl. noch erforderlich:

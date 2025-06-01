@@ -15,7 +15,8 @@
 	}
 
 	function LevelJoin(level) {
-		goto(`/levels/level${level}`);
+		//goto(`/levels/level${level}`);
+		window.location.href = `/levels/level${level}`;
 	}
 </script>
 

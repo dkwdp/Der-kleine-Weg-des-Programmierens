@@ -88,11 +88,11 @@
 
         <JavaScriptEditor />
 
-        {#if !get(isCurrentLevelDrawing)}
+        {#if $isCurrentLevelDrawing}
           <P5Canvas bind:this={canvasRef} />
         {/if}
         <div class="controls">
-          {#if get(isCurrentLevelDrawing)}
+          {#if !$isCurrentLevelDrawing}
           <button on:click={runJavaScript}> Ausführen</button>
           {/if}
         </div>

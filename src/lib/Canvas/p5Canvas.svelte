@@ -89,7 +89,7 @@
   
       const sketch = (p) => {
         p.setup = () => {
-          const canvas = p.createCanvas(400, 300);
+          const canvas = p.createCanvas(300, 300);
           canvas.parent(canvasContainer);
           p.background(255);
           customFunctions = setupCustomFunctions(p);
