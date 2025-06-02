@@ -6,6 +6,7 @@
     let canvasContainer;
     let p5Instance;
     let customFunctions = {};
+    let safeMode = true;
   
     // Definiere verfügbare Zeichenfunktionen
     function setupCustomFunctions(p) {
@@ -33,34 +34,86 @@
           p.fill(color);
           p.textSize(size);
           p.text(text, x, y);
-        }
+        },
+        draw_ellipse: (x, y, w, h, color = 'purple') => {
+      p.fill(color);
+      p.noStroke();
+      p.ellipse(x, y, w, h);
+    },
+    draw_triangle: (x1, y1, x2, y2, x3, y3, color = 'orange') => {
+      p.fill(color);
+      p.noStroke();
+      p.triangle(x1, y1, x2, y2, x3, y3);
+    },
+    draw_point: (x, y, color = 'black', weight = 5) => {
+      p.stroke(color);
+      p.strokeWeight(weight);
+      p.point(x, y);
+      p.noStroke();
+    },
+    draw_arc: (x, y, w, h, start, stop, color = 'pink') => {
+      p.fill(color);
+      p.noStroke();
+      p.arc(x, y, w, h, start, stop);
+    },
+    set_stroke: (color = 'black', weight = 1) => {
+      p.stroke(color);
+      p.strokeWeight(weight);
+    },
+    set_fill: (color = 'black') => {
+      p.fill(color);
+    },
+    clear_stroke: () => {
+      p.noStroke();
+    },
+    clear_fill: () => {
+      p.noFill();
+    },
+    draw_grid: (spacing = 20, color = '#ccc') => {
+      p.stroke(color);
+      p.strokeWeight(1);
+      for (let x = 0; x < p.width; x += spacing) {
+        p.line(x, 0, x, p.height);
+      }
+      for (let y = 0; y < p.height; y += spacing) {
+        p.line(0, y, p.width, y);
+      }
+      p.noStroke();
+    }
       };
     }
   
     function executeDrawingCode(code) {
-      try {
-        console.log('Führe Code aus:', code);
-        
-        // Erstelle eine sichere Ausführungsumgebung mit den custom functions
-        const functionNames = Object.keys(customFunctions);
-        const functionValues = Object.values(customFunctions);
-        
-        // Füge console.log hinzu
-        functionNames.push('console');
-        functionValues.push({
-          log: (...args) => console.log(...args)
-        });
-  
-        // Erstelle und führe Funktion aus
-        const func = new Function(...functionNames, code);
-        func(...functionValues);
-        
-        console.log('Code erfolgreich ausgeführt');
-      } catch (error) {
-        console.error('Fehler beim Ausführen des Codes:', error);
-        throw error;
-      }
+  try {
+    console.log('Führe Code aus (safeMode =', safeMode, '):', code);
+
+    if (safeMode) {
+      const functionNames = Object.keys(customFunctions);
+      const functionValues = Object.values(customFunctions);
+
+      functionNames.push('console');
+      functionValues.push(console);
+
+      const func = new Function(...functionNames, code);
+      func(...functionValues);
+    } else {
+      // Volle p5-Nutzung – p5 Funktionen verfügbar machen über `with(p)`
+      const func = new Function('p', 'console', `
+        with(p) {
+          ${code}
+        }
+      `);
+      func(p5Instance, console);
     }
+
+    console.log('Code erfolgreich ausgeführt');
+  } catch (error) {
+    console.error('Fehler beim Ausführen des Codes:', error);
+    throw error;
+  }
+}
+
+
   
     onMount(() => {
       // Einfache p5.js Integration ohne dynamisches Laden
@@ -155,6 +208,9 @@
     <div class="canvas-controls">
       <button on:click={runDrawingCode}>🎨 Zeichnung ausführen</button>
       <button on:click={clearCanvas}>🗑️ Canvas leeren</button>
+      <button on:click={() => safeMode = !safeMode}>
+        {safeMode ? '🔒 Sicherer Modus' : '🔓 Voller p5-Modus'}
+      </button>
     </div>
   </div>
   
