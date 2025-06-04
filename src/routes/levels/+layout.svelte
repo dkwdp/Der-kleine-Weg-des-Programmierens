@@ -141,7 +141,7 @@
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
   :root {
-    /* Ihre Farbpalette in dezenter Anwendung */
+    /* Farbpalette */
     --primary: #F8AA48;      /* Warmes Orange (Akzent) */
     --primary-light: #FFE8D1; /* Aufgehellte Variante */
     --secondary: #413C58;    /* Tiefes Lila (für Texte) */
