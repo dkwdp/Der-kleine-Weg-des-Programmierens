@@ -140,17 +140,16 @@
 
   main {
     display: flex;
-    height: 100vh;
   }
 
   .container {
     display: flex;
-    height: 100%;
     width: 100%;
   }
 
   .sidebar {
     flex: 1;
+    min-height: 100vh;
     width: 40%;
     background-color: var(--bg-light);
     padding: 2rem;
