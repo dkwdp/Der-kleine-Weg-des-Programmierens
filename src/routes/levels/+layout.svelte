@@ -162,7 +162,7 @@
 
   body {
     margin: 0;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Baloo 2', -apple-system, BlinkMacSystemFont, sans-serif;
     font-weight: 400;
     background-color: var(--light);
     color: var(--text);
