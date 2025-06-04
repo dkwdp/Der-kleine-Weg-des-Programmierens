@@ -93,7 +93,7 @@
 
 <style>
   :root {
-    /* Professionelle Waldpalette */
+    
     --primary: #3a7d44;      /* Waldgrün */
     --primary-light: #5d9c47;
     --secondary: #e09f3e;    /* Herbstorange */
@@ -138,7 +138,7 @@
     min-height: 0;
   }
 
-  /* Sidebar - jetzt 40% Breite */
+  
   .sidebar {
     width: 40%;
     min-width: 300px;
