@@ -21,6 +21,52 @@
 
   $: imageSrc = emotionImages[emotion] || emotionImages.neutral;
 
+  // Resizer-Funktionalität
+  let isDragging = false;
+  let startX, startLeftWidth;
+
+  function startDrag(e) {
+    isDragging = true;
+    startX = e.clientX;
+    startLeftWidth = document.querySelector('.sidebar').offsetWidth;
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+  }
+
+  function onDrag(e) {
+    if (!isDragging) return;
+    
+    const container = document.querySelector('.container');
+    const sidebar = document.querySelector('.sidebar');
+    const dx = e.clientX - startX;
+    const newLeftWidth = startLeftWidth + dx;
+    
+    // Begrenze die minimale und maximale Breite
+    const minWidth = 300;
+    const maxWidth = container.offsetWidth - 300;
+    
+    if (newLeftWidth >= minWidth && newLeftWidth <= maxWidth) {
+      sidebar.style.width = `${newLeftWidth}px`;
+      sidebar.style.flex = '0 0 auto';
+    }
+  }
+
+  function stopDrag() {
+    isDragging = false;
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+  }
+
+  onMount(() => {
+    window.addEventListener('mousemove', onDrag);
+    window.addEventListener('mouseup', stopDrag);
+    
+    return () => {
+      window.removeEventListener('mousemove', onDrag);
+      window.removeEventListener('mouseup', stopDrag);
+    };
+  });
+
   async function runJavaScript() {
     const code = get(myVariable);
     try {
@@ -39,16 +85,16 @@
       if(trimmedOutput === currrentExpectedOutput){
         output = "✓ Richtig: " + trimmedOutput;
         emotion = 'happy';
-        message = 'Großartig!';
+        message = 'Gut gemacht';
       } else{
-        output = "↻ Ergebnis: " + trimmedOutput + " | Erwartet: " + currrentExpectedOutput;
+        output = "↳ Ergebnis: " + trimmedOutput + " | Erwartet: " + currrentExpectedOutput;
         emotion = 'think';
-        message = 'Fast geschafft!';
+        message = 'Fast geschafft';
       }
     } catch (err) {
-      output = "⚠️ Fehler: " + err.message;
+      output = "✗ Fehler: " + err.message;
       emotion = 'sad';
-      message = 'Versuche es nochmal';
+      message = 'Noch versuchen';
     }
   }
 </script>
@@ -57,25 +103,25 @@
   <div class="container">
     <div class="sidebar">
       <div class="header">
-        <h1> Javascript Abenteuer</h1>
-        <div class="subtitle">Programmieren lernen mit viel Spaß!</div>
+        <h1>Javascript Abenteuer</h1>
+        <div class="subtitle">Programmieren lernen mit Leichtigkeit</div>
       </div>
       <slot />
     </div>
 
+    <div class="resizer" on:mousedown={startDrag}></div>
+
     <div class="coding-area">
       <div class="editor-container">
         <div class="editor-header">
-          <h2><span class="icon">✏️</span> Code Editor</h2>
-          <button on:click={runJavaScript}>
-            <span class="icon">🌱</span> Ausführen!
-          </button>
+          <h2>Code Editor</h2>
+          <button on:click={runJavaScript}>Ausführen</button>
         </div>
         <JavaScriptEditor />
         
         {#if output}
           <div class="output-container {emotion}">
-            <h3><span class="icon">🍃</span> Ergebnis</h3>
+            <h3>Ergebnis</h3>
             <pre class="output">{output}</pre>
           </div>
         {/if}
@@ -83,7 +129,7 @@
     </div>
     
     <div class="mascot-container">
-      <img src={imageSrc} alt="Waldtier-Maskottchen" class="mascot" />
+      <img src={imageSrc} alt="Natur-Maskottchen" class="mascot" />
       {#if message}
         <div class="speech-bubble">{message}</div>
       {/if}
@@ -92,37 +138,35 @@
 </main>
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
   :root {
-    
-    --primary: #3a7d44;      /* Waldgrün */
-    --primary-light: #5d9c47;
-    --secondary: #e09f3e;    /* Herbstorange */
-    --accent: #8cb369;       /* Frisches Grün */
-    --light: #f4f9f1;        /* Hellgrün */
-    --dark: #2b463c;         /* Dunkelgrün */
-    --success: #6a994e;      /* Erfolgsgrün */
-    --error: #bc4749;        /* Erdbeerrot */
-    --text: #3a3a3a;         /* Dunkelgrau */
-    --border: #d8e2d3;       /* Hellgrün */
+    /* Ihre Farbpalette in dezenter Anwendung */
+    --primary: #F8AA48;      /* Warmes Orange (Akzent) */
+    --primary-light: #FFE8D1; /* Aufgehellte Variante */
+    --secondary: #413C58;    /* Tiefes Lila (für Texte) */
+    --accent: #A3C4BC;      /* Weiches Grün-Blau (Hintergründe) */
+    --light: #F5F9F7;       /* Sehr helles Grün (Haupthintergrund) */
+    --success: #BFD7B5;     /* Frisches Grün (Erfolgsmeldungen) */
+    --error: #D64550;       /* Warmes Rot (Fehlermeldungen) */
+    --text: #413C58;        /* Haupttextfarbe */
+    --border: #D1E0D7;      /* Hellgrau-Grün (Bordüren) */
+    --background: #FFFFFF;  /* Weiß (für Boxen) */
     
     /* Design-Tokens */
-    --border-radius: 12px;
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
-    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --border-radius: 6px;
+    --shadow-sm: 0 1px 3px rgba(65, 60, 88, 0.08);
+    --shadow-md: 0 2px 6px rgba(65, 60, 88, 0.1);
+    --transition: all 0.2s ease;
   }
 
   body {
     margin: 0;
-    font-family: 'Nunito Sans', 'Segoe UI', system-ui, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 400;
     background-color: var(--light);
     color: var(--text);
     line-height: 1.6;
-    background-image: 
-      linear-gradient(rgba(244, 249, 241, 0.9), rgba(244, 249, 241, 0.9)),
-      url('karte Kopie.png');
-    background-size: cover;
-    background-attachment: fixed;
   }
 
   main {
@@ -138,15 +182,39 @@
     min-height: 0;
   }
 
-  
+  /* Sidebar */
   .sidebar {
     width: 40%;
     min-width: 300px;
-    background: white;
+    background: var(--background);
     padding: 1.5rem;
-    box-shadow: var(--shadow-sm);
     border-right: 1px solid var(--border);
     overflow-y: auto;
+    position: relative;
+    background-image: linear-gradient(to bottom, var(--background), var(--light));
+  }
+
+  .sidebar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--success));
+  }
+
+  /* Resizer */
+  .resizer {
+    width: 4px;
+    background: var(--border);
+    cursor: col-resize;
+    transition: var(--transition);
+    flex-shrink: 0;
+  }
+
+  .resizer:hover {
+    background: var(--primary);
   }
 
   .header {
@@ -154,30 +222,34 @@
   }
 
   h1 {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--primary);
-    margin: 0 0 0.25rem 0;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--secondary);
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -0.02em;
   }
 
   .subtitle {
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: var(--text);
-    opacity: 0.8;
+    opacity: 0.7;
+    font-weight: 400;
   }
 
-  /* Coding-Bereich - jetzt 60% Breite */
+  /* Coding-Bereich */
   .coding-area {
     width: 60%;
     flex: 1;
     display: flex;
     flex-direction: column;
     min-height: 0;
+    background-color: var(--light);
+    background-image: linear-gradient(to bottom, var(--light), var(--accent));
   }
 
   .editor-container {
     flex: 1;
-    padding: 2rem;
+    padding: 1.5rem;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -187,128 +259,126 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     flex-shrink: 0;
   }
 
   h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--dark);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--secondary);
+    margin: 0;
+  }
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--secondary);
+    margin: 0 0 0.5rem 0;
   }
 
   button {
-    padding: 0.75rem 1.5rem;
+    padding: 0.5rem 1rem;
     background-color: var(--primary);
     color: white;
     border: none;
     border-radius: var(--border-radius);
     cursor: pointer;
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 0.9rem;
+    font-weight: 500;
     transition: var(--transition);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    box-shadow: var(--shadow-sm);
-    flex-shrink: 0;
   }
 
   button:hover {
-    background-color: var(--primary-light);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-  }
-
-  .icon {
-    font-size: 1.1em;
+    background-color: var(--secondary);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
   }
 
   .output-container {
-    margin-top: 2rem;
-    background: white;
-    padding: 1.5rem;
+    margin-top: 1.5rem;
+    background: var(--background);
+    padding: 1rem;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-sm);
-    border-left: 4px solid var(--border);
+    border-left: 3px solid var(--border);
     transition: var(--transition);
     flex-shrink: 0;
   }
 
   .output-container.happy {
     border-left-color: var(--success);
+    background-color: rgba(191, 215, 181, 0.05);
   }
 
   .output-container.think {
     border-left-color: var(--secondary);
+    background-color: rgba(65, 60, 88, 0.03);
   }
 
   .output-container.sad {
     border-left-color: var(--error);
-  }
-
-  h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--dark);
-    margin: 0 0 1rem 0;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    background-color: rgba(214, 69, 80, 0.03);
   }
 
   .output {
     white-space: pre-wrap;
-    font-family: 'Fira Code', 'Menlo', monospace;
-    font-size: 0.95rem;
-    line-height: 1.7;
-    background: rgba(0, 0, 0, 0.02);
-    padding: 1rem;
-    border-radius: 8px;
+    font-family: 'Menlo', 'Consolas', monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    background: rgba(163, 196, 188, 0.05);
+    padding: 0.75rem;
+    border-radius: 6px;
     overflow-x: auto;
     max-height: 200px;
     overflow-y: auto;
+    border: 1px solid var(--border);
   }
 
+  /* Maskottchen */
   .mascot-container {
     position: fixed;
-    right: 2rem;
-    bottom: 2rem;
-    width: 140px;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    width: 120px;
     z-index: 100;
     transition: var(--transition);
+    background: var(--background);
+    border-radius: 50%;
+    padding: 6px;
+    box-shadow: var(--shadow-sm);
+    border: 2px solid var(--accent);
   }
 
   .mascot {
     width: 100%;
     height: auto;
-    filter: drop-shadow(var(--shadow-md));
     transition: var(--transition);
     cursor: pointer;
+    border-radius: 50%;
   }
 
   .mascot:hover {
-    transform: scale(1.1) rotate(5deg);
+    transform: scale(1.05);
   }
 
+  /* Sprechblase */
   .speech-bubble {
     position: absolute;
     bottom: 100%;
     left: 50%;
     transform: translateX(-50%);
-    margin-bottom: 1rem;
-    padding: 0.75rem 1.25rem;
-    background: white;
+    margin-bottom: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--background);
     border-radius: var(--border-radius);
-    font-size: 0.95rem;
-    box-shadow: var(--shadow-md);
-    max-width: 220px;
+    font-size: 0.85rem;
+    box-shadow: var(--shadow-sm);
+    max-width: 180px;
     text-align: center;
-    animation: float 3s ease-in-out infinite;
-    border: 1px solid var(--border);
+    border: 1px solid var(--success);
+    color: var(--text);
+    font-weight: 400;
   }
 
   .speech-bubble:after {
@@ -316,17 +386,13 @@
     position: absolute;
     top: 100%;
     left: 50%;
-    margin-left: -8px;
-    border-width: 8px;
+    margin-left: -5px;
+    border-width: 5px;
     border-style: solid;
-    border-color: white transparent transparent transparent;
+    border-color: var(--background) transparent transparent transparent;
   }
 
-  @keyframes float {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(-6px); }
-  }
-
+  /* Responsive Design */
   @media (max-width: 1024px) {
     .sidebar {
       width: 35%;
@@ -334,12 +400,12 @@
     }
     
     .editor-container {
-      padding: 1.5rem;
+      padding: 1rem;
     }
     
     .mascot-container {
-      width: 120px;
-      right: 1.5rem;
+      width: 100px;
+      right: 1rem;
     }
   }
 
@@ -350,18 +416,22 @@
     
     .sidebar {
       width: 100%;
-      padding: 1rem 1.5rem;
+      padding: 1rem;
     }
     
     .coding-area {
       width: 100%;
-      padding-bottom: 120px;
+      padding-bottom: 100px;
     }
     
     .mascot-container {
-      width: 100px;
-      right: 1rem;
-      bottom: 1rem;
+      width: 80px;
+      right: 0.75rem;
+      bottom: 0.75rem;
+    }
+    
+    .resizer {
+      display: none;
     }
   }
 </style>
