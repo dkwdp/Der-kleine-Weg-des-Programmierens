@@ -85,16 +85,16 @@
       if(trimmedOutput === currrentExpectedOutput){
         output = "✓ Richtig: " + trimmedOutput;
         emotion = 'happy';
-        message = 'Gut gemacht';
+        message = 'Gut gemacht!';
       } else{
         output = "↳ Ergebnis: " + trimmedOutput + " | Erwartet: " + currrentExpectedOutput;
         emotion = 'think';
-        message = 'Fast geschafft';
+        message = 'Fast geschafft!';
       }
     } catch (err) {
       output = "✗ Fehler: " + err.message;
       emotion = 'sad';
-      message = 'Noch versuchen';
+      message = 'Versuch es nochmal!';
     }
   }
 </script>
