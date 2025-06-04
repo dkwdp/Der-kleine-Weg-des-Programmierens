@@ -13,7 +13,7 @@
         "id": 2,
         "title": "Einführung in die Addition2",
         "description": "Berechne die Summe von 1+2",
-        "expectedOutput": "3",
+        "expectedOutput": "HEEELLLLOOOOOOOOOO",
         "initialCode": "console.log('hallo')",
         "type": "calculation",
         "hints": ["Mit dem Text console.log() kannst du Text im Computer anzeigen. Schreibe den Satz in Anführungszeichen. Der Computer gibt genau das wieder was zwischen den Anführungszeichen steht."

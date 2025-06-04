@@ -1,5 +1,5 @@
 <script>
-  import { myVariable, isCurrentLevelDrawing, solvedLevel } from '$lib/stores/editorStore';
+  import { myVariable, isCurrentLevelDrawing, solvedLevel, levelID } from '$lib/stores/editorStore';
   import levels from '$data/levels.json';
     import { onMount } from 'svelte';
     import { goto } from '$app/navigation';
@@ -12,6 +12,7 @@
   onMount(() => {
     myVariable.set(currentLevel.initialCode);
     solvedLevel.set(false);
+    levelID.set(0)
   });
 
   // Funktion zum Weitergehen ist evtl. noch erforderlich:
