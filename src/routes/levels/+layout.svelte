@@ -95,12 +95,12 @@
 
         console.log = originalLog;
 
-      if(trimmedOutput === currrentExpectedOutput){
+      if(trimmedOutput === expectedOutput){
         output = "✓ Richtig: " + trimmedOutput;
         emotion = 'happy';
         message = 'Gut gemacht!';
       } else{
-        output = "↳ Ergebnis: " + trimmedOutput + " | Erwartet: " + currrentExpectedOutput;
+        output = "↳ Ergebnis: " + trimmedOutput + " | Erwartet: " + expectedOutput;
         emotion = 'think';
         message = 'Fast geschafft!';
       }
@@ -129,9 +129,15 @@
       <div class="editor-container">
         <div class="editor-header">
           <h2>Code Editor</h2>
+          {#if !$isCurrentLevelDrawing}
           <button on:click={runJavaScript}>Ausführen</button>
+          {/if}
         </div>
         <JavaScriptEditor />
+        {#if $isCurrentLevelDrawing}
+          <P5Canvas bind:this={canvasRef} />
+        {/if}
+          
         
         {#if output}
           <div class="output-container {emotion}">
