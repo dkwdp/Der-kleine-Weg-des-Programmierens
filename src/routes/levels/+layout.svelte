@@ -177,17 +177,11 @@
     background-color: var(--code-bg);
     box-sizing: border-box;
   }
-  .speechArea {
-    flex: 0.3;
-    background-color: var(--dojo-violet);
-    height: 5%;
-  }
 
   .mascot-container {
-    background-color: var(--dojo-red);
     position: fixed;
     bottom: 20px;
-    right: 200px;
+    right: 2%;
     width: 10%;
     z-index: 1000;
   }
