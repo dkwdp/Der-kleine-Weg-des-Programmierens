@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import { get } from "svelte/store";
-  import { myVariable, isCurrentLevelDrawing } from "$lib/stores/editorStore";
+  import { myVariable, isCurrentLevelDrawing, solvedLevel } from "$lib/stores/editorStore";
   import JavaScriptEditor from "$lib/JavaScriptEditor.svelte";
   import levels from "$data/levels.json"; //json datei mit level-lösungen
   import Mascot from "../mascot/Mascot.svelte";
@@ -43,6 +43,7 @@
             trimmedOutput +
             " | Erwartetes Ergebnis: " +
             expectedOutput;
+            solvedLevel.set(true);
         } else {
           output =
             "Falsch. Dein Ergebnis ist: " +

@@ -1,22 +1,22 @@
 <script>
-  import { myVariable, isCurrentLevelDrawing } from '$lib/stores/editorStore';
+  import { myVariable, isCurrentLevelDrawing, solvedLevel } from '$lib/stores/editorStore';
   import levels from '$data/levels.json';
     import { onMount } from 'svelte';
+    import { goto } from '$app/navigation';
 
   // Verwendung der Level-Daten aus der JSON-Datei:
   let currentLevelIndex = 0; // starten beim ersten Level
   let currentLevel = levels[currentLevelIndex];
   
+  
   onMount(() => {
     myVariable.set(currentLevel.initialCode);
+    solvedLevel.set(false);
   });
 
   // Funktion zum Weitergehen ist evtl. noch erforderlich:
   function nextTask() {
-    if (currentLevelIndex < levels.length - 1) {
-      currentLevelIndex++;
-      currentLevel = levels[currentLevelIndex];
-    }
+    window.location.href = `/levels/level${currentLevelIndex+2}`;
   }
 </script>
 
@@ -24,8 +24,18 @@
   <h1>{currentLevel.title}</h1>
   <h2>Levelbeschreibung</h2>
   <p>{currentLevel.description}</p>
+  {#if currentLevel.hints}
+      <h3>💡 Tipps:</h3>
+      <ul class="hints">
+        {#each currentLevel.hints as hint}
+          <p>{hint}</p>
+        {/each}
+      </ul>
+  {/if}
 
+  {#if $solvedLevel}
   <button on:click={nextTask}>Weiter</button>
+  {/if}
 </main>
 
 <style>
@@ -39,4 +49,5 @@
     font-size: 16px;
     cursor: pointer;
   }
+  
 </style>
