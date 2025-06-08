@@ -101,12 +101,6 @@ export let emotion = 'neutral';
   
 
 
-  body {
-    margin: 0;
-    font-family: "Helvetica Neue", sans-serif;
-    background-color: var(--bg-dark);
-    color: var(--text-light);
-  }
 
   main {
     display: flex;
