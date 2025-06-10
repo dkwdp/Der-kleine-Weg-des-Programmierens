@@ -8,7 +8,6 @@
 	// Level-Daten mit Icons
 	const levelData = [
 		{ id: 1, x: 48, y: 14, icon: 'raft', name: 'Floß' },
-		/*
 		{ id: 2, x: 15, y: 18, icon: 'tent', name: 'Zelt' },
 		{ id: 3, x: 46, y: 19, icon: 'fish', name: 'Fisch' },
 		{ id: 4, x: 62, y: 22, icon: 'polarbear', name: 'Polarbaer' },
@@ -18,7 +17,6 @@
 		{ id: 8, x: 20, y: 44, icon: 'hut', name: 'Huette' },
 		{ id: 9, x: 30, y: 50, icon: 'kid', name: 'Kind' },
 		{ id: 10, x: 84, y: 57, icon: 'flower', name: 'Blume' }
-		 */
 	];
 
 	let iconLoadStates = {};
