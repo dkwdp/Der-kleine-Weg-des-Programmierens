@@ -4,9 +4,8 @@
     import { onMount } from 'svelte';
     import { goto } from '$app/navigation';
 
-  let currentLevelIndex = 0;
+  let currentLevelIndex = 0; // bei jedem Level Anpassen
   let currentLevel = levels[currentLevelIndex];
-  
   
   onMount(() => {
     myVariable.set(currentLevel.initialCode);
@@ -15,7 +14,6 @@
   });
   let i = 0;
 
-  // Funktion zum Weitergehen ist evtl. noch erforderlich:
   function nextTask() {
     i = $outputID;
     i++;

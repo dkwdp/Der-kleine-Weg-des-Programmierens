@@ -3,6 +3,7 @@
   let step = 0;
   let message = '';
   let userCode = '';
+  
 
   const steps = [
     {

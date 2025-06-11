@@ -10,6 +10,7 @@
     switch: '/PinuSwitch.png',
     neutral2: '/PinuNeutral2.png',
   };
+  
 
   $: imageSrc = emotionImages[emotion] || emotionImages.neutral;
 </script>

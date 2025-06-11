@@ -13,6 +13,7 @@
     solvedLevel.set(false);
     levelID.set(currentLevelIndex)
   });
+  
   let i = 0;
 
   // Funktion zum Weitergehen ist evtl. noch erforderlich:

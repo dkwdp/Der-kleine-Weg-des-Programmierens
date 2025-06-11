@@ -52,7 +52,7 @@
         "type": "drawing",
         "hints": [
             "Die Koordinaten beginnen oben links bei (0,0)",
-            "Der Canvas ist 400px breit und 300px hoch",
+            "Der Canvas ist 400px breit und 300px hoch ",
             "Verfügbare Farben: 'red', 'blue', 'green', 'yellow', 'purple', etc."
         ]
     }
