@@ -3,7 +3,7 @@
    import { goto } from '$app/navigation';
     // Funktion zum Weiterleiten zur nächsten Seite
     function startJourney() {
-    goto('/mapBackground');
+    goto('/map');
 
       // Hier kannst du später die Navigation zur nächsten Seite implementieren.
     }
