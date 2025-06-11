@@ -6,7 +6,7 @@
   let canvasContainer;
   let p5Instance;
   let customFunctions = {};
-  let safeMode = true;
+  let safeMode = false;
 
   // Definiere verfügbare Zeichenfunktionen
   function setupCustomFunctions(p) {
@@ -214,9 +214,10 @@
   <div class="canvas-controls">
     <button on:click={runDrawingCode}>🎨 Zeichnung ausführen</button>
     <button on:click={clearCanvas}>🗑️ Canvas leeren</button>
-    <button on:click={() => (safeMode = !safeMode)}>
+    <!--<button on:click={() => (safeMode = !safeMode)}>
       {safeMode ? "🔒 Sicherer Modus" : "🔓 Voller p5-Modus"}
     </button>
+    -->
   </div>
 </div>
 

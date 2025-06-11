@@ -1,6 +1,6 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
-  import { myVariable, isCurrentLevelDrawing } from '$lib/stores/editorStore';
+  import { myVariable, isCurrentLevelDrawing, outputID} from '$lib/stores/editorStore';
   import levels from '$data/levels.json';
 
   let currentLevelIndex = 2; // Level 3 (Index 2)
@@ -10,23 +10,23 @@
     myVariable.set(currentLevel.initialCode);
     isCurrentLevelDrawing.set(currentLevel.type == "drawing");
   });
-
+  
+  let i = 0;
   function nextTask() {
-    if (currentLevelIndex < levels.length - 1) {
-      currentLevelIndex++;
-      currentLevel = levels[currentLevelIndex];
-      myVariable.set(currentLevel.initialCode);
+    i = $outputID;
+    i++;
+    outputID.set(i);
+  }
+  function previousTask(){
+    i = $outputID;
+    i--;
+    if(i < 0){
+      i = 0;
     }
+    outputID.set(i);
   }
 
-  function prevTask() {
-    if (currentLevelIndex > 0) {
-      currentLevelIndex--;
-      currentLevel = levels[currentLevelIndex];
-      myVariable.set(currentLevel.initialCode);
 
-    }
-  }
 </script>
 
 <main>
@@ -45,6 +45,8 @@
       </ul>
     {/if}
   </div>
+  <button on:click={previousTask}>Zurück</button>
+  <button on:click={nextTask}>Weiter</button>
 
   {#if currentLevel.type === 'drawing'}
     <div class="drawing-info">

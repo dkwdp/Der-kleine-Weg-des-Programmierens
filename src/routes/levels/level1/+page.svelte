@@ -3,12 +3,13 @@
   import levels from '$data/levels.json';
     import { onMount } from 'svelte';
 
-  // Verwendung der Level-Daten aus der JSON-Datei:
-  let currentLevelIndex = 0; // starten beim ersten Level
+  let currentLevelIndex = 0;
   let currentLevel = levels[currentLevelIndex];
   
   onMount(() => {
     myVariable.set(currentLevel.initialCode);
+    solvedLevel.set(false);
+    levelID.set(currentLevelIndex)
   });
 
   // Funktion zum Weitergehen ist evtl. noch erforderlich:

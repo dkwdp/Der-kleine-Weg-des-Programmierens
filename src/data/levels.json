@@ -1,17 +1,19 @@
 [
     {
         "id": 1,
-        "title": "Einführung in die Addition1",
-        "description": "Berechne die Summe von 2+2",
-        "expectedOutput": "4",
-        "initialCode": "console.log(...)",
-        "type": "calculation"
+        "title": "'Hello World!'",
+        "description": ["Schreibe deine erste Ausgabe!", "Schreibe 2+2" ],
+        "expectedOutput": ["Hello World!", "8"],
+        "initialCode": "console.log()",
+        "type": "calculation",
+        "hints": ["Mit dem Text console.log() kannst du Text im Computer anzeigen. Schreibe den Satz in Anführungszeichen. Der Computer gibt genau das wieder was zwischen den Anführungszeichen steht."
+        ]
     },
     {
         "id": 2,
         "title": "Einführung in die Addition2",
-        "description": "Berechne die Summe von 1+2",
-        "expectedOutput": "3",
+        "description": ["Berechne die Summe von 1+2"],
+        "expectedOutput": ["HEEELLLLOOOOOOOOOO", "4"],
         "initialCode": "console.log('hallo')",
         "type": "calculation"
 
@@ -19,7 +21,7 @@
     {
         "id": 3,
         "title": "Zeichne deinen ersten Kreis",
-        "description": "Verwende draw_circle(x, y, radius, farbe) um einen blauen Kreis zu zeichnen. Beispiel: draw_circle(200, 150, 50, 'blue')",
+        "description": ["Verwende background('farbe') um den Hintergrund zu färben.", "Füge "],
         "initialCode": "set_background('lightblue');\ndraw_circle(200, 150, 50, 'blue');",
         "type": "drawing",
         "hints": [
