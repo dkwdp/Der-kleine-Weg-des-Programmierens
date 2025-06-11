@@ -10,6 +10,8 @@
 
   onMount(() => {
     myVariable.set(currentLevel.initialCode); // setzen des initialen Codes im Editor
+    // Wenn du etwas in die Konsole schreiben willst, kannst du console.log verwenden:
+    console.log('Aktuelles Level:', currentLevel);
   });
   $: output = $pythonOutput;
   $: input = $pythonCode;
