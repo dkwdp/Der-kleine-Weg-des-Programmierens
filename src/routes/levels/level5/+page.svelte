@@ -1,32 +1,35 @@
 <script>
     import { onMount, onDestroy } from 'svelte';
-    import { myVariable, isCurrentLevelDrawing } from '$lib/stores/editorStore';
-    import levels from '$data/levels.json';
+  import { myVariable, isCurrentLevelDrawing, outputID, solvedLevel, levelID} from '$lib/stores/editorStore';
+  import levels from '$data/levels.json';
   
     let currentLevelIndex = 3;
     let currentLevel = levels[currentLevelIndex];
   
-    onMount(() => {
-      myVariable.set(currentLevel.initialCode);
-      isCurrentLevelDrawing.set(currentLevel.type == "drawing");
-    });
-  
-    function nextTask() {
-      if (currentLevelIndex < levels.length - 1) {
-        currentLevelIndex++;
-        currentLevel = levels[currentLevelIndex];
-        myVariable.set(currentLevel.initialCode);
-      }
+
+  onMount(() => {
+    myVariable.set(currentLevel.initialCode[0]);
+    solvedLevel.set(false);
+    levelID.set(currentLevelIndex)
+    isCurrentLevelDrawing.set(currentLevel.type == "drawing");
+  });
+  let i = 0;
+
+  function nextTask() {
+    i = $outputID;
+    i++;
+    outputID.set(i);
+    myVariable.set(currentLevel.initialCode[i]);
+  }
+  function previousTask(){
+    i = $outputID;
+    i--;
+    if(i < 0){
+      i = 0;
     }
-  
-    function prevTask() {
-      if (currentLevelIndex > 0) {
-        currentLevelIndex--;
-        currentLevel = levels[currentLevelIndex];
-        myVariable.set(currentLevel.initialCode);
-  
-      }
-    }
+    outputID.set(i);
+    myVariable.set(currentLevel.initialCode[i]);
+  }
   </script>
   
   <main>
