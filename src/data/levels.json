@@ -2,8 +2,8 @@
     {
         "id": 1,
         "title": "'Hello World!'",
-        "description": "Schreibe deine erste Ausgabe!" ,
-        "expectedOutput": "Hello World!",
+        "description": ["Schreibe deine erste Ausgabe!", "Neue Aufgabe" ],
+        "expectedOutput": ["Hello World!", "4"],
         "initialCode": "console.log()",
         "type": "calculation",
         "hints": ["Mit dem Text console.log() kannst du Text im Computer anzeigen. Schreibe den Satz in Anführungszeichen. Der Computer gibt genau das wieder was zwischen den Anführungszeichen steht."
@@ -13,7 +13,7 @@
         "id": 2,
         "title": "Einführung in die Addition2",
         "description": "Berechne die Summe von 1+2",
-        "expectedOutput": "HEEELLLLOOOOOOOOOO",
+        "expectedOutput": ["HEEELLLLOOOOOOOOOO", "4"],
         "initialCode": "console.log('hallo')",
         "type": "calculation",
         "hints": ["Mit dem Text console.log() kannst du Text im Computer anzeigen. Schreibe den Satz in Anführungszeichen. Der Computer gibt genau das wieder was zwischen den Anführungszeichen steht."
