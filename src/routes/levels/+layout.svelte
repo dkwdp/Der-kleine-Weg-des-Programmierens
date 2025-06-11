@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import { get } from "svelte/store";
-  import { myVariable, isCurrentLevelDrawing , outputID, solvedLevel } from "$lib/stores/editorStore";
+  import { myVariable, isCurrentLevelDrawing , outputID, solvedLevel, levelID } from "$lib/stores/editorStore";
   import JavaScriptEditor from "$lib/JavaScriptEditor.svelte";
   import levels from "$data/levels.json"; //json datei mit level-lösungen
   import Mascot from "../mascot/Mascot.svelte";
@@ -81,7 +81,7 @@
       };
 
       // Für Zeichenlevel: Canvas-Code ausführen
-      const currentLevelData = levels[currentLevel];
+      const currentLevelData = levels[$levelID];
       if (currentLevelData && currentLevelData.type === "drawing") {
         if (canvasRef) {
           canvasRef.runDrawingCode();
@@ -92,7 +92,7 @@
         const result = eval(code);
         const trimmedOutput = captured.trim() || String(result);
         let i = $outputID;
-        const expectedOutput = levels[currentLevel].expectedOutput[i];
+        const expectedOutput = currentLevelData.expectedOutput[i];
 
         console.log = originalLog;
 
