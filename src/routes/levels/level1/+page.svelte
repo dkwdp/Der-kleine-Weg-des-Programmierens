@@ -3,7 +3,7 @@
   import levels from '$data/levels.json';
     import { onMount } from 'svelte';
 
-  let currentLevelIndex = 0;
+  let currentLevelIndex = 0; // bei jedem Level Anpassen
   let currentLevel = levels[currentLevelIndex];
   
   onMount(() => {
@@ -12,7 +12,6 @@
     levelID.set(currentLevelIndex)
   });
 
-  // Funktion zum Weitergehen ist evtl. noch erforderlich:
   function nextTask() {
     if (currentLevelIndex < levels.length - 1) {
       currentLevelIndex++;

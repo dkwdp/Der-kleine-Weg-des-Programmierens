@@ -1,10 +1,10 @@
 [
     {
         "id": 1,
-        "title": "'Hello World!'",
+        "title": ["'Hello World!'","'2 + 2'"],
         "description": ["Schreibe deine erste Ausgabe!", "Schreibe 2+2" ],
         "expectedOutput": ["Hello World!", "8"],
-        "initialCode": "console.log()",
+        "initialCode": ["console.log()", "console.log('hier schreiben')" ],
         "type": "calculation",
         "hints": ["Mit dem Text console.log() kannst du Text im Computer anzeigen. Schreibe den Satz in Anführungszeichen. Der Computer gibt genau das wieder was zwischen den Anführungszeichen steht."
         ]
@@ -15,7 +15,9 @@
         "description": ["Berechne die Summe von 1+2"],
         "expectedOutput": ["HEEELLLLOOOOOOOOOO", "4"],
         "initialCode": "console.log('hallo')",
-        "type": "calculation"
+        "type": "calculation",
+        "hints": ["Mit dem Text console.log() kannst du Text im Computer anzeigen. Schreibe den Satz in Anführungszeichen. Der Computer gibt genau das wieder was zwischen den Anführungszeichen steht."
+    ]
 
     },
     {
@@ -41,5 +43,18 @@
             "Der Canvas ist 400px breit und 300px hoch",
             "Verfügbare Farben: 'red', 'blue', 'green', 'yellow', 'purple', etc."
         ]
+    },
+    {
+        "id": 6,
+        "title": "Zeichne deinen ersten Kreis",
+        "description": "Verwende draw_line(x1, y1, x2, y2, farbe) um eine Linie zu zeichnen.",
+        "initialCode": "set_background('white');\ndraw_circle(150, 150, 50, 'blue')\ndraw_line(180,120,160,140,'red');\ndraw_line(120,120,140,140,'red');\ndraw_circle(120,140,10,'lightblue');\ndraw_circle(180,140,10,'lightblue');\ndraw_text('f**k', 140,180,'black');",
+        "type": "drawing",
+        "hints": [
+            "Die Koordinaten beginnen oben links bei (0,0)",
+            "Der Canvas ist 400px breit und 300px hoch ",
+            "Verfügbare Farben: 'red', 'blue', 'green', 'yellow', 'purple', etc."
+        ]
     }
+
 ]
