@@ -1,21 +1,24 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
-  import { myVariable, isCurrentLevelDrawing, outputID} from '$lib/stores/editorStore';
+  import { myVariable, isCurrentLevelDrawing, outputID, solvedLevel, levelID} from '$lib/stores/editorStore';
   import levels from '$data/levels.json';
 
   let currentLevelIndex = 2; // Level 3 (Index 2)
   let currentLevel = levels[currentLevelIndex];
 
   onMount(() => {
-    myVariable.set(currentLevel.initialCode);
+    myVariable.set(currentLevel.initialCode[0]);
+    solvedLevel.set(false);
+    levelID.set(currentLevelIndex)
     isCurrentLevelDrawing.set(currentLevel.type == "drawing");
   });
-  
   let i = 0;
+
   function nextTask() {
     i = $outputID;
     i++;
     outputID.set(i);
+    myVariable.set(currentLevel.initialCode[i]);
   }
   function previousTask(){
     i = $outputID;
@@ -24,6 +27,7 @@
       i = 0;
     }
     outputID.set(i);
+    myVariable.set(currentLevel.initialCode[i]);
   }
 
 
