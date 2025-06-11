@@ -5,7 +5,7 @@
   let userCode = writable('');
   let consoleOutput = writable('');
   let currentStep = 0;
-
+    // Define the steps for the if/else lesson
   const steps = [
     {
       title: "Was ist if/else?",
