@@ -2,8 +2,8 @@
     {
         "id": 1,
         "title": "'Hello World!'",
-        "description": ["Schreibe deine erste Ausgabe!", "Neue Aufgabe" ],
-        "expectedOutput": ["Hello World!", "4"],
+        "description": ["Schreibe deine erste Ausgabe!", "Schreibe 2+2" ],
+        "expectedOutput": ["Hello World!", "8"],
         "initialCode": "console.log()",
         "type": "calculation",
         "hints": ["Mit dem Text console.log() kannst du Text im Computer anzeigen. Schreibe den Satz in Anführungszeichen. Der Computer gibt genau das wieder was zwischen den Anführungszeichen steht."
@@ -23,7 +23,7 @@
     {
         "id": 3,
         "title": "Zeichne deinen ersten Kreis",
-        "description": ["Verwende draw_circle(x, y, radius, farbe) um einen blauen Kreis zu zeichnen. Beispiel: draw_circle(200, 150, 50, 'blue')"],
+        "description": ["Verwende background('farbe') um den Hintergrund zu färben.", "Füge "],
         "initialCode": "set_background('lightblue');\ndraw_circle(200, 150, 50, 'blue');",
         "type": "drawing",
         "hints": [

@@ -463,5 +463,6 @@
     .resizer {
       display: none;
     }
+    
   }
 </style>
