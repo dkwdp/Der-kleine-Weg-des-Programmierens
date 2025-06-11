@@ -9,7 +9,8 @@
   onMount(() => {
     myVariable.set(currentLevel.initialCode[0]);
     solvedLevel.set(false);
-    levelID.set(currentLevelIndex)
+    levelID.set(currentLevelIndex);
+    isCurrentLevelDrawing.set(currentLevel.type == "drawing");
   });
   let i = 0;
 
