@@ -1,12 +1,12 @@
 <script>
   import { onMount } from "svelte";
   import { get } from "svelte/store";
-  import { myVariable, isCurrentLevelDrawing  } from "$lib/stores/editorStore";
+  import { myVariable, isCurrentLevelDrawing } from "$lib/stores/editorStore";
   import JavaScriptEditor from "$lib/JavaScriptEditor.svelte";
-  import levels from "$data/levels.json"; //json datei mit level-lösungen
+  import levels from "$data/levels.json";
   import Mascot from "../mascot/Mascot.svelte";
   import P5Canvas from "$lib/Canvas/p5Canvas.svelte";
-  import { TreeIndentContext } from "@codemirror/language";
+  import SettingsDropdown from "$lib/SettingsDropdown.svelte";
 
   let output = "";
   let currentLevel = 0;
@@ -24,15 +24,14 @@
 
   $: imageSrc = emotionImages[emotion] || emotionImages.neutral;
 
-  // Resizer-Funktionalität
   let isDragging = false;
   let startX, startLeftWidth;
+  let canvasRef;
 
   function startDrag(e) {
     isDragging = true;
     startX = e.clientX;
     startLeftWidth = document.querySelector('.sidebar').offsetWidth;
-    document.body.style.cursor = 'col-resize';
     document.body.style.userSelect = 'none';
   }
 
@@ -44,7 +43,6 @@
     const dx = e.clientX - startX;
     const newLeftWidth = startLeftWidth + dx;
     
-    // Begrenze die minimale und maximale Breite
     const minWidth = 300;
     const maxWidth = container.offsetWidth - 300;
     
@@ -56,7 +54,6 @@
 
   function stopDrag() {
     isDragging = false;
-    document.body.style.cursor = '';
     document.body.style.userSelect = '';
   }
 
@@ -69,18 +66,17 @@
       window.removeEventListener('mouseup', stopDrag);
     };
   });
-  let canvasRef;
 
   async function runJavaScript() {
     const code = get(myVariable);
 
-    try {      let captured = "";
+    try {
+      let captured = "";
       const originalLog = console.log;
       console.log = (...args) => {
         captured += args.join(" ") + "\n";
       };
 
-      // Für Zeichenlevel: Canvas-Code ausführen
       const currentLevelData = levels[currentLevel];
       if (currentLevelData && currentLevelData.type === "drawing") {
         if (canvasRef) {
@@ -88,23 +84,22 @@
         }
         output = "Zeichnung ausgeführt!";
       } else {
-        // Normaler JavaScript Code
         const result = eval(code);
         const trimmedOutput = captured.trim() || String(result);
         const expectedOutput = levels[currentLevel].expectedOutput;
 
         console.log = originalLog;
 
-      if(trimmedOutput === expectedOutput){
-        output = "✓ Richtig: " + trimmedOutput;
-        emotion = 'happy';
-        message = 'Gut gemacht!';
-      } else{
-        output = "↳ Ergebnis: " + trimmedOutput + " | Erwartet: " + expectedOutput;
-        emotion = 'think';
-        message = 'Fast geschafft!';
+        if(trimmedOutput === expectedOutput){
+          output = "✓ Richtig: " + trimmedOutput;
+          emotion = 'happy';
+          message = 'Gut gemacht!';
+        } else{
+          output = "↳ Ergebnis: " + trimmedOutput + " | Erwartet: " + expectedOutput;
+          emotion = 'think';
+          message = 'Fast geschafft!';
+        }
       }
-    }
     } catch (err) {
       output = "✗ Fehler: " + err.message;
       emotion = 'sad';
@@ -119,6 +114,7 @@
       <div class="header">
         <h1>Javascript Abenteuer</h1>
         <div class="subtitle">Programmieren lernen mit Leichtigkeit</div>
+        <SettingsDropdown {currentLevel} />
       </div>
       <slot />
     </div>
@@ -138,7 +134,6 @@
           <P5Canvas bind:this={canvasRef} />
         {/if}
           
-        
         {#if output}
           <div class="output-container {emotion}">
             <h3>Ergebnis</h3>
@@ -158,35 +153,43 @@
 </main>
 
 <style>
-  @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap");
+  @import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700&display=swap");
 
   :root {
-    /* Farbpalette */
-    --primary: #F8AA48;      /* Warmes Orange (Akzent) */
-    --primary-light: #FFE8D1; /* Aufgehellte Variante */
-    --secondary: #413C58;    /* Tiefes Lila (für Texte) */
-    --accent: #A3C4BC;      /* Weiches Grün-Blau (Hintergründe) */
-    --light: #F5F9F7;       /* Sehr helles Grün (Haupthintergrund) */
-    --success: #BFD7B5;     /* Frisches Grün (Erfolgsmeldungen) */
-    --error: #D64550;       /* Warmes Rot (Fehlermeldungen) */
-    --text: #413C58;        /* Haupttextfarbe */
-    --border: #D1E0D7;      /* Hellgrau-Grün (Bordüren) */
-    --background: #FFFFFF;  /* Weiß (für Boxen) */
-    
-    /* Design-Tokens */
-    --border-radius: 6px;
-    --shadow-sm: 0 1px 3px rgba(65, 60, 88, 0.08);
-    --shadow-md: 0 2px 6px rgba(65, 60, 88, 0.1);
-    --transition: all 0.2s ease;
+    --primary: #F4A261;
+    --primary-light: #FFF6ED;
+    --secondary: #4C7355;
+    --accent: #56C5C0;
+    --success: #A8D672;
+    --light: #F1FAF7;
+    --error: #E76F51;
+    --text: #3A5642;
+    --border: #D8EADB;
+    --background: #FFFFFF;
+    --border-radius: 12px;
+    --border-radius-lg: 18px;
+    --shadow-sm: 0 3px 6px rgba(60, 90, 72, 0.07);
+    --shadow-md: 0 6px 12px rgba(60, 90, 72, 0.12);
+    --transition: all 0.3s ease-in-out;
+    --font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  }
+
+  /* Einheitliche Mauszeiger */
+  body, body * {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="%234C7355"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/></svg>'), auto;
+  }
+
+  button, [onclick], .mascot, .mascot-container {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="%23F4A261"><path d="M10 4l6 6-6 6-1.4-1.4 4.6-4.6-4.6-4.6z"/></svg>'), pointer;
+  }
+
+  .resizer {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="%2356C5C0"><path d="M8 4h8v16H8z"/></svg>'), col-resize;
   }
 
   body {
     margin: 0;
-    font-family:
-      "Baloo 2",
-      -apple-system,
-      BlinkMacSystemFont,
-      sans-serif;
+    font-family: var(--font-family);
     font-weight: 400;
     background-color: var(--light);
     color: var(--text);
@@ -206,20 +209,22 @@
     min-height: 0;
   }
 
-  /* Sidebar */
   .sidebar {
     width: 40%;
     min-width: 300px;
     background: var(--background);
     padding: 1.5rem;
-    border-right: 1px solid var(--border);
+    border-right: 2px dashed var(--border);
     overflow-y: auto;
     position: relative;
     background-image: linear-gradient(
       to bottom,
       var(--background),
-      var(--light)
+      var(--primary-light)
     );
+    border-radius: 0 var(--border-radius-lg) var(--border-radius-lg) 0;
+
+
   }
 
   .sidebar::before {
@@ -228,21 +233,23 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--primary), var(--success));
+    height: 6px;
+    background: linear-gradient(90deg, var(--primary), var(--accent), var(--success));
+    border-radius: 3px;
   }
 
-  /* Resizer */
   .resizer {
-    width: 4px;
-    background: var(--border);
-    cursor: col-resize;
+    width: 8px;
+    background: var(--accent);
     transition: var(--transition);
     flex-shrink: 0;
+    border-radius: 4px;
+    margin: 0 2px;
   }
 
   .resizer:hover {
     background: var(--primary);
+    transform: scaleX(1.5);
   }
 
   .header {
@@ -250,21 +257,20 @@
   }
 
   h1 {
-    font-size: 1.5rem;
-    font-weight: 500;
+    font-size: 1.8rem;
+    font-weight: 700;
     color: var(--secondary);
     margin: 0 0 0.5rem 0;
-    letter-spacing: -0.02em;
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.05);
   }
 
   .subtitle {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: var(--text);
-    opacity: 0.7;
-    font-weight: 400;
+    opacity: 0.8;
+    font-weight: 500;
   }
 
-  /* Coding-Bereich */
   .coding-area {
     width: 60%;
     flex: 1;
@@ -287,126 +293,126 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     flex-shrink: 0;
   }
 
   h2 {
-    font-size: 1.2rem;
-    font-weight: 500;
+    font-size: 1.5rem;
+    font-weight: 600;
     color: var(--secondary);
     margin: 0;
   }
 
   h3 {
-    font-size: 1rem;
-    font-weight: 500;
+    font-size: 1.2rem;
+    font-weight: 600;
     color: var(--secondary);
     margin: 0 0 0.5rem 0;
   }
 
   button {
-    padding: 0.5rem 1rem;
+    padding: 0.6rem 1.2rem;
     background-color: var(--primary);
     color: white;
     border: none;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 500;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
     transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+    letter-spacing: 0.5px;
   }
 
   button:hover {
     background-color: var(--secondary);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: var(--shadow-md);
   }
 
   .output-container {
     margin-top: 1.5rem;
     background: var(--background);
-    padding: 1rem;
+    padding: 1.2rem;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-sm);
-    border-left: 3px solid var(--border);
+    border-left: 5px solid var(--border);
     transition: var(--transition);
     flex-shrink: 0;
   }
 
   .output-container.happy {
     border-left-color: var(--success);
-    background-color: rgba(191, 215, 181, 0.05);
+    background-color: rgba(191, 215, 181, 0.1);
+    animation: bounce 0.5s;
   }
 
   .output-container.think {
     border-left-color: var(--secondary);
-    background-color: rgba(65, 60, 88, 0.03);
+    background-color: rgba(65, 60, 88, 0.1);
   }
 
   .output-container.sad {
     border-left-color: var(--error);
-    background-color: rgba(214, 69, 80, 0.03);
+    background-color: rgba(214, 69, 80, 0.1);
   }
 
   .output {
     white-space: pre-wrap;
-    font-family: 'Menlo', 'Consolas', monospace;
-    font-size: 0.85rem;
+    font-family: 'Comic Neue', cursive, monospace;
+    font-size: 0.9rem;
     line-height: 1.6;
-    background: rgba(163, 196, 188, 0.05);
-    padding: 0.75rem;
-    border-radius: 6px;
+    background: rgba(209, 224, 215, 0.3);
+    padding: 1rem;
+    border-radius: var(--border-radius);
     overflow-x: auto;
     max-height: 200px;
     overflow-y: auto;
-    border: 1px solid var(--border);
+    border: 2px dotted var(--border);
   }
 
-  /* Maskottchen */
   .mascot-container {
     position: fixed;
-    right: 1.5rem;
-    bottom: 1.5rem;
-    width: 120px;
+    right: 2rem;
+    bottom: 2rem;
+    width: 140px;
     z-index: 100;
     transition: var(--transition);
     background: var(--background);
     border-radius: 50%;
-    padding: 6px;
-    box-shadow: var(--shadow-sm);
-    border: 2px solid var(--accent);
+    padding: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border: 3px solid var(--accent);
+    animation: float 3s ease-in-out infinite;
   }
 
   .mascot {
     width: 100%;
     height: auto;
     transition: var(--transition);
-    cursor: pointer;
     border-radius: 50%;
   }
 
   .mascot:hover {
-    transform: scale(1.05);
+    transform: scale(1.1) rotate(5deg);
   }
 
-  /* Sprechblase */
   .speech-bubble {
     position: absolute;
     bottom: 100%;
     left: 50%;
     transform: translateX(-50%);
-    margin-bottom: 0.75rem;
-    padding: 0.5rem 0.75rem;
+    margin-bottom: 1rem;
+    padding: 0.8rem 1rem;
     background: var(--background);
-    border-radius: var(--border-radius);
-    font-size: 0.85rem;
-    box-shadow: var(--shadow-sm);
-    max-width: 180px;
+    border-radius: var(--border-radius-lg);
+    font-size: 1rem;
+    box-shadow: var(--shadow-md);
+    max-width: 200px;
     text-align: center;
-    border: 1px solid var(--success);
+    border: 3px solid var(--success);
     color: var(--text);
-    font-weight: 400;
+    font-weight: 500;
   }
 
   .speech-bubble:after {
@@ -414,26 +420,35 @@
     position: absolute;
     top: 100%;
     left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
+    margin-left: -8px;
+    border-width: 8px 8px 0 8px;
     border-style: solid;
     border-color: var(--background) transparent transparent transparent;
   }
 
-  /* Responsive Design */
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
   @media (max-width: 1024px) {
     .sidebar {
       width: 35%;
-      padding: 1rem;
+      padding: 1.2rem;
     }
 
     .editor-container {
-      padding: 1rem;
+      padding: 1.2rem;
     }
 
     .mascot-container {
-      width: 100px;
-      right: 1rem;
+      width: 120px;
+      right: 1.5rem;
     }
   }
 
@@ -445,21 +460,40 @@
     .sidebar {
       width: 100%;
       padding: 1rem;
+      border-radius: 0;
     }
 
     .coding-area {
       width: 100%;
-      padding-bottom: 100px;
+      padding-bottom: 120px;
     }
 
     .mascot-container {
-      width: 80px;
-      right: 0.75rem;
-      bottom: 0.75rem;
+      width: 100px;
+      right: 1rem;
+      bottom: 1rem;
     }
 
     .resizer {
       display: none;
     }
   }
+
+  .header {
+    position: relative; /* Für korrekte Dropdown-Positionierung */
+  }
+  
+  /* Ergänzung für das Dropdown */
+  .dropdown-container {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+  }
+
+  .settings-button[aria-expanded="true"] {
+  background: var(--primary);
+  color: white;
+}
+
 </style>
