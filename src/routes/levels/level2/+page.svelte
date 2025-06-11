@@ -1,6 +1,7 @@
 <script>
   import { myVariable, isCurrentLevelDrawing, solvedLevel, levelID, outputID } from '$lib/stores/editorStore';
   import levels from '$data/levels.json';
+  import { onMount } from 'svelte';
 
   let currentLevelIndex = 1; // bei jedem Level Anpassen
   let currentLevel = levels[currentLevelIndex];
