@@ -8,7 +8,7 @@
   let currentLevel = levels[currentLevelIndex];
   
   onMount(() => {
-    myVariable.set(currentLevel.initialCode);
+    myVariable.set(currentLevel.initialCode[0]);
     solvedLevel.set(false);
     levelID.set(currentLevelIndex)
   });
@@ -18,6 +18,7 @@
     i = $outputID;
     i++;
     outputID.set(i);
+    myVariable.set(currentLevel.initialCode[i]);
   }
   function previousTask(){
     i = $outputID;
@@ -26,11 +27,12 @@
       i = 0;
     }
     outputID.set(i);
+    myVariable.set(currentLevel.initialCode[i]);
   }
 </script>
 
 <main>
-  <h1>{currentLevel.title}</h1>
+  <h1>{currentLevel.title[i]}</h1>
   <h2>Levelbeschreibung</h2>
   <p>{currentLevel.description[i]}</p>
   {#if currentLevel.hints}

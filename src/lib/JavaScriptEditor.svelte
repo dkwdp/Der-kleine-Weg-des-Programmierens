@@ -2,9 +2,7 @@
   import { onMount } from "svelte";
   import { get, writable } from "svelte/store";
   import { javascript } from "@codemirror/lang-javascript";
-  import {
-    EditorState
-  } from "@codemirror/state";
+  import { EditorState } from "@codemirror/state";
   import {
     EditorView,
     keymap,
