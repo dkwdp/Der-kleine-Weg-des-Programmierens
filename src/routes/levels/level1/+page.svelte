@@ -4,15 +4,14 @@
     import { onMount } from 'svelte';
     import { goto } from '$app/navigation';
 
-  // Verwendung der Level-Daten aus der JSON-Datei:
-  let currentLevelIndex = 0; // starten beim ersten Level
+  let currentLevelIndex = 0;
   let currentLevel = levels[currentLevelIndex];
   
   
   onMount(() => {
     myVariable.set(currentLevel.initialCode);
     solvedLevel.set(false);
-    levelID.set(0)
+    levelID.set(currentLevelIndex)
   });
   let i = 0;
 

@@ -12,7 +12,7 @@
     {
         "id": 2,
         "title": "Einführung in die Addition2",
-        "description": "Berechne die Summe von 1+2",
+        "description": ["Berechne die Summe von 1+2"],
         "expectedOutput": ["HEEELLLLOOOOOOOOOO", "4"],
         "initialCode": "console.log('hallo')",
         "type": "calculation",
@@ -23,7 +23,7 @@
     {
         "id": 3,
         "title": "Zeichne deinen ersten Kreis",
-        "description": "Verwende draw_circle(x, y, radius, farbe) um einen blauen Kreis zu zeichnen. Beispiel: draw_circle(200, 150, 50, 'blue')",
+        "description": ["Verwende draw_circle(x, y, radius, farbe) um einen blauen Kreis zu zeichnen. Beispiel: draw_circle(200, 150, 50, 'blue')"],
         "initialCode": "set_background('lightblue');\ndraw_circle(200, 150, 50, 'blue');",
         "type": "drawing",
         "hints": [

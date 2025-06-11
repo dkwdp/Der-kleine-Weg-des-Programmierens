@@ -6,7 +6,7 @@
   let canvasContainer;
   let p5Instance;
   let customFunctions = {};
-  let safeMode = true;
+  let safeMode = false;
 
   // Definiere verfügbare Zeichenfunktionen
   function setupCustomFunctions(p) {
