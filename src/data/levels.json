@@ -1,10 +1,10 @@
 [
     {
         "id": 1,
-        "title": "'Hello World!'",
+        "title": ["'Hello World!'","'2 + 2'"],
         "description": ["Schreibe deine erste Ausgabe!", "Schreibe 2+2" ],
         "expectedOutput": ["Hello World!", "8"],
-        "initialCode": "console.log()",
+        "initialCode": ["console.log()", "console.log('hier schreiben')" ],
         "type": "calculation",
         "hints": ["Mit dem Text console.log() kannst du Text im Computer anzeigen. Schreibe den Satz in Anführungszeichen. Der Computer gibt genau das wieder was zwischen den Anführungszeichen steht."
         ]
