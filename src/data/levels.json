@@ -1,23 +1,19 @@
 [
     {
         "id": 1,
-        "title": "'Hello World!'",
-        "description": ["Schreibe deine erste Ausgabe!", "Neue Aufgabe" ],
-        "expectedOutput": ["Hello World!", "4"],
-        "initialCode": "console.log()",
-        "type": "calculation",
-        "hints": ["Mit dem Text console.log() kannst du Text im Computer anzeigen. Schreibe den Satz in Anführungszeichen. Der Computer gibt genau das wieder was zwischen den Anführungszeichen steht."
-        ]
+        "title": "Einführung in die Addition1",
+        "description": "Berechne die Summe von 2+2",
+        "expectedOutput": "4",
+        "initialCode": "console.log(...)",
+        "type": "calculation"
     },
     {
         "id": 2,
         "title": "Einführung in die Addition2",
         "description": "Berechne die Summe von 1+2",
-        "expectedOutput": ["HEEELLLLOOOOOOOOOO", "4"],
+        "expectedOutput": "3",
         "initialCode": "console.log('hallo')",
-        "type": "calculation",
-        "hints": ["Mit dem Text console.log() kannst du Text im Computer anzeigen. Schreibe den Satz in Anführungszeichen. Der Computer gibt genau das wieder was zwischen den Anführungszeichen steht."
-    ]
+        "type": "calculation"
 
     },
     {
@@ -43,18 +39,5 @@
             "Der Canvas ist 400px breit und 300px hoch",
             "Verfügbare Farben: 'red', 'blue', 'green', 'yellow', 'purple', etc."
         ]
-    },
-    {
-        "id": 6,
-        "title": "Zeichne deinen ersten Kreis",
-        "description": "Verwende draw_line(x1, y1, x2, y2, farbe) um eine Linie zu zeichnen.",
-        "initialCode": "set_background('white');\ndraw_circle(150, 150, 50, 'blue')\ndraw_line(180,120,160,140,'red');\ndraw_line(120,120,140,140,'red');\ndraw_circle(120,140,10,'lightblue');\ndraw_circle(180,140,10,'lightblue');\ndraw_text('f**k', 140,180,'black');",
-        "type": "drawing",
-        "hints": [
-            "Die Koordinaten beginnen oben links bei (0,0)",
-            "Der Canvas ist 400px breit und 300px hoch",
-            "Verfügbare Farben: 'red', 'blue', 'green', 'yellow', 'purple', etc."
-        ]
     }
-
 ]

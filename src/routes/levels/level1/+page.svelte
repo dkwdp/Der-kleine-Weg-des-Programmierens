@@ -1,54 +1,31 @@
 <script>
-  import { myVariable, isCurrentLevelDrawing, solvedLevel, levelID, outputID } from '$lib/stores/editorStore';
+  import { myVariable, isCurrentLevelDrawing } from '$lib/stores/editorStore';
   import levels from '$data/levels.json';
     import { onMount } from 'svelte';
-    import { goto } from '$app/navigation';
 
   // Verwendung der Level-Daten aus der JSON-Datei:
   let currentLevelIndex = 0; // starten beim ersten Level
   let currentLevel = levels[currentLevelIndex];
   
-  
   onMount(() => {
     myVariable.set(currentLevel.initialCode);
-    solvedLevel.set(false);
-    levelID.set(0)
   });
-  let i = 0;
 
   // Funktion zum Weitergehen ist evtl. noch erforderlich:
   function nextTask() {
-    i = $outputID;
-    i++;
-    outputID.set(i);
-  }
-  function previousTask(){
-    i = $outputID;
-    i--;
-    if(i < 0){
-      i = 0;
+    if (currentLevelIndex < levels.length - 1) {
+      currentLevelIndex++;
+      currentLevel = levels[currentLevelIndex];
     }
-    outputID.set(i);
   }
 </script>
 
 <main>
   <h1>{currentLevel.title}</h1>
   <h2>Levelbeschreibung</h2>
-  <p>{currentLevel.description[i]}</p>
-  {#if currentLevel.hints}
-      <h3>💡 Tipps:</h3>
-      <ul class="hints">
-        {#each currentLevel.hints as hint}
-          <p>{hint}</p>
-        {/each}
-      </ul>
-  {/if}
+  <p>{currentLevel.description}</p>
 
-  {#if $solvedLevel}
-  <button on:click={previousTask}>Zurück</button>
   <button on:click={nextTask}>Weiter</button>
-  {/if}
 </main>
 
 <style>
@@ -62,5 +39,4 @@
     font-size: 16px;
     cursor: pointer;
   }
-  
 </style>
