@@ -261,7 +261,7 @@
 		font-size: clamp(16px, 2.5vw, 24px);
 	}
 
-	/* Hover-Effekte - VEREINFACHT */
+	/* Hover-Effekte */
 	.level-button:hover {
 		transform: translate(-50%, -50%) scale(1.05);
 		filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5));
