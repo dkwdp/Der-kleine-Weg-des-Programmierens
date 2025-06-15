@@ -27,7 +27,7 @@
   
       }
     }
-ç  </script>
+</script>
   
   <main>
     <h1>{currentLevel.title}</h1>
