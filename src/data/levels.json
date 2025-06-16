@@ -1,22 +1,22 @@
 [
     {
         "id": 1,
-        "title": ["'Hello World!'","'2 + 2'"],
-        "description": ["Schreibe deine erste Ausgabe!", "Schreibe 2+2" ],
-        "expectedOutput": ["Hello World!", "8"],
+        "title": ["'Hello World!'","Einfaches Rechnen"],
+        "description": ["Schreibe deine erste Ausgabe!", "Schreib eine Rechnung, welche als Ergebnis vier ausgibt" ],
+        "expectedOutput": ["Hello World!", "4"],
         "initialCode": ["console.log()", "console.log('hier schreiben')" ],
         "type": "calculation",
-        "hints": ["Mit dem Text console.log() kannst du Text im Computer anzeigen. Schreibe den Satz in Anführungszeichen. Der Computer gibt genau das wieder was zwischen den Anführungszeichen steht."
+        "hints": ["Mit dem Text console.log() kannst du Text im Computer anzeigen. Der Computer gibt genau das wieder was zwischen den Anführungszeichen steht."
         ]
     },
     {
         "id": 2,
-        "title": ["Einführung in die Addition2"],
-        "description": ["Berechne die Summe von 1+2"],
-        "expectedOutput": ["HEEELLLLOOOOOOOOOO", "4"],
-        "initialCode": ["console.log('hallo')"],
+        "title": ["Einführung in die Variablen"],
+        "description": ["Erstelle zwei Variablen a und b mit den Werten 2 und 3. Addiere a und b und gib das Ergebnis mit console.log() aus."],
+        "expectedOutput": ["5"],
+        "initialCode": ["let a =\nconsole.log('')"],
         "type": "calculation",
-        "hints": ["Mit dem Text console.log() kannst du Text im Computer anzeigen. Schreibe den Satz in Anführungszeichen. Der Computer gibt genau das wieder was zwischen den Anführungszeichen steht."
+        "hints": ["Deklariere Variablen mit let.", "Nutze console.log(a + b), um das Ergebnis anzuzeigen"
     ]
 
     },
