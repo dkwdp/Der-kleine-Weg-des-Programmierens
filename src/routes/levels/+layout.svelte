@@ -162,7 +162,7 @@ console.log(prompt)
       feedback = data.feedback;
       message = feedback;
     } catch (err) {
-      error = 'Something went wrong: ' + err.message;
+      error = 'Ups! Da konnte ich nicht helfen.: ' + err.message;
       message = error;
     } finally {
       loading = false;
@@ -181,10 +181,10 @@ console.log(prompt)
 </button>
 {#if isOpen}
   <div class="popup-menu">
-    <!-- Close button -->
+  
     <button class="close-btn" on:click={closeMenu}>✕</button>
 
-    <!-- Custom image buttons (examples) -->
+   
     <div class="image-buttons">
       <img src="/lockedBelt.png" alt="Option 1" />
       <img src="/lockedBelt.png" alt="Option 2" />
@@ -244,11 +244,17 @@ console.log(prompt)
   padding: 0;
   margin: 0;
   border: none;
-  background: none;
+  background-color: var(--primary);
   display: block;
   width: 100%;
   height: 100%;
 }
+
+.banner-button:hover .header-image {
+  transform: scale(0.95);
+  transition: transform 0.2s ease;
+}
+
 .beltButton {
   position: absolute;
   bottom: 10px;
@@ -256,14 +262,20 @@ console.log(prompt)
   z-index: 10;
 }
 
-  /* Menu container */
+.header-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
 .popup-menu {
-  position: relative;
+  position: absolute;
   top: 95%;
   right: 1%;
   width: 300px;
   height: 200px;
-  background-color: #222;
+  background-color:var(--secondary);
   border: 2px solid #aaa;
   border-radius: 10px;
   padding: 1rem;
@@ -271,7 +283,6 @@ console.log(prompt)
   z-index: 1000;
 }
 
-/* Close button */
 .close-btn {
   position: absolute;
   top: 5px;
@@ -284,7 +295,6 @@ console.log(prompt)
 }
 
 
-/* Image button grid */
 .image-buttons {
   display: flex;
   gap: 10px;
@@ -344,6 +354,9 @@ console.log(prompt)
     display: flex;
     flex-direction: column;
   }
+  .top-bar {
+  position: relative;
+}
 
   .container {
     display: flex;
@@ -351,7 +364,6 @@ console.log(prompt)
     min-height: 0;
   }
 
-  /* Sidebar */
   .sidebar {
     width: 40%;
     min-width: 300px;
@@ -547,7 +559,7 @@ console.log(prompt)
     border-radius: var(--border-radius);
     font-size: 0.85rem;
     box-shadow: var(--shadow-sm);
-    max-width: 180px;
+    max-width: 50%;
     text-align: center;
     border: 1px solid var(--success);
     color: var(--text);
