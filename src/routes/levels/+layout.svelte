@@ -1,17 +1,29 @@
 <script>
   import { onMount } from "svelte";
   import { get } from "svelte/store";
-  import { myVariable, isCurrentLevelDrawing , outputID, solvedLevel, levelID } from "$lib/stores/editorStore";
+  import { myVariable, isCurrentLevelDrawing, outputID, solvedLevel, levelID } from "$lib/stores/editorStore";
   import JavaScriptEditor from "$lib/JavaScriptEditor.svelte";
-  import levels from "$data/levels.json"; //json datei mit level-lösungen
-  import Mascot from "../mascot/Mascot.svelte";
+  import levels from "$data/levels.json";
   import P5Canvas from "$lib/Canvas/p5Canvas.svelte";
-  import { TreeIndentContext } from "@codemirror/language";
+  import { fade } from 'svelte/transition';
 
+  // Originale Variablen
   let output = "";
   let currentLevel = 0;
   let emotion = 'neutral';
   let message = '';
+  let isDragging = false;
+  let startX, startLeftWidth;
+  let canvasRef;
+  let showSettings = false;
+
+  // Pinguin-Interaktionen
+  const tips = [
+    "Probier mal console.log()!",
+    "Vergiss die Semikolons nicht!",
+    "Du schaffst das!",
+    "Fehler sind zum Lernen da!"
+  ];
 
   const emotionImages = {
     happy: '/PinuHappy.png',
@@ -22,12 +34,43 @@
     neutral2: '/PinuNeutral2.png',
   };
 
+  // Funktionen
+  function goToMap() {
+    window.location.href = '/map';
+  }
+
+  function goToHome() {
+    window.location.href = '/';
+  }
+
+  function resetLevel() {
+    if (confirm("Möchtest du dieses Level wirklich zurücksetzen?")) {
+      myVariable.set(levels[$levelID].initialCode || "");
+      output = "";
+      emotion = 'neutral';
+      message = '';
+    }
+  }
+
+  function handleMascotClick() {
+    if (!message) {
+      message = tips[Math.floor(Math.random() * tips.length)];
+      setTimeout(() => message = '', 3000);
+    }
+    emotion = emotion === 'neutral' ? 'neutral2' : 'neutral';
+  }
+
+  function handleMascotHover() {
+    if (emotion === 'neutral') emotion = 'switch';
+  }
+
+  function handleMascotLeave() {
+    if (emotion === 'switch') emotion = 'neutral';
+  }
+
   $: imageSrc = emotionImages[emotion] || emotionImages.neutral;
 
-  // Resizer-Funktionalität
-  let isDragging = false;
-  let startX, startLeftWidth;
-
+  // Resizer-Funktionen
   function startDrag(e) {
     isDragging = true;
     startX = e.clientX;
@@ -44,7 +87,6 @@
     const dx = e.clientX - startX;
     const newLeftWidth = startLeftWidth + dx;
     
-    // Begrenze die minimale und maximale Breite
     const minWidth = 300;
     const maxWidth = container.offsetWidth - 300;
     
@@ -69,18 +111,17 @@
       window.removeEventListener('mouseup', stopDrag);
     };
   });
-  let canvasRef;
 
   async function runJavaScript() {
     const code = get(myVariable);
 
-    try {      let captured = "";
+    try {
+      let captured = "";
       const originalLog = console.log;
       console.log = (...args) => {
         captured += args.join(" ") + "\n";
       };
 
-      // Für Zeichenlevel: Canvas-Code ausführen
       const currentLevelData = levels[$levelID];
       if (currentLevelData && currentLevelData.type === "drawing") {
         if (canvasRef) {
@@ -88,7 +129,6 @@
         }
         output = "Zeichnung ausgeführt!";
       } else {
-        // Normaler JavaScript Code
         const result = eval(code);
         const trimmedOutput = captured.trim() || String(result);
         let i = $outputID;
@@ -96,17 +136,17 @@
 
         console.log = originalLog;
 
-      if(trimmedOutput === expectedOutput){
-        output = "✓ Richtig: " + trimmedOutput;
-        emotion = 'happy';
-        message = 'Gut gemacht!';
-        solvedLevel.set(true);
-      } else{
-        output = "↳ Ergebnis: " + trimmedOutput + " | Erwartet: " + expectedOutput;
-        emotion = 'think';
-        message = 'Fast geschafft!';
+        if(trimmedOutput === expectedOutput) {
+          output = "✓ Richtig: " + trimmedOutput;
+          emotion = 'happy';
+          message = 'Gut gemacht!';
+          solvedLevel.set(true);
+        } else {
+          output = "↳ Ergebnis: " + trimmedOutput + " | Erwartet: " + expectedOutput;
+          emotion = 'think';
+          message = 'Fast geschafft!';
+        }
       }
-    }
     } catch (err) {
       output = "✗ Fehler: " + err.message;
       emotion = 'sad';
@@ -140,7 +180,6 @@
           <P5Canvas bind:this={canvasRef} />
         {/if}
           
-        
         {#if output}
           <div class="output-container {emotion}">
             <h3>Ergebnis</h3>
@@ -150,11 +189,40 @@
       </div>
     </div>
     
-    <div class="mascot-container">
-      <img src={imageSrc} alt="Natur-Maskottchen" class="mascot" />
-      {#if message}
-        <div class="speech-bubble">{message}</div>
-      {/if}
+    <div class="mascot-and-settings-container">
+      <div class="settings-button-container">
+        <button class="settings-button" on:click={() => showSettings = !showSettings}>
+          ⚙️
+        </button>
+        
+        {#if showSettings}
+          <div class="settings-menu" transition:fade>
+            <button on:click={resetLevel}>
+              <span>🔄</span> Level neu starten
+            </button>
+            <button on:click={goToMap}>
+              <span>🗺️</span> Zur Karte
+            </button>
+            <button on:click={goToHome}>
+              <span>🏠</span> Hauptbildschirm
+            </button>
+          </div>
+        {/if}
+      </div>
+
+      <div class="mascot-container">
+        <img 
+          src={imageSrc} 
+          alt="Natur-Maskottchen" 
+          class="mascot"
+          on:click={handleMascotClick}
+          on:mouseover={handleMascotHover}
+          on:mouseout={handleMascotLeave}
+        />
+        {#if message}
+          <div class="speech-bubble">{message}</div>
+        {/if}
+      </div>
     </div>
   </div>
 </main>
@@ -164,16 +232,16 @@
 
   :root {
     /* Farbpalette */
-    --primary: #F8AA48;      /* Warmes Orange (Akzent) */
-    --primary-light: #FFE8D1; /* Aufgehellte Variante */
-    --secondary: #413C58;    /* Tiefes Lila (für Texte) */
-    --accent: #A3C4BC;      /* Weiches Grün-Blau (Hintergründe) */
-    --light: #F5F9F7;       /* Sehr helles Grün (Haupthintergrund) */
-    --success: #BFD7B5;     /* Frisches Grün (Erfolgsmeldungen) */
-    --error: #D64550;       /* Warmes Rot (Fehlermeldungen) */
-    --text: #413C58;        /* Haupttextfarbe */
-    --border: #D1E0D7;      /* Hellgrau-Grün (Bordüren) */
-    --background: #FFFFFF;  /* Weiß (für Boxen) */
+    --primary: #F8AA48;
+    --primary-light: #FFE8D1;
+    --secondary: #413C58;
+    --accent: #A3C4BC;
+    --light: #F5F9F7;
+    --success: #BFD7B5;
+    --error: #D64550;
+    --text: #413C58;
+    --border: #D1E0D7;
+    --background: #FFFFFF;
     
     /* Design-Tokens */
     --border-radius: 6px;
@@ -182,13 +250,82 @@
     --transition: all 0.2s ease;
   }
 
+  /* Container für Pinguin + Einstellungen */
+  .mascot-and-settings-container {
+    position: fixed;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    z-index: 100;
+  }
+
+  /* Einstellungs-Button */
+  .settings-button-container {
+    position: relative;
+    margin-bottom: 0.5rem;
+  }
+
+  .settings-button {
+    background: var(--primary-light);
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1.2rem;
+  }
+
+  .settings-button:hover {
+    background: var(--primary);
+    color: white;
+    transform: rotate(90deg);
+  }
+
+  .settings-menu {
+    position: absolute;
+    right: 0;
+    bottom: 50px;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    min-width: 180px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .settings-menu button {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text); /* Schriftfarbe angepasst */
+  }
+
+  .settings-menu button:hover {
+    background: var(--primary-light);
+  }
+
+  .settings-menu button span {
+    font-size: 1.1rem;
+    filter: brightness(0.8); /* Icons etwas dunkler */
+  }
+
+  /* Originales CSS */
   body {
     margin: 0;
-    font-family:
-      "Baloo 2",
-      -apple-system,
-      BlinkMacSystemFont,
-      sans-serif;
+    font-family: "Baloo 2", -apple-system, sans-serif;
     font-weight: 400;
     background-color: var(--light);
     color: var(--text);
@@ -208,7 +345,6 @@
     min-height: 0;
   }
 
-  /* Sidebar */
   .sidebar {
     width: 40%;
     min-width: 300px;
@@ -217,11 +353,7 @@
     border-right: 1px solid var(--border);
     overflow-y: auto;
     position: relative;
-    background-image: linear-gradient(
-      to bottom,
-      var(--background),
-      var(--light)
-    );
+    background-image: linear-gradient(to bottom, var(--background), var(--light));
   }
 
   .sidebar::before {
@@ -234,7 +366,6 @@
     background: linear-gradient(90deg, var(--primary), var(--success));
   }
 
-  /* Resizer */
   .resizer {
     width: 4px;
     background: var(--border);
@@ -266,7 +397,6 @@
     font-weight: 400;
   }
 
-  /* Coding-Bereich */
   .coding-area {
     width: 60%;
     flex: 1;
@@ -367,11 +497,7 @@
 
   /* Maskottchen */
   .mascot-container {
-    position: fixed;
-    right: 1.5rem;
-    bottom: 1.5rem;
     width: 120px;
-    z-index: 100;
     transition: var(--transition);
     background: var(--background);
     border-radius: 50%;
@@ -383,13 +509,21 @@
   .mascot {
     width: 100%;
     height: auto;
-    transition: var(--transition);
+    transition: transform 0.3s ease, filter 0.2s ease;
     cursor: pointer;
     border-radius: 50%;
+    animation: float 3s ease-in-out infinite;
   }
 
   .mascot:hover {
     transform: scale(1.05);
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    animation-play-state: paused;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
   }
 
   /* Sprechblase */
@@ -409,6 +543,7 @@
     border: 1px solid var(--success);
     color: var(--text);
     font-weight: 400;
+    transition: opacity 0.3s ease;
   }
 
   .speech-bubble:after {
@@ -435,6 +570,9 @@
 
     .mascot-container {
       width: 100px;
+    }
+
+    .mascot-and-settings-container {
       right: 1rem;
     }
   }
@@ -454,15 +592,24 @@
       padding-bottom: 100px;
     }
 
-    .mascot-container {
-      width: 80px;
+    .mascot-and-settings-container {
       right: 0.75rem;
       bottom: 0.75rem;
+      flex-direction: column-reverse;
+      align-items: flex-end;
+      gap: 0.5rem;
+    }
+
+    .mascot-container {
+      width: 80px;
+    }
+
+    .settings-button-container {
+      margin-bottom: 0;
     }
 
     .resizer {
       display: none;
     }
-    
   }
 </style>
