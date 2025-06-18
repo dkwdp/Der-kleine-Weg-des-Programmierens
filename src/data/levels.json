@@ -1,51 +1,109 @@
 [
     {
         "id": 1,
-        "title": ["'Hello World!'","Einfaches Rechnen"],
-        "description": ["Schreibe deine erste Ausgabe!", "Schreib eine Rechnung, welche als Ergebnis vier ausgibt" ],
+        "title": ["'Hello World!'","Rechnen mit Zahlen"],
+        "description": ["Schreibe deine erste Ausgabe!", "Schreib eine Rechnung mit zwei Zahlen, welche als Ergebnis vier ausgibt" ],
         "expectedOutput": ["Hello World!", "4"],
-        "initialCode": ["console.log()", "console.log('hier schreiben')" ],
+        "initialCode": ["console.log('')", "console.log()" ],
         "type": "calculation",
-        "hints": ["Mit dem Text console.log() kannst du Text im Computer anzeigen. Der Computer gibt genau das wieder was zwischen den Anführungszeichen steht."
+        "hints": [
+                        "Mit dem Text console.log() kannst du Text im Computer anzeigen. Der Computer gibt genau das wieder was zwischen den Anführungszeichen steht."
+                        ,"Achtung! Bei Rechnungen brauch man keine Anführungsstriche. Schreib zum Beispiel: 2 + 2"
         ]
     },
     {
         "id": 2,
         "title": ["Einführung in die Variablen"],
+        "description": [
+                        "Erstelle die Variable a und setze diese auf fünf. Gib sie danach im console.log aus!"
+                        ,"Erstelle zwei Variablen a und b mit den Werten 5 und 3. Addiere a und b und gib das Ergebnis mit console.log() aus."
+                        ,"Ergänze die Einkaufsliste mit Kaffee"],
+        "expectedOutput": [
+                        "5"
+                        ,"8"
+                        ,"Cola Fanta Kaffee"
+                    ],
+        "initialCode": [
+                        "let a =\nconsole.log()",
+                        "let a =\nlet b =\nconsole.log()",
+                        "let a = 'Cola'\nlet b = \nconsole.log(a,'Fanta',b)"],
+        "type": "calculation",
+        "hints": [
+                    "Deklariere Variablen mit let."
+                    ,"Nutze console.log(a + b), um das Ergebnis anzuzeigen"
+                    ,"Setze 'Kaffee' als Variable b. Dann gib Cola, Fanta und b zusammen aus."]
+    },
+    {
+        "id": 3,
+        "title": ["Verstehen von Datentypen"],
+        "description": [
+                    "Gib eine Zahl wie 7 aus.",
+                    "Gib den Wert true aus.",
+                    "Was passiert, wenn du '7' (Text) und 6 (Zahl) mit + verbindest?",
+                    "Was passiert, wenn du true + 1 rechnest?",
+                    "Setze zwei Texte zusammen: 'Ich' und 'mag'."],
+        "expectedOutput": [
+                    "7",
+                    "true",
+                    "76",
+                    "2",
+                    "Ichmag"],
+        "initialCode": [
+                    "console.log()",
+                    "console.log()",
+                    "let a = ''\nlet b = 6\nconsole.log(a + b)",
+                    "console.log(true + )",
+                    "console.log('Ich' + )"],
+        "type": "calculation",
+        "hints": [
+                    "Zahlen kannst du direkt ohne Anführungszeichen ausgeben.",
+                    "true ist ein sogenannter Wahrheitswert  entweder true oder false.",
+                    "Ein Text plus eine Zahl ergibt einen neuen Text probier es!",
+                    "true wird in Rechnungen wie 1 behandelt. Also: true + 1 = ?",
+                    "Texte kann man mit + verbinden, z.B. 'Ich' + 'mag'."]
+    },
+    {
+        "id": 4,
+        "title": ["Einführung in die Variablen"],
         "description": ["Erstelle zwei Variablen a und b mit den Werten 2 und 3. Addiere a und b und gib das Ergebnis mit console.log() aus."],
         "expectedOutput": ["5"],
         "initialCode": ["let a =\nconsole.log('')"],
         "type": "calculation",
-        "hints": ["Deklariere Variablen mit let.", "Nutze console.log(a + b), um das Ergebnis anzuzeigen"
-    ]
-
-    },
-    {
-        "id": 3,
-        "title": ["Zeichne deinen ersten Kreis"],
-        "description": ["Verwende background('farbe') um den Hintergrund zu färben.", "Füge "],
-        "initialCode": ["set_background('lightblue');\ndraw_circle(200, 150, 50, 'blue');"],
-        "type": "drawing",
         "hints": [
-            "Die Koordinaten beginnen oben links bei (0,0)",
-            "Der Canvas ist 300px breit und 300px hoch",
-            "Verfügbare Farben: 'red', 'blue', 'green', 'yellow', 'purple', etc."
-        ]
+            "Deklariere Variablen mit let.", "Nutze console.log(a + b), um das Ergebnis anzuzeigen"]
     },
     {
         "id": 5,
-        "title": ["Zeichne deinen ersten Kreis"],
-        "description": ["Verwende draw_line(x1, y1, x2, y2, farbe) um eine Linie zu zeichnen."],
-        "initialCode":["set_background('white');\ndraw_circle(150, 150, 50, 'blue')\ndraw_line(180,120,160,140,'red');\ndraw_line(120,120,140,140,'red');\ndraw_circle(120,140,10,'lightblue');\ndraw_circle(180,140,10,'lightblue');\ndraw_text('f**k', 140,180,'black');"],
-        "type": "drawing",
+        "title": ["Einführung in die Variablen"],
+        "description": ["Erstelle zwei Variablen a und b mit den Werten 2 und 3. Addiere a und b und gib das Ergebnis mit console.log() aus."],
+        "expectedOutput": ["5"],
+        "initialCode": ["let a =\nconsole.log('')"],
+        "type": "calculation",
         "hints": [
-            "Die Koordinaten beginnen oben links bei (0,0)",
-            "Der Canvas ist 400px breit und 300px hoch",
-            "Verfügbare Farben: 'red', 'blue', 'green', 'yellow', 'purple', etc."
-        ]
+            "Deklariere Variablen mit let.", "Nutze console.log(a + b), um das Ergebnis anzuzeigen"]
     },
     {
         "id": 6,
+        "title": ["Einführung in die Variablen"],
+        "description": ["Erstelle zwei Variablen a und b mit den Werten 2 und 3. Addiere a und b und gib das Ergebnis mit console.log() aus."],
+        "expectedOutput": ["5"],
+        "initialCode": ["let a =\nconsole.log('')"],
+        "type": "calculation",
+        "hints": [
+            "Deklariere Variablen mit let.", "Nutze console.log(a + b), um das Ergebnis anzuzeigen"]
+    },
+    {
+        "id": 7,
+        "title": ["Einführung in die Variablen"],
+        "description": ["Erstelle zwei Variablen a und b mit den Werten 2 und 3. Addiere a und b und gib das Ergebnis mit console.log() aus."],
+        "expectedOutput": ["5"],
+        "initialCode": ["let a =\nconsole.log('')"],
+        "type": "calculation",
+        "hints": [
+            "Deklariere Variablen mit let.", "Nutze console.log(a + b), um das Ergebnis anzuzeigen"]
+    },
+    {
+        "id": 100,
         "title": ["Zeichne deinen ersten Kreis"],
         "description": ["Verwende draw_line(x1, y1, x2, y2, farbe) um eine Linie zu zeichnen."],
         "initialCode": ["set_background('white');\ndraw_circle(150, 150, 50, 'blue')\ndraw_line(180,120,160,140,'red');\ndraw_line(120,120,140,140,'red');\ndraw_circle(120,140,10,'lightblue');\ndraw_circle(180,140,10,'lightblue');\ndraw_text('f**k', 140,180,'black');"],

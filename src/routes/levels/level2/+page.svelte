@@ -12,6 +12,7 @@
     levelID.set(currentLevelIndex)
   });
   let i = 0;
+  $: i = $outputID;
 
   function nextTask() {
     i = $outputID;
@@ -35,16 +36,17 @@
   <p>{currentLevel.description[i]}</p>
   {#if currentLevel.hints}
       <h3>💡 Tipps:</h3>
-      <ul class="hints">
-        {#each currentLevel.hints as hint}
-          <p>{hint}</p>
-        {/each}
-      </ul>
+       <p>{currentLevel.hints[i]}</p>
+      
   {/if}
 
   {#if $solvedLevel}
+  {#if i > 0}
   <button on:click={previousTask}>Zurück</button>
+  {/if}
+  {#if  i+1 < currentLevel.description.length }
   <button on:click={nextTask}>Weiter</button>
+  {/if}
   {/if}
 </main>
 
