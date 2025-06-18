@@ -232,7 +232,7 @@ console.log(prompt)
         <div class="editor-header">
           <h2>Code Editor</h2>
           {#if !$isCurrentLevelDrawing}
-          <button on:click={runJavaScript}>Ausführen</button>
+          <button on:click={() => { runJavaScript(); submitCode();}}>Ausführen</button>
           {/if}
         </div>
         <JavaScriptEditor />
