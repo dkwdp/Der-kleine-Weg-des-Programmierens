@@ -283,10 +283,6 @@ console.log(prompt)
       <span class="icon">🏠</span>
       <span class="tooltip">Hauptbildschirm</span>
     </button>
-    <button class="nav-button next-level" on:click={goToNextLevel} aria-label="Nächstes Level">
-      <span class="icon">⏭️</span>
-      <span class="tooltip">Nächstes Level</span>
-    </button>
   </div>
 </main>
 

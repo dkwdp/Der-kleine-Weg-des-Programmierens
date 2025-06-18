@@ -95,6 +95,11 @@
 </div>
 
 <style>
+
+:global(body) {
+    background: #ffffff; /* Heller Hintergrund */
+    color: #000000;       /* Schwarze Schrift */
+  }
 	/* Global Reset */
 	:global(body) {
 		margin: 0;
