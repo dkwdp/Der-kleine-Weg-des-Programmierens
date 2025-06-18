@@ -42,8 +42,12 @@
   {/if}
 
   {#if $solvedLevel}
+  {#if i > 0}
   <button on:click={previousTask}>Zurück</button>
+  {/if}
+  {#if i+1 < currentLevel.description.length }
   <button on:click={nextTask}>Weiter</button>
+  {/if}
   {/if}
 </main>
 
