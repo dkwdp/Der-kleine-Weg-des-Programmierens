@@ -38,11 +38,7 @@
   <p>{currentLevel.description[i]}</p>
   {#if currentLevel.hints}
       <h3>💡 Tipps:</h3>
-      <ul class="hints">
-        {#each currentLevel.hints as hint}
-          <p>{hint}</p>
-        {/each}
-      </ul>
+      <p>{currentLevel.hints[i]}</p>
   {/if}
 
   {#if $solvedLevel}

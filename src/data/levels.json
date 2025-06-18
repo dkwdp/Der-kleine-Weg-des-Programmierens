@@ -6,7 +6,8 @@
         "expectedOutput": ["Hello World!", "8"],
         "initialCode": ["console.log()", "console.log('hier schreiben')" ],
         "type": "calculation",
-        "hints": ["Mit dem Text console.log() kannst du Text im Computer anzeigen. Schreibe den Satz in Anführungszeichen. Der Computer gibt genau das wieder was zwischen den Anführungszeichen steht."
+        "hints": ["Mit dem Text console.log() kannst du Text im Computer anzeigen. Schreibe den Satz in Anführungszeichen. Der Computer gibt genau das wieder was zwischen den Anführungszeichen steht.",
+         "Stufe 2"
         ]
     },
     {
