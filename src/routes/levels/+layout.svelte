@@ -7,7 +7,6 @@
   import P5Canvas from "$lib/Canvas/p5Canvas.svelte";
   import { fade } from 'svelte/transition';
 
-  // Originale Variablen
   let output = "";
   let currentLevel = 0;
   let emotion = 'neutral';
@@ -17,7 +16,6 @@
   let canvasRef;
   let showSettings = false;
 
-  // Pinguin-Interaktionen
   const tips = [
     "Probier mal console.log()!",
     "Vergiss die Semikolons nicht!",
@@ -34,7 +32,6 @@
     neutral2: '/PinuNeutral2.png',
   };
 
-  // Funktionen
   function goToMap() {
     window.location.href = '/map';
   }
@@ -43,13 +40,11 @@
     window.location.href = '/';
   }
 
-  function resetLevel() {
-    if (confirm("Möchtest du dieses Level wirklich zurücksetzen?")) {
-      myVariable.set(levels[$levelID].initialCode || "");
-      output = "";
-      emotion = 'neutral';
-      message = '';
-    }
+  function goToNextLevel() {
+    // Hier Logik für das nächste Level einfügen
+    // Zum Beispiel:
+    // levelID.update(n => n + 1);
+    alert("Nächstes Level wird geladen...");
   }
 
   function handleMascotClick() {
@@ -70,7 +65,6 @@
 
   $: imageSrc = emotionImages[emotion] || emotionImages.neutral;
 
-  // Resizer-Funktionen
   function startDrag(e) {
     isDragging = true;
     startX = e.clientX;
@@ -81,15 +75,13 @@
 
   function onDrag(e) {
     if (!isDragging) return;
-    
     const container = document.querySelector('.container');
     const sidebar = document.querySelector('.sidebar');
     const dx = e.clientX - startX;
     const newLeftWidth = startLeftWidth + dx;
-    
     const minWidth = 300;
     const maxWidth = container.offsetWidth - 300;
-    
+
     if (newLeftWidth >= minWidth && newLeftWidth <= maxWidth) {
       sidebar.style.width = `${newLeftWidth}px`;
       sidebar.style.flex = '0 0 auto';
@@ -105,7 +97,6 @@
   onMount(() => {
     window.addEventListener('mousemove', onDrag);
     window.addEventListener('mouseup', stopDrag);
-    
     return () => {
       window.removeEventListener('mousemove', onDrag);
       window.removeEventListener('mouseup', stopDrag);
@@ -114,7 +105,6 @@
 
   async function runJavaScript() {
     const code = get(myVariable);
-
     try {
       let captured = "";
       const originalLog = console.log;
@@ -124,16 +114,13 @@
 
       const currentLevelData = levels[$levelID];
       if (currentLevelData && currentLevelData.type === "drawing") {
-        if (canvasRef) {
-          canvasRef.runDrawingCode();
-        }
+        if (canvasRef) canvasRef.runDrawingCode();
         output = "Zeichnung ausgeführt!";
       } else {
         const result = eval(code);
         const trimmedOutput = captured.trim() || String(result);
         let i = $outputID;
         const expectedOutput = currentLevelData.expectedOutput[i];
-
         console.log = originalLog;
 
         if(trimmedOutput === expectedOutput) {
@@ -164,9 +151,7 @@
       </div>
       <slot />
     </div>
-
     <div class="resizer" on:mousedown={startDrag}></div>
-
     <div class="coding-area">
       <div class="editor-container">
         <div class="editor-header">
@@ -179,7 +164,6 @@
         {#if $isCurrentLevelDrawing}
           <P5Canvas bind:this={canvasRef} />
         {/if}
-          
         {#if output}
           <div class="output-container {emotion}">
             <h3>Ergebnis</h3>
@@ -188,28 +172,16 @@
         {/if}
       </div>
     </div>
-    
     <div class="mascot-and-settings-container">
       <div class="settings-button-container">
-        <button class="settings-button" on:click={() => showSettings = !showSettings}>
-          ⚙️
-        </button>
-        
+        <button class="settings-button" on:click={() => showSettings = !showSettings}>⚙️</button>
         {#if showSettings}
           <div class="settings-menu" transition:fade>
-            <button on:click={resetLevel}>
-              <span>🔄</span> Level neu starten
-            </button>
-            <button on:click={goToMap}>
-              <span>🗺️</span> Zur Karte
-            </button>
-            <button on:click={goToHome}>
-              <span>🏠</span> Hauptbildschirm
-            </button>
+            <button on:click={goToMap}><span>🗺️</span> Zur Karte</button>
+            <button on:click={goToHome}><span>🏠</span> Hauptbildschirm</button>
           </div>
         {/if}
       </div>
-
       <div class="mascot-container">
         <img 
           src={imageSrc} 
@@ -225,23 +197,40 @@
       </div>
     </div>
   </div>
+
+  <!-- Neuer dezenter Navigationsbalken -->
+  <div class="navigation-bar">
+    <button class="nav-button" on:click={goToMap} aria-label="Zurück zur Karte">
+      <span class="icon">🗺️</span>
+      <span class="tooltip">Zurück zur Karte</span>
+    </button>
+    <button class="nav-button" on:click={goToHome} aria-label="Hauptbildschirm">
+      <span class="icon">🏠</span>
+      <span class="tooltip">Hauptbildschirm</span>
+    </button>
+    <button class="nav-button next-level" on:click={goToNextLevel} aria-label="Nächstes Level">
+      <span class="icon">⏭️</span>
+      <span class="tooltip">Nächstes Level</span>
+    </button>
+  </div>
 </main>
 
 <style>
-  @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap");
-
   :root {
-    /* Farbpalette */
-    --primary: #F8AA48;
-    --primary-light: #FFE8D1;
-    --secondary: #413C58;
-    --accent: #A3C4BC;
-    --light: #F5F9F7;
-    --success: #BFD7B5;
+    --primary: #5B7553;            /* dunkles grün */
+    --primary-light: #B3CBB9;      /* helles grün */
+    --secondary: #3A3F58;          /* dunkelblau/grau */
+    --accent: #8EA8C3;             /* pastellblau */
+    --light: #E9F0ED;              /* sehr helles grün */
+    --success: #A7C4A0;            /* sanftes grün */
     --error: #D64550;
-    --text: #413C58;
-    --border: #D1E0D7;
+    --text: #2F2F2F;
+    --border: #CBDDD1;
     --background: #FFFFFF;
+    --border-radius: 6px;
+    --shadow-sm: 0 1px 3px rgba(47, 47, 47, 0.08);
+    --shadow-md: 0 2px 6px rgba(47, 47, 47, 0.1);
+    --transition: all 0.2s ease;
     
     /* Design-Tokens */
     --border-radius: 6px;
@@ -254,7 +243,7 @@
   .mascot-and-settings-container {
     position: fixed;
     right: 1.5rem;
-    bottom: 1.5rem;
+    bottom: 5rem; /* Angepasst wegen dem neuen Navigationsbalken */
     display: flex;
     align-items: flex-end;
     gap: 1rem;
@@ -310,7 +299,7 @@
     align-items: center;
     gap: 0.5rem;
     font-size: 0.9rem;
-    color: var(--text); /* Schriftfarbe angepasst */
+    color: var(--text);
   }
 
   .settings-menu button:hover {
@@ -319,7 +308,7 @@
 
   .settings-menu button span {
     font-size: 1.1rem;
-    filter: brightness(0.8); /* Icons etwas dunkler */
+    filter: brightness(0.8);
   }
 
   /* Originales CSS */
@@ -557,6 +546,76 @@
     border-color: var(--background) transparent transparent transparent;
   }
 
+  /* Stile für den dezenten Navigationsbalken */
+  .navigation-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(58, 63, 88, 0.9); /* Leicht transparent */
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem;
+    gap: 1rem;
+    z-index: 90;
+    backdrop-filter: blur(5px);
+    border-top: 1px solid var(--border);
+  }
+  
+  .nav-button {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background: var(--primary-light);
+    color: var(--secondary);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    position: relative;
+  }
+  
+  .nav-button .icon {
+    font-size: 1.2rem;
+  }
+  
+  .nav-button .tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--secondary);
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: var(--border-radius);
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    margin-bottom: 0.5rem;
+  }
+  
+  .nav-button:hover .tooltip {
+    opacity: 1;
+  }
+  
+  .nav-button:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-3px) scale(1.1);
+  }
+  
+  .nav-button.next-level {
+    background: var(--success);
+  }
+  
+  .nav-button.next-level:hover {
+    background: var(--primary);
+  }
+
   /* Responsive Design */
   @media (max-width: 1024px) {
     .sidebar {
@@ -589,12 +648,12 @@
 
     .coding-area {
       width: 100%;
-      padding-bottom: 100px;
+      padding-bottom: 100px; /* Platz für den Navigationsbalken */
     }
 
     .mascot-and-settings-container {
       right: 0.75rem;
-      bottom: 0.75rem;
+      bottom: 5rem;
       flex-direction: column-reverse;
       align-items: flex-end;
       gap: 0.5rem;
@@ -610,6 +669,23 @@
 
     .resizer {
       display: none;
+    }
+    
+    /* Anpassung für mobile Geräte */
+    .navigation-bar {
+      justify-content: space-around;
+      padding: 0.5rem;
+      gap: 0;
+    }
+    
+    .nav-button {
+      width: 36px;
+      height: 36px;
+    }
+    
+    .nav-button .tooltip {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.4rem;
     }
   }
 </style>
