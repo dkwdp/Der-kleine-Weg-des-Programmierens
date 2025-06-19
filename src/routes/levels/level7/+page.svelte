@@ -1,119 +1,102 @@
 <script>
   import { onMount } from 'svelte';
-  import { writable } from 'svelte/store';
+  import { writable, get } from 'svelte/store';
+  import levels from '$data/levels.json';
+  import { myVariable } from '$lib/stores/editorStore';
 
-  let userCode = writable('');
-  let consoleOutput = writable('');
-  let currentStep = 0;
+  let currentLevelIndex = 7; // Level 7: Schleifen in JavaScript
+  let currentStepIndex = 0;
+  let output = '';
+  let message = '';
+  let emotion = 'neutral';
 
-  const steps = [
-    {
-      title: "Was ist if/else?",
-      description: `In JavaScript benutzt man 'if', um zu fragen: "Stimmt das?" Wenn ja, passiert etwas.
-Beispiel:
+  let currentLevel;
+  let currentStep;
 
-let alter = 10;
+  const emotionImages = {
+    happy: '/PinuHappy.png',
+    neutral: '/PinuNeutral.png',
+    sad: '/PinuSad.png',
+    think: '/PinuThink.png',
+    switch: '/PinuSwitch.png',
+    neutral2: '/PinuNeutral2.png',
+  };
 
-if (alter >= 18) {
-  console.log("Du bist erwachsen!");
-} else {
-  console.log("Du bist noch ein Kind!");}`,
-      code: `let alter = 10;
+  $: imageSrc = emotionImages[emotion] || emotionImages.neutral;
 
-if (alter >= 18) {
-  console.log("Du bist erwachsen!");
-} else {
-  console.log("Du bist noch ein Kind!");}`
-    },
-    {
-      title: "Mini-Level: Alter prüfen",
-      description: `Ist jemand alt genug fürs Kino? Ergänze die Bedingung so, dass die Ausgabe stimmt.`,
-      code: `let alter = 12;
-
-// Ergänze den Code unten:
-if (alter >= 16) {
-  console.log("Du darfst alleine ins Kino.");
-} else {
-  console.log("Du brauchst Begleitung.");}`
-    },
-    {
-      title: "Mini-Level: Farben vergleichen",
-      description: `Ändere den Wert der Variable so, dass \"Blau ist cool!\" erscheint.`,
-      code: `let farbe = "rot";
-
-if (farbe === "blau") {
-  console.log("Blau ist cool!");
-} else {
-  console.log("Das ist nicht Blau.");}`
-    },
-    {
-      title: "Bonus: Eigenes Beispiel",
-      description: `Erstelle deinen eigenen if/else-Code, z. B. mit Punkten oder Wetter.`,
-      code: `let punkte = 25;
-
-if (punkte >= 30) {
-  console.log("Du bekommst einen Preis!");
-} else {
-  console.log("Noch ein paar Punkte mehr!");}`
+  function updateLevel() {
+    currentLevel = levels.find((lvl) => lvl.id === currentLevelIndex);
+    if (currentLevel && currentLevel.steps && currentLevel.steps.length > 0) {
+      currentStep = currentLevel.steps[currentStepIndex];
+      myVariable.set(currentStep.code);
     }
-  ];
-
-  let current = steps[currentStep];
+  }
 
   function nextStep() {
-    if (currentStep < steps.length - 1) {
-      currentStep++;
-      current = steps[currentStep];
+    if (currentLevel && currentStepIndex < currentLevel.steps.length - 1) {
+      currentStepIndex++;
+      updateLevel();
     }
   }
 
   function prevStep() {
-    if (currentStep > 0) {
-      currentStep--;
-      current = steps[currentStep];
+    if (currentStepIndex > 0) {
+      currentStepIndex--;
+      updateLevel();
     }
   }
 
   function runCode() {
     try {
-      const log = [];
+      let captured = '';
       const originalLog = console.log;
-      console.log = (...args) => log.push(args.join(" "));
+      console.log = (...args) => {
+        captured += args.join(' ') + '\n';
+      };
 
-      eval(get(userCode));
+      eval(get(myVariable));
 
       console.log = originalLog;
-      consoleOutput.set(log.join("\n"));
-    } catch (e) {
-      consoleOutput.set("Fehler: " + e.message);
+      const trimmedOutput = captured.trim();
+
+      const expectedOutput = currentStep.expectedOutput || '';
+      if (expectedOutput && trimmedOutput === expectedOutput) {
+        output = '✓ Richtig: ' + trimmedOutput;
+        emotion = 'happy';
+        message = 'Gut gemacht!';
+      } else if (expectedOutput) {
+        output = '↳ Ergebnis: ' + trimmedOutput + ' | Erwartet: ' + expectedOutput;
+        emotion = 'think';
+        message = 'Fast geschafft!';
+      } else {
+        output = trimmedOutput;
+        emotion = 'neutral';
+        message = '';
+      }
+    } catch (err) {
+      output = '✗ Fehler: ' + err.message;
+      emotion = 'sad';
+      message = 'Versuch es nochmal!';
     }
   }
 
-  import { get } from 'svelte/store';
-
   onMount(() => {
-    userCode.set(current.code);
+    updateLevel();
   });
-
-  $: current = steps[currentStep];
-  $: userCode.set(current.code);
 </script>
 
 <main>
-  <h1>{current.title}</h1>
-  <p>{current.description}</p>
+  {#if currentStep}
+    <h1>{currentStep.title}</h1>
+    <p>{@html currentStep.description}</p>
 
-  <textarea bind:value={$userCode} rows="10" cols="60"></textarea>
-  <br />
-  <button on:click={runCode}>Code ausführen</button>
-
-  <h3>Konsole:</h3>
-  <pre>{$consoleOutput}</pre>
-
-  <div style="margin-top: 20px">
-    <button on:click={prevStep} disabled={currentStep === 0}>Zurück</button>
-    <button on:click={nextStep} disabled={currentStep === steps.length - 1}>Weiter</button>
-  </div>
+    <div class="navigation">
+      <button on:click={prevStep} disabled={currentStepIndex === 0}>Zurück</button>
+      <button on:click={nextStep} disabled={currentStepIndex === currentLevel.steps.length - 1}>Weiter</button>
+    </div>
+  {:else}
+    <p>Lade Level...</p>
+  {/if}
 </main>
 
 <style>
@@ -123,20 +106,10 @@ if (punkte >= 30) {
     max-width: 800px;
     margin: auto;
   }
-  textarea {
-    width: 100%;
-    font-family: monospace;
-    font-size: 14px;
-  }
+
   button {
     margin: 10px;
     padding: 10px 20px;
     font-size: 16px;
-  }
-  pre {
-    background-color: #f4f4f4;
-    padding: 10px;
-    white-space: pre-wrap;
-    border: 1px solid #ccc;
   }
 </style>
