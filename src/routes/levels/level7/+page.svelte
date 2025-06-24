@@ -13,6 +13,7 @@
     levelID.set(currentLevelIndex)
   });
   let i = 0;
+  $: i = $outputID;
 
   function nextTask() {
     i = $outputID;
@@ -37,7 +38,7 @@
   <p>{currentLevel.description[i]}</p>
   {#if currentLevel.hints}
       <h3>💡 Tipps:</h3>
-       <p>{currentLevel.hints[i]}</p>
+       <p class="hint-text">{currentLevel.hints[i]}</p>
       
   {/if}
 
@@ -55,6 +56,9 @@
   main {
     padding: 20px;
     text-align: center;
+  }
+  .hint-text{
+    white-space: pre-wrap; 
   }
 
   button {

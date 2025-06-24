@@ -4,7 +4,7 @@
     import { onMount } from 'svelte';
     import { goto } from '$app/navigation';
 
-  let currentLevelIndex = 5; // bei jedem Level Anpassen
+  let currentLevelIndex = 7; // bei jedem Level Anpassen
   let currentLevel = levels[currentLevelIndex];
   
   onMount(() => {

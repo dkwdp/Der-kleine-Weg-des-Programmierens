@@ -13,6 +13,7 @@
     levelID.set(currentLevelIndex)
   });
   let i = 0;
+  $: i = $outputID;
 
   function nextTask() {
     i = $outputID;
