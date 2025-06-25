@@ -1,99 +1,56 @@
 <script>
   import { onMount } from 'svelte';
-  import { writable, get } from 'svelte/store';
-  import levels from '$data/levels.json';
   import { myVariable } from '$lib/stores/editorStore';
+  import levels from '$data/levels.json';
 
-  let currentLevelIndex = 6; // if/else hat ID 6
+  let currentLevelIndex = 6; // Level 6: if/else
   let currentStepIndex = 0;
-  let output = '';
-  let message = '';
-  let emotion = 'neutral';
-
   let currentLevel;
-  let currentStep;
 
-  const emotionImages = {
-    happy: '/PinuHappy.png',
-    neutral: '/PinuNeutral.png',
-    sad: '/PinuSad.png',
-    think: '/PinuThink.png',
-    switch: '/PinuSwitch.png',
-    neutral2: '/PinuNeutral2.png',
-  };
-
-  $: imageSrc = emotionImages[emotion] || emotionImages.neutral;
-
-  function updateLevel() {
-    currentLevel = levels.find((lvl) => lvl.id === currentLevelIndex);
-    if (currentLevel && currentLevel.steps && currentLevel.steps.length > 0) {
-      currentStep = currentLevel.steps[currentStepIndex];
-      myVariable.set(currentStep.code);
-    }
+  function updateStep() {
+    if (!currentLevel) return;
+    myVariable.set(currentLevel.codes[currentStepIndex]);
   }
 
   function nextStep() {
-    if (currentLevel && currentStepIndex < currentLevel.steps.length - 1) {
+    if (currentStepIndex < currentLevel.titles.length - 1) {
       currentStepIndex++;
-      updateLevel();
+      updateStep();
     }
   }
 
   function prevStep() {
     if (currentStepIndex > 0) {
       currentStepIndex--;
-      updateLevel();
-    }
-  }
-
-  function runCode() {
-    try {
-      let captured = '';
-      const originalLog = console.log;
-      console.log = (...args) => {
-        captured += args.join(' ') + '\n';
-      };
-
-      eval(get(myVariable));
-
-      console.log = originalLog;
-      const trimmedOutput = captured.trim();
-
-      const expectedOutput = currentStep.expectedOutput || '';
-      if (expectedOutput && trimmedOutput === expectedOutput) {
-        output = '✓ Richtig: ' + trimmedOutput;
-        emotion = 'happy';
-        message = 'Gut gemacht!';
-      } else if (expectedOutput) {
-        output = '↳ Ergebnis: ' + trimmedOutput + ' | Erwartet: ' + expectedOutput;
-        emotion = 'think';
-        message = 'Fast geschafft!';
-      } else {
-        output = trimmedOutput;
-        emotion = 'neutral';
-        message = '';
-      }
-    } catch (err) {
-      output = '✗ Fehler: ' + err.message;
-      emotion = 'sad';
-      message = 'Versuch es nochmal!';
+      updateStep();
     }
   }
 
   onMount(() => {
-    updateLevel();
+    currentLevel = levels.find((lvl) => lvl.id === currentLevelIndex);
+    updateStep();
   });
 </script>
 
 <main>
-  {#if currentStep}
-    <h1>{currentStep.title}</h1>
-    <p>{@html currentStep.description}</p>
+  {#if currentLevel}
+    <h1>{currentLevel.titles[currentStepIndex]}</h1>
+    <p>{@html currentLevel.descriptions[currentStepIndex]}</p>
 
     <div class="navigation">
       <button on:click={prevStep} disabled={currentStepIndex === 0}>Zurück</button>
-      <button on:click={nextStep} disabled={currentStepIndex === currentLevel.steps.length - 1}>Weiter</button>
+      <button on:click={nextStep} disabled={currentStepIndex === currentLevel.titles.length - 1}>Weiter</button>
     </div>
+
+    {#if currentLevel.hints && currentLevel.hints.length}
+      <h3>Tipps:</h3>
+      <ul>
+        {#each currentLevel.hints as hint}
+          <li>{hint}</li>
+        {/each}
+      </ul>
+    {/if}
+
   {:else}
     <p>Lade Level...</p>
   {/if}
@@ -111,5 +68,20 @@
     margin: 10px;
     padding: 10px 20px;
     font-size: 16px;
+    cursor: pointer;
+    background: #f8aa48;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+
+  button:hover {
+    background: #413c58;
+  }
+
+  ul {
+    padding-left: 1.2em;
+    margin-top: 10px;
   }
 </style>

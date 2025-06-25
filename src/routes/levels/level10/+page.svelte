@@ -3,7 +3,7 @@
   import { myVariable } from '$lib/stores/editorStore';
   import levels from '$data/levels.json';
 
-  let currentLevelIndex = 7; // z.B. Level 7: for-Schleifen
+  let currentLevelIndex = 10; // z.B. Level 10: for-Schleifen
   let currentStepIndex = 0;
   
   let currentLevel;
