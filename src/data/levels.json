@@ -1,51 +1,199 @@
 [
     {
         "id": 1,
-        "title": ["'Hello World!'","'2 + 2'"],
-        "description": ["Schreibe deine erste Ausgabe!", "Schreibe 2+2" ],
-        "expectedOutput": ["Hello World!", "8"],
-        "initialCode": ["console.log()", "console.log('hier schreiben')" ],
+        "title": ["'Hello World!'","Rechnen mit Zahlen"],
+        "description": ["Schreibe deine erste Ausgabe!", "Schreib eine Rechnung mit zwei Zahlen, welche als Ergebnis vier ausgibt" ],
+        "expectedOutput": ["Hello World!", "4"],
+        "initialCode": ["console.log('')", "console.log()" ],
         "type": "calculation",
-        "hints": ["Mit dem Text console.log() kannst du Text im Computer anzeigen. Schreibe den Satz in Anführungszeichen. Der Computer gibt genau das wieder was zwischen den Anführungszeichen steht."
+        "hints": [
+                        "Mit dem Text console.log() kannst du Text im Computer anzeigen. Der Computer gibt genau das wieder was zwischen den Anführungszeichen steht."
+                        ,"Achtung! Bei Rechnungen brauch man keine Anführungsstriche. Schreib zum Beispiel: 2 + 2"
         ]
     },
     {
         "id": 2,
-        "title": ["Einführung in die Addition2"],
-        "description": ["Berechne die Summe von 1+2"],
-        "expectedOutput": ["HEEELLLLOOOOOOOOOO", "4"],
-        "initialCode": ["console.log('hallo')"],
+        "title": ["Einführung in die Variablen"],
+        "description": [
+                    "Erstelle die Variable a und setze diese auf fünf. Gib sie danach im console.log aus!",
+                    "Erstelle zwei Variablen a und b mit den Werten 5 und 3. Addiere a und b und gib das Ergebnis mit console.log() aus.",
+                    "Ergänze die Einkaufsliste mit Kaffee"
+                    ],
+        "expectedOutput": [
+                    "5"
+                    ,"8"
+                    ,"Cola Fanta Kaffee"
+                    ],
+        "initialCode": [
+                        "let a =\nconsole.log()",
+                    "let a =\nlet b =\nconsole.log()",
+                    "let a = 'Cola'\nlet b = \nconsole.log(a,'Fanta',b)"],
         "type": "calculation",
-        "hints": ["Mit dem Text console.log() kannst du Text im Computer anzeigen. Schreibe den Satz in Anführungszeichen. Der Computer gibt genau das wieder was zwischen den Anführungszeichen steht."
-    ]
-
+        "hints": [
+                    "Deklariere Variablen mit let."
+                    ,"Nutze console.log(a + b), um das Ergebnis anzuzeigen"
+                    ,"Setze 'Kaffee' als Variable b. Dann gib Cola, Fanta und b zusammen aus."]
     },
     {
         "id": 3,
-        "title": ["Zeichne deinen ersten Kreis"],
-        "description": ["Verwende background('farbe') um den Hintergrund zu färben.", "Füge "],
-        "initialCode": ["set_background('lightblue');\ndraw_circle(200, 150, 50, 'blue');"],
-        "type": "drawing",
+        "title": ["Verstehen von Datentypen"],
+        "description": [
+                    "Gib eine Zahl wie 7 aus.",
+                    "Gib den Wert true aus.",
+                    "Was passiert, wenn du '7' (Text) und 6 (Zahl) mit + verbindest?",
+                    "Was passiert, wenn du true + 1 rechnest?",
+                    "Setze zwei Texte zusammen: 'Ich' und 'mag'."],
+        "expectedOutput": [
+                    "7",
+                    "true",
+                    "76",
+                    "2",
+                    "Ichmag"],
+        "initialCode": [
+                    "console.log()",
+                    "console.log()",
+                    "let a = ''\nlet b = 6\nconsole.log(a + b)",
+                    "console.log(true + )",
+                    "console.log('Ich' + )"],
+        "type": "calculation",
         "hints": [
-            "Die Koordinaten beginnen oben links bei (0,0)",
-            "Der Canvas ist 300px breit und 300px hoch",
-            "Verfügbare Farben: 'red', 'blue', 'green', 'yellow', 'purple', etc."
+                    "Zahlen kannst du direkt ohne Anführungszeichen ausgeben.",
+                    "true ist ein sogenannter Wahrheitswert  entweder true oder false.",
+                    "Ein Text plus eine Zahl ergibt einen neuen Text probier es!",
+                    "true wird in Rechnungen wie 1 behandelt. Also: true + 1 = ?",
+                    "Texte kann man mit + verbinden, z.B. 'Ich' + 'mag'."]
+    },
+    {
+        "id": 4,
+        "title": ["Operatoren"],
+        "description": [
+                    "Rechne 10 minus 2 und gib das Ergebnis aus.",
+                    "Multipliziere 4 mit 6 und gib das Ergebnis aus.",
+                    "Dividiere 15 durch 5 und gib das Ergebnis aus.",
+                    "Erhöhe a um 1 und verringere b um 1. Gib beide Werte aus.\n Nutze dafür eine besondere Schreibweise.",
+                    "Nutze eine verkürzte Zuweisung, um b um 7 zu erhöhen. Gib b aus.",
+                    "Vergleiche: Ist a größer als 5? Gib das Ergebnis aus."
+        ],
+        "expectedOutput": [
+                    "8",
+                    "24",
+                    "3",
+                    "6\n4",
+                    "12",
+                    "true"
+        ],
+        "initialCode": [
+                    "console.log()",
+                    "console.log()",
+                    "console.log()",
+                    "let a = 5\na++\nlet b = 5\nconsole.log()\nconsole.log()",
+                    "let b = 5\nconsole.log()",
+                    "let a = 8\nconsole.log()"
+        ],
+        "type": "calculation",
+        "hints": [
+                    "Mit - kannst du subtrahieren.",
+                    "Mit * kannst du multiplizieren.",
+                    "Mit / kannst du dividieren.",
+                    "a++ ist das gleiche wie a + 1 und b-- ist das gleiche wie b - 1.",
+                    "b += 7 ist das gleiche wie b = b + 7.",
+                    "Mit > vergleichst du, ob etwas größer ist als etwas anderes."
         ]
     },
     {
         "id": 5,
-        "title": ["Zeichne deinen ersten Kreis"],
-        "description": ["Verwende draw_line(x1, y1, x2, y2, farbe) um eine Linie zu zeichnen."],
-        "initialCode":["set_background('white');\ndraw_circle(150, 150, 50, 'blue')\ndraw_line(180,120,160,140,'red');\ndraw_line(120,120,140,140,'red');\ndraw_circle(120,140,10,'lightblue');\ndraw_circle(180,140,10,'lightblue');\ndraw_text('f**k', 140,180,'black');"],
-        "type": "drawing",
+        "title": ["Deine ersten Listen"],
+        "description": [
+                    "Ich möchte gerne eine Einkaufsliste für eine Party schreiben, aber ich weiß nicht genau, wie. Kannst du mir bitte eine Liste schreiben, auf der Schokolade, Kerzen und Getränke draufstehen?",
+                    "Ups! Jetzt habe ich schon vergessen, was wir aufgeschrieben haben. Kannst du gucken, ob “Kerzen” auf der Liste stehen?",
+                    "Wie viele Dinge stehen auf unserer Liste? Gib die Anzahl aus."
+        ],
+        "expectedOutput": [
+                    "Schokolade,Kerzen,Getränke",
+                    "true",
+                    "3"
+        ],
+        "initialCode": [
+                    "let einkaufsliste = []\nconsole.log()",
+                    "let einkaufsliste = ['Schokolade', 'Kerzen', 'Getränke']\nconsole.log()",
+                    "let einkaufsliste = ['Schokolade', 'Kerzen', 'Getränke']\nconsole.log()"
+        ],
+        "type": "calculation",
         "hints": [
-            "Die Koordinaten beginnen oben links bei (0,0)",
-            "Der Canvas ist 400px breit und 300px hoch",
-            "Verfügbare Farben: 'red', 'blue', 'green', 'yellow', 'purple', etc."
+                    "Listen werden in eckigen Klammern geschrieben. Trenne die Einträge mit Kommas.",
+                    "Nutze .includes(), um zu überprüfen, ob ein Wert in der Liste ist. Arbeite in dieser Aufgabe im console.log",
+                    "Mit .length bekommst du die Anzahl der Einträge in einer Liste."
         ]
     },
     {
         "id": 6,
+        "title": ["if/else Anweisungen "],
+       "description": [
+                    "Wir wollen den Computer fragen, ob eine Zahl größer als 5 ist. Wenn das stimmt, soll er 'Die Zahl ist groß' ausgeben. Schreibe einen if-Block.",
+                    "Was passiert, wenn die Zahl NICHT größer als 5 ist? Ergänze einen else-Block, der 'Die Zahl ist klein' ausgibt.",
+                    "Jetzt soll der Computer zusätzlich sagen, wenn die Zahl genau 5 ist. Ergänze im else if-Block, damit 'Die Zahl ist genau fünf' ausgegeben wird."
+        ],
+        "expectedOutput": [
+                    "Die Zahl ist groß",
+                    "Die Zahl ist klein",
+                    "Die Zahl ist genau fünf"
+        ],
+        "initialCode": [
+                    "let zahl = 7\nif () {\n    console.log()\n}",
+                    "let zahl = 3\nif (zahl > 5) {\n    console.log('Die Zahl ist groß')\n} else {\n    console.log()\n}",
+                    "let zahl = 5\nif (zahl > 5) {\n    console.log('Die Zahl ist groß')\n} else if () {\n    console.log('')\n} else {\n    console.log('Die Zahl ist klein')\n}"
+        ],
+        "type": "calculation",
+        "hints": [
+                    "Ein if-Block schreibt man so: \nif (Zahl größer als 5){\nCode der passieren soll hier}",
+                    "else ist wie: 'Sonst'. Schreibe es unter den if-Block, dann passiert das dort, wenn die if-Bedingung nicht stimmt.",
+                    "else if ist ein Zwischenschritt: \nEs prüft eine weitere Bedingung, falls die erste falsch ist. \n Mit einem doppelten Leerzeichen kann man prüfen ob eine Variable wie 'zahl' gleich fünf ist."
+        ]
+    },
+    {
+        "id": 7,
+        "title": ["Basics über Schleifen"],
+        "description": [
+                    "Stell dir vor, du willst alle Zahlen von 0 bis 5 nacheinander zählen lassen. Schreibe dafür eine while-Schleife, die diese Zahlen mit console.log() ausgibt.",
+                    "Mache jetzt das gleiche wie vorher aber benutze diesmal eine for-Schleife. Gib wieder die Zahlen von 0 bis 5 aus."
+        ],
+        "expectedOutput": [
+                    "0\n1\n2\n3\n4\n5",
+                    "0\n1\n2\n3\n4\n5"
+        ],
+        "initialCode": [
+                    "let zahl = 0\nwhile( zahl ?){\nconsole.log(zahl)\n\n}",
+                    "for () {\nconsole.log()\n}"
+        ],
+        "type": "calculation",
+        "hints": [
+                    "Bei while-Schleifen musst du vorher eine Variable anlegen und in der Schleife erhöhen. Stell sicher, dass du die zahl <= 5 setzt in der Schleife.\n PS: Um die Variable zu verändern gabs einen coolen Trick mit ++  :)",
+                    "Eine for-Schleife enthält Zähler, Bedingung und Zähler-Veränderung direkt in der Klammer: \nfor(let i = 0; i <= 5; i++)" 
+        ]
+    },
+    {
+        "id": 8,
+        "title": ["Anfänge mit Funktionen"],
+        "description": [
+                    "Schreibe eine Funktion, die eine Zahl verdoppelt und das Ergebnis zurückgibt. In dem Fall wollen wir die Zahl 4 verdoppeln",
+                    "Gib a = 4 und b = 7 vor. Schreibe eine Funktion, die zwei Zahlen addiert und das Ergebnis zurückgibt. Rufe die Funktion mit a und b auf und gib das Ergebnis aus."
+        ],
+        "expectedOutput": [
+                    "8",
+                    "11"
+        ],
+        "initialCode": [
+                    "function verdopple(zahl){\n return  // Schreibe hier deine Funktion zum Verdoppeln\n}\nconsole.log(verdopple(4))",
+                    "//Erstell hier die Variablen a und b mit den vorgegebenen Werten\n\nfunction addiere(Wert1,Wert2){\nreturn \n}\n console.log(addiere(a,b))"
+        ],
+        "type": "calculation",
+        "hints": [
+                    "Eine Funktion wird mit function Funktionsname() { ... } definiert.\n Falls du nicht weiterkommst, in die Klammer der Funktion muss die mathematische Operation rein, z.B. zahl * 2;",
+                    "Vergiss nicht a und b als Variable mit einem Wert festzulegen. \nBenutze Wert1 und Wert2 als Parameter in der Funktion addiere."
+        ]
+    },
+{
+        "id": 100,
         "title": ["Zeichne deinen ersten Kreis"],
         "description": ["Verwende draw_line(x1, y1, x2, y2, farbe) um eine Linie zu zeichnen."],
         "initialCode": ["set_background('white');\ndraw_circle(150, 150, 50, 'blue')\ndraw_line(180,120,160,140,'red');\ndraw_line(120,120,140,140,'red');\ndraw_circle(120,140,10,'lightblue');\ndraw_circle(180,140,10,'lightblue');\ndraw_text('f**k', 140,180,'black');"],

@@ -1,132 +1,70 @@
-
 <script>
-  let step = 0;
-  let message = '';
-  let userCode = '';
+  import { myVariable, isCurrentLevelDrawing, solvedLevel, levelID, outputID } from '$lib/stores/editorStore';
+  import levels from '$data/levels.json';
+    import { onMount } from 'svelte';
+    import { goto } from '$app/navigation';
+
+  let currentLevelIndex = 5; // bei jedem Level Anpassen
+  let currentLevel = levels[currentLevelIndex];
   
+  onMount(() => {
+    myVariable.set(currentLevel.initialCode[0]);
+    solvedLevel.set(false);
+    levelID.set(currentLevelIndex)
+  });
+  let i = 0;
+  $: i = $outputID;
 
-  const steps = [
-    {
-      title: 'Was ist eine for-Schleife?',
-      explanation: `Mit einer for-Schleife kannst du etwas mehrmals wiederholen. Beispiel:
-
-for (let i = 0; i < 5; i++) {
-  console.log(i);
-}
-
-Das gibt die Zahlen 0 bis 4 aus.`
-    },
-    {
-      title: '🧠 Übung: Zähle von 1 bis 5',
-      explanation: 'Schreibe eine for-Schleife, die die Zahlen von 1 bis 5 in die Konsole ausgibt.'
-    },
-    {
-      title: 'Was ist eine while-Schleife?',
-      explanation: `Eine while-Schleife wiederholt sich, solange eine Bedingung wahr ist. Beispiel:
-
-let i = 0;
-while (i < 3) {
-  console.log(i);
-  i++;
-}`
-    },
-    {
-      title: '🧠 Übung: Zähle mit while von 0 bis 3',
-      explanation: 'Schreibe eine while-Schleife, die die Zahlen 0 bis 3 ausgibt.'
-    }
-  ];
-
-  function runCode() {
-    message = '';
-    try {
-      // eval nur zu Lernzwecken in sicherer Umgebung!
-      console.clear();
-      eval(userCode);
-      message = '✅ Code erfolgreich ausgeführt!';
-    } catch (e) {
-      message = '❌ Fehler im Code: ' + e.message;
-    }
+  function nextTask() {
+    i = $outputID;
+    i++;
+    outputID.set(i);
+    myVariable.set(currentLevel.initialCode[i]);
   }
-
-  function nextStep() {
-    if (step < steps.length - 1) step++;
-  }
-
-  function prevStep() {
-    if (step > 0) step--;
+  function previousTask(){
+    i = $outputID;
+    i--;
+    if(i < 0){
+      i = 0;
+    }
+    outputID.set(i);
+    myVariable.set(currentLevel.initialCode[i]);
   }
 </script>
 
 <main>
-  <h1>{steps[step].title}</h1>
-  <pre>{steps[step].explanation}</pre>
-
-  {#if steps[step].title.startsWith('🧠')}
-    <textarea
-      bind:value={userCode}
-      rows="6"
-      placeholder="Schreibe deinen Code hier (z. B. for (let i = 1; i &lt;= 5; i++) &#123; console.log(i); &#125;)"
-    ></textarea>
-    <button on:click={runCode}>▶️ Ausführen</button>
-    <p>{message}</p>
+  <h1>{currentLevel.title[i]}</h1>
+  <h2>Levelbeschreibung</h2>
+  <p>{currentLevel.description[i]}</p>
+  {#if currentLevel.hints}
+      <h3>💡 Tipps:</h3>
+       <p class="hint-text">{currentLevel.hints[i]}</p>
+      
   {/if}
 
-  <div style="margin-top: 20px">
-    <button on:click={prevStep} disabled={step === 0}>⬅️ Zurück</button>
-    <button on:click={nextStep} disabled={step === steps.length - 1}>➡️ Weiter</button>
-  </div>
+  {#if $solvedLevel}
+  {#if i > 0}
+  <button on:click={previousTask}>Zurück</button>
+  {/if}
+  {#if  i+1 < currentLevel.description.length }
+  <button on:click={nextTask}>Weiter</button>
+  {/if}
+  {/if}
 </main>
 
 <style>
   main {
     padding: 20px;
-    max-width: 800px;
-    margin: auto;
-    font-family: sans-serif;
-    background-color: #f0f8ff;
-    border-radius: 12px;
+    text-align: center;
   }
-
-  h1 {
-    color: #007acc;
-    font-size: 1.8rem;
-  }
-
-  pre {
-    background: #e6f2ff;
-    padding: 12px;
-    border-left: 4px solid #007acc;
-    white-space: pre-wrap;
-    border-radius: 6px;
-  }
-
-  textarea {
-    width: 100%;
-    padding: 10px;
-    font-family: monospace;
-    font-size: 1rem;
-    border: 2px solid #007acc;
-    border-radius: 8px;
-    margin-top: 10px;
+  .hint-text{
+    white-space: pre-wrap; 
   }
 
   button {
-    padding: 8px 16px;
-    margin: 5px;
-    border: none;
-    border-radius: 6px;
-    background-color: #007acc;
-    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
     cursor: pointer;
   }
-
-  button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-
-  p {
-    font-weight: bold;
-    color: #d32f2f;
-  }
+  
 </style>

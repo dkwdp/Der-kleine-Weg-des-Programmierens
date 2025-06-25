@@ -1,9 +1,10 @@
 <script>
   import { myVariable, isCurrentLevelDrawing, solvedLevel, levelID, outputID } from '$lib/stores/editorStore';
   import levels from '$data/levels.json';
-  import { onMount } from 'svelte';
+    import { onMount } from 'svelte';
+    import { goto } from '$app/navigation';
 
-  let currentLevelIndex = 1; // bei jedem Level Anpassen
+  let currentLevelIndex = 7; // bei jedem Level Anpassen
   let currentLevel = levels[currentLevelIndex];
   
   onMount(() => {
@@ -30,13 +31,14 @@
     myVariable.set(currentLevel.initialCode[i]);
   }
 </script>
+
 <main>
   <h1>{currentLevel.title[i]}</h1>
   <h2>Levelbeschreibung</h2>
   <p>{currentLevel.description[i]}</p>
   {#if currentLevel.hints}
       <h3>💡 Tipps:</h3>
-       <p>{currentLevel.hints[i]}</p>
+       <p class="hint-text">{currentLevel.hints[i]}</p>
       
   {/if}
 
@@ -55,10 +57,14 @@
     padding: 20px;
     text-align: center;
   }
+  .hint-text{
+    white-space: pre-wrap; 
+  }
 
   button {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
   }
+  
 </style>
