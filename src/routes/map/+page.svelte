@@ -119,7 +119,7 @@
 	// Intelligentere Level-Hover Funktion
 	function onLevelHover(level) {
 		const hoverMessage = getRandomMessage(hoverMessages);
-		updateMascot('neutral2', `Level ${level.id} ${hoverMessage}`);
+		updateMascot('think', `Level ${level.id} ${hoverMessage}`);
 	}
 
 	// Level-Leave mit intelligenter Rückkehr
