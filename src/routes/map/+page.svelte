@@ -2,42 +2,160 @@
 	import { goto } from '$app/navigation';
 	import Mascot from '../mascot/Mascot.svelte';
 
+	// Mascot State Management
 	let emotion = 'neutral';
 	let message = 'Willkommen!';
+	let inactivityTimer;
+	let currentNeutralState = 'neutral';
 	
 	// Level-Daten
 	const levelData = [
 		{ id: 1, x: 60, y: 12, icon: 'polarbear', name: 'Polarbaer', size: 'medium' },
-		{ id: 2, x: 42, y: 13, icon: 'raft', name: 'Floß', size: 'medium' },
-		{ id: 3, x: 22, y: 22, icon: 'tent', name: 'Zelt', size: 'medium' },
-		{ id: 4, x: 52, y: 23, icon: 'fish', name: 'Fisch', size: 'small' },
-		{ id: 5, x: 18, y: 29, icon: 'lumberjack', name: 'Holzfaeller', size: 'small' },
-		{ id: 6, x: 30, y: 42, icon: 'hut', name: 'Huette', size: 'large' },
-		{ id: 7, x: 60, y: 39, icon: 'angler', name: 'Angler', size: 'small' },
-		{ id: 8, x: 20, y: 55, icon: 'kid', name: 'Kind', size: 'small' },
-		{ id: 9, x: 49, y: 53, icon: 'bridge', name: 'Bruecke', size: 'large' },
-		{ id: 10, x: 73, y: 70, icon: 'flower', name: 'Blume', size: 'small' },
+		{ id: 2, x: 22, y: 22, icon: 'tent', name: 'Zelt', size: 'medium' },
+		{ id: 3, x: 30, y: 42, icon: 'hut', name: 'Huette', size: 'large' },
+		{ id: 4, x: 63, y: 42, icon: 'angler', name: 'Angler', size: 'small' },
+		{ id: 5, x: 49, y: 53, icon: 'bridge', name: 'Bruecke', size: 'large' },
+		{ id: 6, x: 70, y: 57, icon: 'lumberjack', name: 'Holzfaeller', size: 'small' },
+		{ id: 7, x: 48, y: 73, icon: 'raft', name: 'Floß', size: 'medium' },
+		{ id: 8, x: 20, y: 85, icon: 'kid', name: 'Kind', size: 'small' },
+		{ id: 9, x: 70, y: 90, icon: 'flower', name: 'Blume', size: 'small' },
+		{ id: 10, x: 43, y: 95, icon: 'fish', name: 'Fisch', size: 'small' },
 	];
 
 	let iconLoadStates = {};
 
-	// Level-Referenz
-	function LevelJoin(level) {
-		goto(`/levels/level${level}`);
+	// ===== MASCOT MANAGEMENT =====
+	
+	// Zentrale Mascot Update Funktion
+	function updateMascot(newEmotion, newMessage) {
+		emotion = newEmotion;
+		message = newMessage;
+		resetInactivityTimer();
 	}
 
-	// Interaktives Maskottchen
+	// Timer Management für Auto-Messages
+	function resetInactivityTimer() {
+		clearTimeout(inactivityTimer);
+		inactivityTimer = setTimeout(() => {
+			if (emotion === 'neutral' || emotion === 'neutral2') {
+				// Wechsel zwischen neutral states für Abwechslung
+				currentNeutralState = currentNeutralState === 'neutral' ? 'neutral2' : 'neutral';
+				updateMascot(currentNeutralState, getRandomIdleMessage());
+			}
+		}, 7000); // Nach 7 Sekunden neue Message
+	}
+
+	// Verschiedene Message-Arrays für Abwechslung
+	const welcomeMessages = [
+		'Yo, wieder da! 🐧',
+		'Pingu ist zurück! Bock zu coden?',
+		'Chillig hier, oder? Los geht\'s!',
+		'Watschel-Zeit! Bereit für Code-Magie?',
+		'Eis to see you! 🧊',
+		'Pinguin-Power aktiviert!'
+	];
+
+	const idleMessages = [
+		'Chillst du noch oder codest du schon? 🐧',
+		'Pssst... die Level warten auf dich!',
+		'Watschel watschel... langweilig hier! 😴',
+		'Eisbär-Modus: entspannt warten...',
+		'Flossen bereit? Lass uns eintauchen!',
+		'Eis-kalte Coding-Skills kommen!',
+		'Flossen-Tipp: Einfach mal klicken!',
+		'Rutsch ins Coden wie ein Pinguin! 🧊',
+		'Kein Stress, jeder fängt mal an!',
+		'Coolness-Level: Pinguin! ❄️',
+		'Watschel rüber und wähl ein Level!',
+		'Fisch später, coden jetzt! 🐟'
+	];
+
+	const hoverMessages = [
+		'ist eis-oliert und wartet!',
+		'braucht deine Flossen-Skills!',
+		'sieht chill aus! 🧊',
+		'wartet auf deinen Watschel!',
+		'ist bereit für Fisch-Action! 🐟',
+		'braucht deine Pinguin-Power!',
+		'sieht eis-genial aus!',
+		'wartet auf die Rutschpartie!',
+		'ist flossen-bereit!',
+		'braucht Pinguin-Magie! ✨'
+	];
+
+	// Hilfsfunktionen für Messages
+	function getRandomMessage(messageArray) {
+		return messageArray[Math.floor(Math.random() * messageArray.length)];
+	}
+
+	function getRandomIdleMessage() {
+		return getRandomMessage(idleMessages);
+	}
+
+	function getWelcomeMessage() {
+		return getRandomMessage(welcomeMessages);
+	}
+
+	// ===== LEVEL INTERACTION =====
+
+	// Level-Referenz mit Mascot-Feedback
+	function LevelJoin(levelId) {
+		const level = levelData.find(l => l.id === levelId);
+		const goMessages = [
+			'Rutsch-Zeit! 🐧',
+			'Auf geht\'s zum Watscheln!',
+			'Eis to meet you, Level!',
+			'Flossen-Action aktiviert!',
+			'Lass uns eintauchen! 🌊'
+		];
+		updateMascot('switch', getRandomMessage(goMessages));
+		
+		// Kurze Verzögerung für Mascot-Feedback, dann Navigation
+		setTimeout(() => {
+			goto(`/levels/level${levelId}`);
+		}, 800);
+	}
+
+	// Intelligentere Level-Hover Funktion
 	function onLevelHover(level) {
-		emotion = 'think';
-		message = `${level.name} - Bereit für das Abenteuer?`;
+		const hoverMessage = getRandomMessage(hoverMessages);
+		updateMascot('neutral2', `Level ${level.id} ${hoverMessage}`);
 	}
 
+	// Level-Leave mit intelligenter Rückkehr
 	function onLevelLeave() {
-		emotion = 'neutral';
-		message = 'Wähle ein Level aus!';
+		const leaveMessages = [
+			'Watschel rum! 🐧',
+			'Such dir dein Eis-Abenteuer!',
+			'Wähl dein Coding-Schicksal!',
+			'Flossen-Entscheidung steht an!'
+		];
+		updateMascot(currentNeutralState, getRandomMessage(leaveMessages));
 	}
 
-	// Icon Load Error Handler
+	// ===== PATH LINES =====
+	
+	function createPathLines() {
+		let pathLines = [];
+		for (let i = 0; i < levelData.length - 1; i++) {
+			const currentLevel = levelData[i];
+			const nextLevel = levelData[i + 1];
+			
+			pathLines.push({
+				x1: currentLevel.x,
+				y1: currentLevel.y,
+				x2: nextLevel.x,
+				y2: nextLevel.y,
+				id: `path-${currentLevel.id}-${nextLevel.id}`
+			});
+		}
+		return pathLines;
+	}
+
+	const pathLines = createPathLines();
+
+	// ===== ICON MANAGEMENT =====
+	
 	function handleIconError(levelId) {
 		iconLoadStates[levelId] = false;
 		iconLoadStates = { ...iconLoadStates };
@@ -47,98 +165,98 @@
 		iconLoadStates[levelId] = true;
 		iconLoadStates = { ...iconLoadStates }; 
 	}
+
+	// ===== INITIALIZATION =====
+	
+	// Beim Laden der Komponente
+	import { onMount, onDestroy } from 'svelte';
+	
+	onMount(() => {
+		// Sofort eine Willkommensnachricht anzeigen
+		const welcomeMsg = getWelcomeMessage();
+		emotion = 'neutral';
+		message = welcomeMsg;
+		resetInactivityTimer();
+	});
+
+	onDestroy(() => {
+		clearTimeout(inactivityTimer);
+	});
 </script>
 
+<!-- Mascot ohne Klick-Handler -->
 <Mascot {emotion} {message} />
 
 <div class="page-container">
-	<div class="map-section">
-		<div class="map-container" role="application">
-			<img src="/map.png" alt="Adventure Map" class="map-image" />
-			
-			<!-- Overlay Header direkt über der Map -->
-			<div class="map-header-overlay">
-				<h1>Willkommen im  Coder-Dojo Abenteuerpfad!</h1>
-			</div>
-			
-			<!-- Dynamische Level Buttons mit Icons -->
-			{#each levelData as level}
-				<button 
-					class="level-button {level.size}"
-					style="top: {level.y}%; left: {level.x}%;"
-					on:click={() => LevelJoin(level.id)}
-					on:mouseenter={() => onLevelHover(level)}
-					on:mouseleave={onLevelLeave}
-					title={level.name}
-				>
-					{#if iconLoadStates[level.id] !== false}
-						<img 
-							src="/icons/{level.icon}.png" 
-							alt="{level.name}"
-							class="level-icon"
-							on:load={() => handleIconLoad(level.id)}
-							on:error={() => handleIconError(level.id)}
-						/>
-					{/if}
-					
-					{#if iconLoadStates[level.id] === false}
-						<!-- Fallback: Nur Zahl wenn Icon fehlt -->
-						<div class="level-number-only">
-							{level.id}
-						</div>
-					{:else}
-						<!-- Nummer über dem Icon -->
-						<div class="level-number-overlay">
-							{level.id}
-						</div>
-					{/if}
-				</button>
-			{/each}
+	<div class="map-container" role="application">
+		<img src="/map.png" alt="Adventure Map" class="map-image" />
+		
+		<!-- Overlay Header direkt über der Map -->
+		<div class="map-header-overlay">
+			<h1>Willkommen im Coder-Dojo Abenteuerpfad!</h1>
 		</div>
+
+		<!-- SVG für die Pfadlinien -->
+		<svg class="path-lines-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+			{#each pathLines as line}
+				<line 
+					x1="{line.x1}%" 
+					y1="{line.y1}%" 
+					x2="{line.x2}%" 
+					y2="{line.y2}%" 
+					class="path-line"
+					stroke="rgba(160, 160, 160, 0.3)"
+					stroke-width="0.3"
+					stroke-dasharray="1,0.5"
+				/>
+			{/each}
+		</svg>
+		
+		<!-- Dynamische Level Buttons mit Icons -->
+		{#each levelData as level}
+			<button 
+				class="level-button {level.size}"
+				style="top: {level.y}%; left: {level.x}%;"
+				on:click={() => LevelJoin(level.id)}
+				on:mouseenter={() => onLevelHover(level)}
+				on:mouseleave={onLevelLeave}
+				title="{level.name}"
+			>
+				{#if iconLoadStates[level.id] === false}
+					<!-- Fallback: Nur Zahl wenn Icon fehlt -->
+					<div class="level-number-only">
+						{level.id}
+					</div>
+				{:else}
+					<!-- Icon + Nummer -->
+					<img 
+						src="/icons/{level.icon}.png" 
+						alt="{level.name}"
+						class="level-icon"
+						on:load={() => handleIconLoad(level.id)}
+						on:error={() => handleIconError(level.id)}
+					/>
+					<div class="level-number-overlay">
+						{level.id}
+					</div>
+				{/if}
+			</button>
+		{/each}
 	</div>
 </div>
 
 <style>
-	/* CSS Custom Properties für einheitliche Werte */
-	:root {
-		--map-max-width: 1000px;
-		--button-size-desktop: 50px;
-		--button-size-tablet: 45px;
-		--button-size-mobile: 40px;
-		--font-size-desktop: 18px;
-		--font-size-tablet: 16px;
-		--font-size-mobile: 14px;
-		--primary-bg: #f5f5f5;
-		--header-color: #333;
-		--text-color: #666;
-	}
-
 	/* Global Reset */
 	:global(body) {
 		margin: 0;
-		padding: 0;
 		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-		background-color: var(--primary-bg);
 		overflow-x: hidden;
 	}
 
 	/* Main Container */
 	.page-container {
-		height: 100vh;
-		width: 100vw;
 		display: flex;
 		flex-direction: column;
-		background: linear-gradient(135deg, rgba(191, 215, 181, 0.2) 0%, rgba(191, 215, 181, 0.4) 100%);
-	}
-
-	/* Map Section */
-	.map-section {
-		flex: 1;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		padding: 0;
-		position: relative;
 	}
 
 	.map-container {
@@ -159,6 +277,17 @@
 		display: block;
 		max-width: 100%;
 		max-height: 100%;
+	}
+
+	/* SVG für Pfadlinien */
+	.path-lines-svg {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+		z-index: 1;
 	}
 
 	/* Header Overlay */
@@ -199,7 +328,6 @@
 		/* Icon-Button Styling */
 		background: transparent;
 		border: none;
-		border-radius: 20px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -212,6 +340,7 @@
 		
 		/* Basis Shadow */
 		filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.4));
+		z-index: 10;
 	}
 
 	/* LARGE Icons */
@@ -251,7 +380,6 @@
 		transform: translate(-50%, -50%);
 		
 		font-size: clamp(10px, 1.5vw, 16px);
-		font-weight: 900;
 		color: white;
 		font-family: 'Arial Black', sans-serif;
 		
@@ -264,7 +392,7 @@
 			 0 0 3px rgba(0, 0, 0, 1);
 		
 		pointer-events: none;
-		z-index: 10;
+		z-index: 1;
 		transition: all 0.3s ease;
 	}
 
@@ -275,84 +403,31 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		
-		/* Fallback-Schriftgröße */
-		font-size: clamp(18px, 3vw, 32px);
-		font-weight: 900;
 		color: white;
 		font-family: 'Arial Black', sans-serif;
-		
-		/* Gradient */
-		background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+		background: #4facfe;
 		border-radius: clamp(12px, 2vw, 22px);
 		border: clamp(3px, 0.5vw, 6px) solid rgba(255, 255, 255, 0.8);
-		
-		/* Text-Schatten */
-		text-shadow: 
-			-2px -2px 0 rgba(0, 0, 0, 0.9),
-			 2px -2px 0 rgba(0, 0, 0, 0.9),
-			-2px  2px 0 rgba(0, 0, 0, 0.9),
-			 2px  2px 0 rgba(0, 0, 0, 0.9),
-			 0 0 6px rgba(0, 0, 0, 1);
-		
-		/* 3D-Effekte */
-		box-shadow: 
-			0 clamp(6px, 1.2vw, 12px) clamp(15px, 2.5vw, 25px) rgba(0, 0, 0, 0.35),
-			inset 0 clamp(2px, 0.4vw, 4px) 0 rgba(255, 255, 255, 0.5),
-			inset 0 clamp(-2px, -0.4vw, -4px) 0 rgba(0, 0, 0, 0.25);
-		
-		transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+		text-shadow: 0 0 4px rgba(0, 0, 0, 1);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+		transition: all 0.3s ease;
 	}
 
-	/* größenspezifische Fallback-Schriftgrößen */
+	/* Größenspezifische Schriftgrößen */
 	.level-button.large .level-number-only {
 		font-size: clamp(24px, 4vw, 45px);
 	}
-
 	.level-button.medium .level-number-only {
 		font-size: clamp(20px, 3vw, 32px);
 	}
-
 	.level-button.small .level-number-only {
 		font-size: clamp(16px, 2.5vw, 24px);
 	}
 
 	/* Hover-Effekte */
 	.level-button:hover {
-		transform: translate(-50%, -50%) scale(1.1);
-	}
-
-	.level-button.large:hover {
-		filter: drop-shadow(0 clamp(20px, 4vw, 35px) clamp(50px, 8vw, 80px) rgba(0, 0, 0, 0.7));
-	}
-
-	.level-button.medium:hover {
-		filter: drop-shadow(0 clamp(15px, 3vw, 25px) clamp(35px, 6vw, 60px) rgba(0, 0, 0, 0.6));
-	}
-
-	.level-button.small:hover {
-		filter: drop-shadow(0 clamp(10px, 2vw, 18px) clamp(25px, 4vw, 40px) rgba(0, 0, 0, 0.5));
-	}
-
-	.level-button:hover .level-icon {
-		filter: brightness(1.3);
-	}
-
-	.level-button:hover .level-number-overlay {
-		text-shadow: 
-			-1px -1px 0 #000,
-			 1px -1px 0 #000,
-			-1px  1px 0 #000,
-			 1px  1px 0 #000,
-			 0 0 6px rgba(0, 0, 0, 1),
-			 0 0 12px rgba(255, 255, 255, 0.9);
-		transform: translate(-50%, -50%) scale(1.1);
-	}
-
-	.level-button:hover .level-number-only {
-		background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-		border-color: rgba(255, 255, 255, 1);
-		transform: scale(1.05);
+		transform: translate(-50%, -50%) scale(1.05);
+		filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5));
 	}
 
 	/* Klick-Effekt */
