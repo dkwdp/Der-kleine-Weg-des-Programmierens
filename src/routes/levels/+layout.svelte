@@ -17,6 +17,7 @@
   let startX, startLeftWidth;
   let canvasRef;
   let showSettings = false;
+  let codeOutput;
 
   const tips = [
     "Probier mal console.log()!",
@@ -124,6 +125,7 @@
         let i = $outputID;
         const expectedOutput = currentLevelData.expectedOutput[i];
         console.log = originalLog;
+        codeOutput = trimmedOutput;
 
         if(trimmedOutput === expectedOutput) {
           output = "✓ Richtig: " + trimmedOutput;
@@ -159,6 +161,7 @@ let loading = false;
   let feedback = '';
 
   async function submitCode() {
+    if (codeOutput == levels[$levelID].expectedOutput[$outputID])return;
     loading = true;
     error = '';
     feedback = '';
@@ -179,7 +182,7 @@ Formatiere deine Antwort übersichtlich.
 Wenn keine Fehler da sind, sei motivierend. 
 Beantworte alles in maximal 3 Sätzen mit maximal 7 Wörtern pro Satz. 
 Die Antworten im Code sind auf Deutsch und Englisch möglich. 
-Antworte immer auf Deutsch. Der erwartete output ist '${expectedOutput}' beachte groß- und kleinschreibung und zeichensetzung"`;
+Antworte immer auf Deutsch. Der erwartete output ist '${levels[$levelID].expectedOutput[$outputID]}' beachte groß- und kleinschreibung und zeichensetzung"`;
 
 console.log(prompt)
     try {
