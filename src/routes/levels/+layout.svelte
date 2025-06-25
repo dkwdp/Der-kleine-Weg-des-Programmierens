@@ -7,7 +7,7 @@
   import levels from "$data/levels.json";
   import P5Canvas from "$lib/Canvas/p5Canvas.svelte";
   import { fade } from 'svelte/transition';
-  import "src/data/layout.css";
+  import "/src/data/layout.css";
 
   let output = "";
   let currentLevel = 0;
