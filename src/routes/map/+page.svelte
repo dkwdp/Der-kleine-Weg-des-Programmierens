@@ -1,5 +1,6 @@
 <script>
 	import { goto } from '$app/navigation';
+	import { gameMode, unlockedLevels } from '$lib/stores/editorStore';
 	import Mascot from '../mascot/Mascot.svelte';
 
 	// Mascot State Management
@@ -23,6 +24,13 @@
 	];
 
 	let iconLoadStates = {};
+
+	// ===== LEVEL ACCESS LOGIC =====
+	
+	// Prüfen ob Level zugänglich ist
+	function isLevelUnlocked(levelId) {
+		return $gameMode === 'free' || $unlockedLevels.includes(levelId);
+	}
 
 	// ===== MASCOT MANAGEMENT =====
 	
@@ -83,6 +91,14 @@
 		'braucht Pinguin-Magie! ✨'
 	];
 
+	const lockedMessages = [
+		'ist noch eingefroren! 🧊',
+		'wartet auf das Auftauen!',
+		'ist noch nicht bereit!',
+		'braucht mehr Pinguin-Power!',
+		'ist noch im Eis gefangen!'
+	];
+
 	// Hilfsfunktionen für Messages
 	function getRandomMessage(messageArray) {
 		return messageArray[Math.floor(Math.random() * messageArray.length)];
@@ -100,6 +116,11 @@
 
 	// Level-Referenz mit Mascot-Feedback
 	function LevelJoin(levelId) {
+		if (!isLevelUnlocked(levelId)) {
+			updateMascot('sad', `Level ${levelId} ${getRandomMessage(lockedMessages)}`);
+			return;
+		}
+		
 		const level = levelData.find(l => l.id === levelId);
 		const goMessages = [
 			'Rutsch-Zeit! 🐧',
@@ -118,6 +139,11 @@
 
 	// Intelligentere Level-Hover Funktion
 	function onLevelHover(level) {
+		if (!isLevelUnlocked(level.id)) {
+			updateMascot('sad', `Level ${level.id} ${getRandomMessage(lockedMessages)}`);
+			return;
+		}
+		
 		const hoverMessage = getRandomMessage(hoverMessages);
 		updateMascot('think', `Level ${level.id} ${hoverMessage}`);
 	}
@@ -215,12 +241,13 @@
 		<!-- Dynamische Level Buttons mit Icons -->
 		{#each levelData as level}
 			<button 
-				class="level-button {level.size}"
+				class="level-button {level.size} {isLevelUnlocked(level.id) ? 'unlocked' : 'locked'}"
 				style="top: {level.y}%; left: {level.x}%;"
 				on:click={() => LevelJoin(level.id)}
 				on:mouseenter={() => onLevelHover(level)}
 				on:mouseleave={onLevelLeave}
 				title="{level.name}"
+				disabled={!isLevelUnlocked(level.id)}
 			>
 				{#if iconLoadStates[level.id] === false}
 					<!-- Fallback: Nur Zahl wenn Icon fehlt -->
@@ -240,43 +267,47 @@
 						{level.id}
 					</div>
 				{/if}
+				
+				<!-- Lock-Icon für gesperrte Level -->
+				{#if !isLevelUnlocked(level.id)}
+					<div class="lock-overlay">
+						🔒
+					</div>
+				{/if}
 			</button>
 		{/each}
 	</div>
 </div>
 
 <style>
-	/* Global Reset */
+	/* Global Reset - Scrolling ermöglichen */
 	:global(body) {
 		margin: 0;
 		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-		overflow-x: hidden;
+		overflow-x: auto; /* Horizontal scrolling erlauben */
+		overflow-y: auto; /* Vertical scrolling erlauben */
 	}
 
-	/* Main Container */
+	/* Main Container - Scrolling unterstützen */
 	.page-container {
-		display: flex;
-		flex-direction: column;
+		display: block; /* Flexbox entfernt für besseres Scrolling */
+		min-height: 100vh; /* Mindesthöhe statt feste Höhe */
+		width: 100%;
 	}
 
 	.map-container {
 		position: relative;
 		width: 100%;
-		height: 100%;
-		max-width: none;
-		max-height: none;
-		display: flex;
-		justify-content: center;
-		align-items: center;
+		min-height: 100vh; /* Mindesthöhe für Scrolling */
+		min-width: 1200px; /* Mindestbreite für horizontales Scrolling */
+		display: block; /* Kein Flexbox für besseres Scrolling */
 	}
 
 	.map-image {
 		width: 100%;
-		height: 100%;
-		object-fit: contain;
+		min-height: 100vh; /* Mindesthöhe */
+		object-fit: cover; /* Cover statt contain für bessere Darstellung */
 		display: block;
-		max-width: 100%;
-		max-height: 100%;
 	}
 
 	/* SVG für Pfadlinien */
@@ -364,6 +395,18 @@
 		filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.4));
 	}
 
+	/* Gesperrte Level Styles */
+	.level-button.locked {
+		filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.2)) grayscale(100%) brightness(0.5);
+		cursor: not-allowed;
+		pointer-events: none;
+	}
+
+	.level-button.locked:hover {
+		transform: translate(-50%, -50%);
+		filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.2)) grayscale(100%) brightness(0.5);
+	}
+
 	/* Level Icon Styling */
 	.level-icon {
 		width: 100%;
@@ -396,6 +439,17 @@
 		transition: all 0.3s ease;
 	}
 
+	/* Lock Overlay für gesperrte Level */
+	.lock-overlay {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		font-size: clamp(20px, 3vw, 40px);
+		z-index: 2;
+		pointer-events: none;
+	}
+
 	/* Fallback-Buttons */
 	.level-number-only {
 		width: 100%;
@@ -424,15 +478,30 @@
 		font-size: clamp(16px, 2.5vw, 24px);
 	}
 
-	/* Hover-Effekte */
-	.level-button:hover {
+	/* Hover-Effekte für freigeschaltete Level */
+	.level-button.unlocked:hover {
 		transform: translate(-50%, -50%) scale(1.05);
 		filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5));
 	}
 
-	/* Klick-Effekt */
-	.level-button:active {
+	/* Klick-Effekt für freigeschaltete Level */
+	.level-button.unlocked:active {
 		transform: translate(-50%, -50%) scale(1.15);
 		transition: all 0.1s ease;
+	}
+
+	/* Mobile Anpassungen für besseres Scrolling */
+	@media (max-width: 768px) {
+		.map-container {
+			min-width: 800px; /* Kleinere Mindestbreite für Mobile */
+		}
+		
+		.map-header-overlay {
+			padding: 1rem 1.5rem;
+		}
+		
+		.map-header-overlay h1 {
+			font-size: 1.2rem;
+		}
 	}
 </style>
