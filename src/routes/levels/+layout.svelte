@@ -179,7 +179,7 @@ Formatiere deine Antwort übersichtlich.
 Wenn keine Fehler da sind, sei motivierend. 
 Beantworte alles in maximal 3 Sätzen mit maximal 7 Wörtern pro Satz. 
 Die Antworten im Code sind auf Deutsch und Englisch möglich. 
-Antworte immer auf Deutsch. Der erwartete output ist 'Hello World!' beachte groß- und kleinschreibung und zeichensetzung"`;
+Antworte immer auf Deutsch. Der erwartete output ist '${expectedOutput}' beachte groß- und kleinschreibung und zeichensetzung"`;
 
 console.log(prompt)
     try {
