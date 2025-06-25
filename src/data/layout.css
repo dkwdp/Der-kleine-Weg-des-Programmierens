@@ -32,7 +32,7 @@
 }
 
 .banner-button:hover .header-image {
-  transform: scale(0.95);
+  transform: scale(0.99);
   transition: transform 0.2s ease;
 }
 
@@ -299,7 +299,7 @@
   }
 
   button:hover {
-    background-color: var(--secondary);
+    background-color: #FFFFFF;
     transform: translateY(-1px);
     box-shadow: var(--shadow-sm);
   }
