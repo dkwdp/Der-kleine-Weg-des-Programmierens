@@ -20,6 +20,7 @@
     i++;
     outputID.set(i);
     myVariable.set(currentLevel.initialCode[i]);
+    solvedLevel.set(false);
   }
   function previousTask(){
     i = $outputID;
