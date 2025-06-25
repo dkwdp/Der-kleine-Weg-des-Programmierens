@@ -2,43 +2,160 @@
 	import { goto } from '$app/navigation';
 	import Mascot from '../mascot/Mascot.svelte';
 
+	// Mascot State Management
 	let emotion = 'neutral';
 	let message = 'Willkommen!';
+	let inactivityTimer;
+	let currentNeutralState = 'neutral';
 	
 	// Level-Daten
 	const levelData = [
 		{ id: 1, x: 60, y: 12, icon: 'polarbear', name: 'Polarbaer', size: 'medium' },
-		{ id: 2, x: 42, y: 13, icon: 'raft', name: 'Floß', size: 'medium' },
-		{ id: 3, x: 22, y: 22, icon: 'tent', name: 'Zelt', size: 'medium' },
-		{ id: 4, x: 52, y: 23, icon: 'fish', name: 'Fisch', size: 'small' },
-		{ id: 5, x: 18, y: 29, icon: 'lumberjack', name: 'Holzfaeller', size: 'small' },
-		{ id: 6, x: 30, y: 42, icon: 'hut', name: 'Huette', size: 'large' },
-		{ id: 7, x: 60, y: 39, icon: 'angler', name: 'Angler', size: 'small' },
-		{ id: 8, x: 20, y: 55, icon: 'kid', name: 'Kind', size: 'small' },
-		{ id: 9, x: 49, y: 53, icon: 'bridge', name: 'Bruecke', size: 'large' },
-		{ id: 10, x: 73, y: 70, icon: 'flower', name: 'Blume', size: 'small' },
-		{ id: 11, x: 75, y: 75, icon: 'csc', name: 'Blume', size: 'small' }
+		{ id: 2, x: 22, y: 22, icon: 'tent', name: 'Zelt', size: 'medium' },
+		{ id: 3, x: 30, y: 42, icon: 'hut', name: 'Huette', size: 'large' },
+		{ id: 4, x: 63, y: 42, icon: 'angler', name: 'Angler', size: 'small' },
+		{ id: 5, x: 49, y: 53, icon: 'bridge', name: 'Bruecke', size: 'large' },
+		{ id: 6, x: 70, y: 57, icon: 'lumberjack', name: 'Holzfaeller', size: 'small' },
+		{ id: 7, x: 48, y: 73, icon: 'raft', name: 'Floß', size: 'medium' },
+		{ id: 8, x: 20, y: 85, icon: 'kid', name: 'Kind', size: 'small' },
+		{ id: 9, x: 70, y: 90, icon: 'flower', name: 'Blume', size: 'small' },
+		{ id: 10, x: 43, y: 95, icon: 'fish', name: 'Fisch', size: 'small' },
 	];
 
 	let iconLoadStates = {};
 
-	// Level-Referenz
-	function LevelJoin(level) {
-		goto(`/levels/level${level}`);
+	// ===== MASCOT MANAGEMENT =====
+	
+	// Zentrale Mascot Update Funktion
+	function updateMascot(newEmotion, newMessage) {
+		emotion = newEmotion;
+		message = newMessage;
+		resetInactivityTimer();
 	}
 
-	// Interaktives Maskottchen
+	// Timer Management für Auto-Messages
+	function resetInactivityTimer() {
+		clearTimeout(inactivityTimer);
+		inactivityTimer = setTimeout(() => {
+			if (emotion === 'neutral' || emotion === 'neutral2') {
+				// Wechsel zwischen neutral states für Abwechslung
+				currentNeutralState = currentNeutralState === 'neutral' ? 'neutral2' : 'neutral';
+				updateMascot(currentNeutralState, getRandomIdleMessage());
+			}
+		}, 7000); // Nach 7 Sekunden neue Message
+	}
+
+	// Verschiedene Message-Arrays für Abwechslung
+	const welcomeMessages = [
+		'Yo, wieder da! 🐧',
+		'Pingu ist zurück! Bock zu coden?',
+		'Chillig hier, oder? Los geht\'s!',
+		'Watschel-Zeit! Bereit für Code-Magie?',
+		'Eis to see you! 🧊',
+		'Pinguin-Power aktiviert!'
+	];
+
+	const idleMessages = [
+		'Chillst du noch oder codest du schon? 🐧',
+		'Pssst... die Level warten auf dich!',
+		'Watschel watschel... langweilig hier! 😴',
+		'Eisbär-Modus: entspannt warten...',
+		'Flossen bereit? Lass uns eintauchen!',
+		'Eis-kalte Coding-Skills kommen!',
+		'Flossen-Tipp: Einfach mal klicken!',
+		'Rutsch ins Coden wie ein Pinguin! 🧊',
+		'Kein Stress, jeder fängt mal an!',
+		'Coolness-Level: Pinguin! ❄️',
+		'Watschel rüber und wähl ein Level!',
+		'Fisch später, coden jetzt! 🐟'
+	];
+
+	const hoverMessages = [
+		'ist eis-oliert und wartet!',
+		'braucht deine Flossen-Skills!',
+		'sieht chill aus! 🧊',
+		'wartet auf deinen Watschel!',
+		'ist bereit für Fisch-Action! 🐟',
+		'braucht deine Pinguin-Power!',
+		'sieht eis-genial aus!',
+		'wartet auf die Rutschpartie!',
+		'ist flossen-bereit!',
+		'braucht Pinguin-Magie! ✨'
+	];
+
+	// Hilfsfunktionen für Messages
+	function getRandomMessage(messageArray) {
+		return messageArray[Math.floor(Math.random() * messageArray.length)];
+	}
+
+	function getRandomIdleMessage() {
+		return getRandomMessage(idleMessages);
+	}
+
+	function getWelcomeMessage() {
+		return getRandomMessage(welcomeMessages);
+	}
+
+	// ===== LEVEL INTERACTION =====
+
+	// Level-Referenz mit Mascot-Feedback
+	function LevelJoin(levelId) {
+		const level = levelData.find(l => l.id === levelId);
+		const goMessages = [
+			'Rutsch-Zeit! 🐧',
+			'Auf geht\'s zum Watscheln!',
+			'Eis to meet you, Level!',
+			'Flossen-Action aktiviert!',
+			'Lass uns eintauchen! 🌊'
+		];
+		updateMascot('switch', getRandomMessage(goMessages));
+		
+		// Kurze Verzögerung für Mascot-Feedback, dann Navigation
+		setTimeout(() => {
+			goto(`/levels/level${levelId}`);
+		}, 800);
+	}
+
+	// Intelligentere Level-Hover Funktion
 	function onLevelHover(level) {
-		emotion = 'think';
-		message = `${level.name} - Bereit für das Abenteuer?`;
+		const hoverMessage = getRandomMessage(hoverMessages);
+		updateMascot('think', `Level ${level.id} ${hoverMessage}`);
 	}
 
+	// Level-Leave mit intelligenter Rückkehr
 	function onLevelLeave() {
-		emotion = 'neutral';
-		message = 'Wähle ein Level aus!';
+		const leaveMessages = [
+			'Watschel rum! 🐧',
+			'Such dir dein Eis-Abenteuer!',
+			'Wähl dein Coding-Schicksal!',
+			'Flossen-Entscheidung steht an!'
+		];
+		updateMascot(currentNeutralState, getRandomMessage(leaveMessages));
 	}
 
-	// Icon Load Error Handler
+	// ===== PATH LINES =====
+	
+	function createPathLines() {
+		let pathLines = [];
+		for (let i = 0; i < levelData.length - 1; i++) {
+			const currentLevel = levelData[i];
+			const nextLevel = levelData[i + 1];
+			
+			pathLines.push({
+				x1: currentLevel.x,
+				y1: currentLevel.y,
+				x2: nextLevel.x,
+				y2: nextLevel.y,
+				id: `path-${currentLevel.id}-${nextLevel.id}`
+			});
+		}
+		return pathLines;
+	}
+
+	const pathLines = createPathLines();
+
+	// ===== ICON MANAGEMENT =====
+	
 	function handleIconError(levelId) {
 		iconLoadStates[levelId] = false;
 		iconLoadStates = { ...iconLoadStates };
@@ -48,8 +165,26 @@
 		iconLoadStates[levelId] = true;
 		iconLoadStates = { ...iconLoadStates }; 
 	}
+
+	// ===== INITIALIZATION =====
+	
+	// Beim Laden der Komponente
+	import { onMount, onDestroy } from 'svelte';
+	
+	onMount(() => {
+		// Sofort eine Willkommensnachricht anzeigen
+		const welcomeMsg = getWelcomeMessage();
+		emotion = 'neutral';
+		message = welcomeMsg;
+		resetInactivityTimer();
+	});
+
+	onDestroy(() => {
+		clearTimeout(inactivityTimer);
+	});
 </script>
 
+<!-- Mascot ohne Klick-Handler -->
 <Mascot {emotion} {message} />
 
 <div class="page-container">
@@ -58,8 +193,24 @@
 		
 		<!-- Overlay Header direkt über der Map -->
 		<div class="map-header-overlay">
-			<h1>Willkommen im  Coder-Dojo Abenteuerpfad!</h1>
+			<h1>Willkommen im Coder-Dojo Abenteuerpfad!</h1>
 		</div>
+
+		<!-- SVG für die Pfadlinien -->
+		<svg class="path-lines-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+			{#each pathLines as line}
+				<line 
+					x1="{line.x1}%" 
+					y1="{line.y1}%" 
+					x2="{line.x2}%" 
+					y2="{line.y2}%" 
+					class="path-line"
+					stroke="rgba(160, 160, 160, 0.3)"
+					stroke-width="0.3"
+					stroke-dasharray="1,0.5"
+				/>
+			{/each}
+		</svg>
 		
 		<!-- Dynamische Level Buttons mit Icons -->
 		{#each levelData as level}
@@ -69,7 +220,7 @@
 				on:click={() => LevelJoin(level.id)}
 				on:mouseenter={() => onLevelHover(level)}
 				on:mouseleave={onLevelLeave}
-				title={level.name}
+				title="{level.name}"
 			>
 				{#if iconLoadStates[level.id] === false}
 					<!-- Fallback: Nur Zahl wenn Icon fehlt -->
@@ -128,6 +279,17 @@
 		max-height: 100%;
 	}
 
+	/* SVG für Pfadlinien */
+	.path-lines-svg {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+		z-index: 1;
+	}
+
 	/* Header Overlay */
 	.map-header-overlay {
 		position: absolute;
@@ -178,6 +340,7 @@
 		
 		/* Basis Shadow */
 		filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.4));
+		z-index: 10;
 	}
 
 	/* LARGE Icons */
