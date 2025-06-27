@@ -14,7 +14,7 @@
   function startWithSelectedLevel() {
     gameMode.set('progressive');
     unlockLevelsUpTo(selectedLevel);
-    goto(`/levels/level${selectedLevel}`);
+    goto(`/map`);
   }
 </script>
 
