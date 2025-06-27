@@ -286,15 +286,6 @@ console.log(prompt)
       </div>
     </div>
     <div class="mascot-and-settings-container">
-      <div class="settings-button-container">
-        <button class="settings-button" on:click={() => showSettings = !showSettings}>⚙️</button>
-        {#if showSettings}
-          <div class="settings-menu" transition:fade>
-            <button on:click={goToMap}><span>🗺️</span> Zur Karte</button>
-            <button on:click={goToHome}><span>🏠</span> Hauptbildschirm</button>
-          </div>
-        {/if}
-      </div>
       <div class="mascot-container">
         <img 
           src={imageSrc} 
