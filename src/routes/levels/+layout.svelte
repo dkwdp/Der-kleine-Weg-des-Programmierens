@@ -201,7 +201,7 @@ ${code}
 \`\`\`
 Deine Aufgabe ist: Der Code ist von einem Kind. 
 Zeige dem Kind die Fehler und helfe ihm diese zu lösen. 
-Sie nett und nicht zu hart. 
+Sei nett und nicht zu hart. 
 Erkläre die Fehler und stelle sicher, dass bei dem Kind alles verständlich ankommt. 
 Gib nicht die Lösung vor.
 Formatiere deine Antwort übersichtlich. 

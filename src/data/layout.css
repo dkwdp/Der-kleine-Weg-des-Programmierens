@@ -225,24 +225,6 @@
     margin: 0 0 0.5rem 0;
   }
 
-  button {
-    padding: 0.5rem 1rem;
-    background-color: var(--primary);
-    color: white;
-    border: none;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: var(--transition);
-  }
-
-  button:hover {
-    background-color: #444242;
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-sm);
-  }
-
   .output-container {
     margin-top: 1.5rem;
     background: var(--background);
@@ -414,34 +396,64 @@
 
   /* Next-Level Button Styling */
 .nav-button.next-level.disabled {
-  background-color: #cccccc !important; /* Grau */
-  color: #666666 !important; /* Dunkler grauer Text */
-  cursor: not-allowed !important; /* "Nicht erlaubt" Cursor */
-  opacity: 0.6; /* Leicht transparent */
+  background-color: #cccccc !important; 
+  color: #666666 !important; 
+  cursor: not-allowed !important; 
+  opacity: 0.6; 
 }
 
 .nav-button.next-level.disabled:hover {
-  background-color: #cccccc !important; /* Bleibt grau beim Hover */
-  transform: none !important; /* Keine Hover-Animation */
-  box-shadow: none !important; /* Kein Hover-Schatten */
+  background-color: #cccccc !important; 
+  transform: none !important; 
+  box-shadow: none !important;
 }
 
   .nav-button.next-level.disabled .tooltip {
-    display: none; /* Tooltip ausblenden wenn deaktiviert */
+    display: none; 
   }
 
   .nav-button.next-level.enabled {
-    /* Normale Button-Styles wenn aktiviert - passe an deine bestehenden Styles an */
-    background-color: #4CAF50; /* Grün oder deine normale Farbe */
+    background-color: #4CAF50;
     color: white;
     cursor: pointer;
   }
 
   .nav-button.next-level.enabled:hover {
-    /* Normale Hover-Effekte wenn aktiviert - passe an deine bestehenden Styles an */
     background-color: #45a049;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   }
+
+  main button {
+  padding: 0.5rem 1rem;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: var(--transition);
+  margin: 0.25rem;
+}
+
+main button:hover {
+  background-color: #444242;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+main button:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+main button:disabled:hover {
+  background-color: #cccccc;
+  transform: none;
+  box-shadow: none;
+}
 
   

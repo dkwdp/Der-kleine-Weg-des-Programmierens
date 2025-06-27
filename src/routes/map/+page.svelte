@@ -25,12 +25,11 @@
 
 	let iconLoadStates = {};
 
-	// ===== LEVEL ACCESS LOGIC =====
 	function isLevelUnlocked(levelId) {
 		return $gameMode === 'free' || $unlockedLevels.includes(levelId);
 	}
 
-	// ===== MASCOT MANAGEMENT =====
+	// Maskottchen
 	function updateMascot(newEmotion, newMessage) {
 		emotion = newEmotion;
 		message = newMessage;
@@ -106,7 +105,7 @@
 		return getRandomMessage(welcomeMessages);
 	}
 
-	// ===== LEVEL INTERACTION =====
+	// Level Interaktion
 	function LevelJoin(levelId) {
 		if (!isLevelUnlocked(levelId)) {
 			updateMascot('sad', `Level ${levelId} ${getRandomMessage(lockedMessages)}`);
@@ -147,7 +146,7 @@
 		updateMascot(currentNeutralState, getRandomMessage(leaveMessages));
 	}
 
-	// ===== PATH LINES =====
+	// Path Linien
 	function createPathLines() {
 		let pathLines = [];
 		for (let i = 0; i < levelData.length - 1; i++) {
@@ -167,7 +166,7 @@
 
 	const pathLines = createPathLines();
 
-	// ===== ICON MANAGEMENT =====
+	// Icons
 	function handleIconError(levelId) {
 		iconLoadStates[levelId] = false;
 		iconLoadStates = { ...iconLoadStates };
@@ -178,7 +177,7 @@
 		iconLoadStates = { ...iconLoadStates }; 
 	}
 
-	// ===== INITIALIZATION =====
+	// Initialisierung
 	import { onMount, onDestroy } from 'svelte';
 	
 	onMount(() => {
@@ -256,7 +255,6 @@
 </div>
 
 <style>
-	/* ===== GLOBAL STYLES ===== */
 	:global(html) {
 		overflow: auto;
 		overscroll-behavior: none; /* Verhindert Overscroll */
@@ -291,7 +289,7 @@
 		display: none; /* Webkit (Chrome, Safari) */
 	}
 
-	/* ===== LAYOUT ===== */
+	/* Layout */
 	.page-container {
 		width: 100%;
 		min-height: 100vh;
@@ -311,7 +309,7 @@
 		display: block;
 	}
 
-	/* ===== HEADER ===== */
+	/* Header */
 	.map-header-overlay {
 		position: absolute;
 		top: 20px;
@@ -341,7 +339,7 @@
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	}
 
-	/* ===== PATH LINES ===== */
+	/* Path Linien */
 	.path-lines-svg {
 		position: absolute;
 		top: 0;
@@ -352,7 +350,7 @@
 		z-index: 1;
 	}
 
-	/* ===== LEVEL BUTTONS ===== */
+	/* Level Buttons */
 	.level-button {
 		position: absolute;
 		transform: translate(-50%, -50%);
@@ -395,7 +393,7 @@
 		pointer-events: none;
 	}
 
-	/* ===== LEVEL ICONS ===== */
+	/* Level Icons */
 	.level-icon {
 		width: 100%;
 		height: 100%;
@@ -432,7 +430,7 @@
 		pointer-events: none;
 	}
 
-	/* ===== FALLBACK BUTTONS ===== */
+	/* Fallback Buttons */
 	.level-number-only {
 		width: 100%;
 		height: 100%;
@@ -459,7 +457,7 @@
 		font-size: clamp(16px, 2.5vw, 24px);
 	}
 
-	/* ===== HOVER & ACTIVE EFFECTS ===== */
+	/* Hover Effekte */
 	.level-button.unlocked:hover {
 		transform: translate(-50%, -50%) scale(1.05);
 		filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5));
