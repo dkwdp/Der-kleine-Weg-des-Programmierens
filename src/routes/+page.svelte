@@ -146,45 +146,6 @@
     background: linear-gradient(135deg, #229954 0%, #1e8449 100%);
     box-shadow: 0 8px 25px rgba(39, 174, 96, 0.5);
   }
-
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .buttons {
-      bottom: 10%;
-      gap: 15px;
-    }
-
-    button {
-      padding: 12px 25px;
-      font-size: 1rem;
-      min-width: 160px;
-    }
-
-    .level-select {
-      width: 120px;
-      padding: 10px 12px;
-      font-size: 1rem;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .buttons {
-      bottom: 8%;
-      gap: 12px;
-    }
-
-    button {
-      padding: 10px 20px;
-      font-size: 0.95rem;
-      min-width: 140px;
-    }
-
-    .level-select {
-      width: 100px;
-      padding: 8px 10px;
-      font-size: 0.9rem;
-    }
-  }
 </style>
 
 <div class="page-container">

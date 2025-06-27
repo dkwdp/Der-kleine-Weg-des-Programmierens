@@ -238,7 +238,7 @@
   }
 
   button:hover {
-    background-color: #FFFFFF;
+    background-color: #444242;
     transform: translateY(-1px);
     box-shadow: var(--shadow-sm);
   }
@@ -443,76 +443,5 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   }
-  /* Responsive Design */
-  @media (max-width: 1024px) {
-    .sidebar {
-      width: 35%;
-      padding: 1rem;
-    }
 
-    .editor-container {
-      padding: 1rem;
-    }
-
-    .mascot-container {
-      width: 100px;
-    }
-
-    .mascot-and-settings-container {
-      right: 1rem;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .container {
-      flex-direction: column;
-    }
-
-    .sidebar {
-      width: 100%;
-      padding: 1rem;
-    }
-
-    .coding-area {
-      width: 100%;
-      padding-bottom: 100px; /* Platz für den Navigationsbalken */
-    }
-
-    .mascot-and-settings-container {
-      right: 0.75rem;
-      bottom: 5rem;
-      flex-direction: column-reverse;
-      align-items: flex-end;
-      gap: 0.5rem;
-    }
-
-    .mascot-container {
-      width: 80px;
-    }
-
-    .settings-button-container {
-      margin-bottom: 0;
-    }
-
-    .resizer {
-      display: none;
-    }
-    
-    /* Anpassung für mobile Geräte */
-    .navigation-bar {
-      justify-content: space-around;
-      padding: 0.5rem;
-      gap: 0;
-    }
-    
-    .nav-button {
-      width: 36px;
-      height: 36px;
-    }
-    
-    .nav-button .tooltip {
-      font-size: 0.7rem;
-      padding: 0.2rem 0.4rem;
-    }
-  }
   

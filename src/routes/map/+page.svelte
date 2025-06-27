@@ -469,19 +469,4 @@
 		transform: translate(-50%, -50%) scale(1.15);
 		transition: all 0.1s ease;
 	}
-
-	/* ===== MOBILE RESPONSIVE ===== */
-	@media (max-width: 768px) {
-		.map-container {
-			min-width: 800px;
-		}
-		
-		.map-header-overlay {
-			padding: 1rem 1.5rem;
-		}
-		
-		.map-header-overlay h1 {
-			font-size: 1.2rem;
-		}
-	}
 </style>
