@@ -424,8 +424,8 @@
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		transform: translate(-50%, -50%);
-		font-size: clamp(20px, 3vw, 40px);
+		transform: translate(-50%, -63%);
+		font-size: clamp(20px, 2vw, 40px);
 		z-index: 2;
 		pointer-events: none;
 	}

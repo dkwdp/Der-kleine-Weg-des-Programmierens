@@ -67,7 +67,7 @@
     filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
   }
 
-  /* Sanfte Schwebe-Animation */
+  /* Schwebe-Animation */
   @keyframes gentleBob {
     0%, 100% { 
       transform: translateY(0px) scale(1);

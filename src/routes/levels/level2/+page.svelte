@@ -78,5 +78,4 @@
     padding: 20px;
     text-align: center;
   }
-  /* Button-Styles sind jetzt in layout.css */
 </style>
