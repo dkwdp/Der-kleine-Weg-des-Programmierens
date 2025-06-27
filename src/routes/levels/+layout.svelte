@@ -2,7 +2,7 @@
   import { goto } from '$app/navigation';
   import { onMount } from "svelte";
   import { get } from "svelte/store";
-  import { myVariable, isCurrentLevelDrawing, outputID, solvedLevel, levelID } from "$lib/stores/editorStore";
+  import { myVariable, isCurrentLevelDrawing, outputID, solvedLevel, levelID, unlockNextLevel } from "$lib/stores/editorStore";
   import JavaScriptEditor from "$lib/JavaScriptEditor.svelte";
   import levels from "$data/levels.json";
   import P5Canvas from "$lib/Canvas/p5Canvas.svelte";
@@ -18,6 +18,11 @@
   let canvasRef;
   let showSettings = false;
   let codeOutput;
+
+  // Tracking für Level-Completion
+  let currentLevelData = {};
+  let solvedTasks = [];
+  let allTasksSolved = false;
 
   const tips = [
     "Probier mal console.log()!",
@@ -44,10 +49,31 @@
   }
 
   function goToNextLevel() {
-    // Hier Logik für das nächste Level einfügen
-    // Zum Beispiel:
-    // levelID.update(n => n + 1);
-    alert("Nächstes Level wird geladen...");
+    if (allTasksSolved) {
+      unlockNextLevel($levelID);
+      goto(`/levels/level${$levelID + 2}`);
+    }
+  }
+
+  // Reactive statements für Level-Tracking
+  $: currentLevelData = levels[$levelID] || {};
+  $: if (currentLevelData.description) {
+    // Initialisiere solvedTasks array wenn sich das Level ändert
+    if (solvedTasks.length !== currentLevelData.description.length) {
+      solvedTasks = new Array(currentLevelData.description.length).fill(false);
+      allTasksSolved = false;
+    }
+  }
+
+  // Überwache wenn eine Task gelöst wird
+  $: if ($solvedLevel && $outputID >= 0 && $outputID < solvedTasks.length) {
+    solvedTasks[$outputID] = true;
+    checkLevelCompletion();
+  }
+
+  function checkLevelCompletion() {
+    allTasksSolved = solvedTasks.every(task => task === true);
+    console.log('Level completion check:', { solvedTasks, allTasksSolved });
   }
 
   function handleMascotClick() {
@@ -295,10 +321,14 @@ console.log(prompt)
       <span class="icon">🏠</span>
       <span class="tooltip">Hauptbildschirm</span>
     </button>
-    <button class="nav-button next-level" on:click={goToNextLevel} aria-label="Nächstes Level">
+    <button 
+      class="nav-button next-level {allTasksSolved ? 'enabled' : 'disabled'}" 
+      on:click={goToNextLevel} 
+      aria-label="Nächstes Level"
+      disabled={!allTasksSolved}
+    >
       <span class="icon">⏭️</span>
       <span class="tooltip">Nächstes Level</span>
     </button>
   </div>
 </main>
-

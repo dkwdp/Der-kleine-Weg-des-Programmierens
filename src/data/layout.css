@@ -476,6 +476,37 @@
     background: var(--primary);
   }
 
+  /* Next-Level Button Styling */
+.nav-button.next-level.disabled {
+  background-color: #cccccc !important; /* Grau */
+  color: #666666 !important; /* Dunkler grauer Text */
+  cursor: not-allowed !important; /* "Nicht erlaubt" Cursor */
+  opacity: 0.6; /* Leicht transparent */
+}
+
+.nav-button.next-level.disabled:hover {
+  background-color: #cccccc !important; /* Bleibt grau beim Hover */
+  transform: none !important; /* Keine Hover-Animation */
+  box-shadow: none !important; /* Kein Hover-Schatten */
+}
+
+  .nav-button.next-level.disabled .tooltip {
+    display: none; /* Tooltip ausblenden wenn deaktiviert */
+  }
+
+  .nav-button.next-level.enabled {
+    /* Normale Button-Styles wenn aktiviert - passe an deine bestehenden Styles an */
+    background-color: #4CAF50; /* Grün oder deine normale Farbe */
+    color: white;
+    cursor: pointer;
+  }
+
+  .nav-button.next-level.enabled:hover {
+    /* Normale Hover-Effekte wenn aktiviert - passe an deine bestehenden Styles an */
+    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
   /* Responsive Design */
   @media (max-width: 1024px) {
     .sidebar {
@@ -548,3 +579,4 @@
       padding: 0.2rem 0.4rem;
     }
   }
+  

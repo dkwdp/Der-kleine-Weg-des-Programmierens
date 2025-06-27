@@ -68,8 +68,6 @@
     {/if}
     {#if $outputID + 1 < currentLevel.description.length}
       <button on:click={nextTask}>Weiter</button>
-    {:else}
-      <button on:click={nextTask}>Nächstes Level</button>
     {/if}
   {/if}
 </main>

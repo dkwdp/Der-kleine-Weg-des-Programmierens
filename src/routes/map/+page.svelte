@@ -26,34 +26,28 @@
 	let iconLoadStates = {};
 
 	// ===== LEVEL ACCESS LOGIC =====
-	
-	// Prüfen ob Level zugänglich ist
 	function isLevelUnlocked(levelId) {
 		return $gameMode === 'free' || $unlockedLevels.includes(levelId);
 	}
 
 	// ===== MASCOT MANAGEMENT =====
-	
-	// Zentrale Mascot Update Funktion
 	function updateMascot(newEmotion, newMessage) {
 		emotion = newEmotion;
 		message = newMessage;
 		resetInactivityTimer();
 	}
 
-	// Timer Management für Auto-Messages
 	function resetInactivityTimer() {
 		clearTimeout(inactivityTimer);
 		inactivityTimer = setTimeout(() => {
 			if (emotion === 'neutral' || emotion === 'neutral2') {
-				// Wechsel zwischen neutral states für Abwechslung
 				currentNeutralState = currentNeutralState === 'neutral' ? 'neutral2' : 'neutral';
 				updateMascot(currentNeutralState, getRandomIdleMessage());
 			}
-		}, 7000); // Nach 7 Sekunden neue Message
+		}, 7000);
 	}
 
-	// Verschiedene Message-Arrays für Abwechslung
+	// Message Arrays
 	const welcomeMessages = [
 		'Yo, wieder da! 🐧',
 		'Pingu ist zurück! Bock zu coden?',
@@ -99,7 +93,7 @@
 		'ist noch im Eis gefangen!'
 	];
 
-	// Hilfsfunktionen für Messages
+	// Hilfsfunktionen
 	function getRandomMessage(messageArray) {
 		return messageArray[Math.floor(Math.random() * messageArray.length)];
 	}
@@ -113,15 +107,12 @@
 	}
 
 	// ===== LEVEL INTERACTION =====
-
-	// Level-Referenz mit Mascot-Feedback
 	function LevelJoin(levelId) {
 		if (!isLevelUnlocked(levelId)) {
 			updateMascot('sad', `Level ${levelId} ${getRandomMessage(lockedMessages)}`);
 			return;
 		}
 		
-		const level = levelData.find(l => l.id === levelId);
 		const goMessages = [
 			'Rutsch-Zeit! 🐧',
 			'Auf geht\'s zum Watscheln!',
@@ -131,13 +122,11 @@
 		];
 		updateMascot('switch', getRandomMessage(goMessages));
 		
-		// Kurze Verzögerung für Mascot-Feedback, dann Navigation
 		setTimeout(() => {
 			goto(`/levels/level${levelId}`);
 		}, 800);
 	}
 
-	// Intelligentere Level-Hover Funktion
 	function onLevelHover(level) {
 		if (!isLevelUnlocked(level.id)) {
 			updateMascot('sad', `Level ${level.id} ${getRandomMessage(lockedMessages)}`);
@@ -148,7 +137,6 @@
 		updateMascot('think', `Level ${level.id} ${hoverMessage}`);
 	}
 
-	// Level-Leave mit intelligenter Rückkehr
 	function onLevelLeave() {
 		const leaveMessages = [
 			'Watschel rum! 🐧',
@@ -160,7 +148,6 @@
 	}
 
 	// ===== PATH LINES =====
-	
 	function createPathLines() {
 		let pathLines = [];
 		for (let i = 0; i < levelData.length - 1; i++) {
@@ -181,7 +168,6 @@
 	const pathLines = createPathLines();
 
 	// ===== ICON MANAGEMENT =====
-	
 	function handleIconError(levelId) {
 		iconLoadStates[levelId] = false;
 		iconLoadStates = { ...iconLoadStates };
@@ -193,12 +179,9 @@
 	}
 
 	// ===== INITIALIZATION =====
-	
-	// Beim Laden der Komponente
 	import { onMount, onDestroy } from 'svelte';
 	
 	onMount(() => {
-		// Sofort eine Willkommensnachricht anzeigen
 		const welcomeMsg = getWelcomeMessage();
 		emotion = 'neutral';
 		message = welcomeMsg;
@@ -210,19 +193,16 @@
 	});
 </script>
 
-<!-- Mascot ohne Klick-Handler -->
 <Mascot {emotion} {message} />
 
 <div class="page-container">
 	<div class="map-container" role="application">
 		<img src="/map.png" alt="Adventure Map" class="map-image" />
 		
-		<!-- Overlay Header direkt über der Map -->
 		<div class="map-header-overlay">
 			<h1>Willkommen im Coder-Dojo Abenteuerpfad!</h1>
 		</div>
 
-		<!-- SVG für die Pfadlinien -->
 		<svg class="path-lines-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
 			{#each pathLines as line}
 				<line 
@@ -238,7 +218,6 @@
 			{/each}
 		</svg>
 		
-		<!-- Dynamische Level Buttons mit Icons -->
 		{#each levelData as level}
 			<button 
 				class="level-button {level.size} {isLevelUnlocked(level.id) ? 'unlocked' : 'locked'}"
@@ -250,12 +229,10 @@
 				disabled={!isLevelUnlocked(level.id)}
 			>
 				{#if iconLoadStates[level.id] === false}
-					<!-- Fallback: Nur Zahl wenn Icon fehlt -->
 					<div class="level-number-only">
 						{level.id}
 					</div>
 				{:else}
-					<!-- Icon + Nummer -->
 					<img 
 						src="/icons/{level.icon}.png" 
 						alt="{level.name}"
@@ -268,7 +245,6 @@
 					</div>
 				{/if}
 				
-				<!-- Lock-Icon für gesperrte Level -->
 				{#if !isLevelUnlocked(level.id)}
 					<div class="lock-overlay">
 						🔒
@@ -280,48 +256,62 @@
 </div>
 
 <style>
-	/* Global Reset - Scrolling ermöglichen */
+	/* ===== GLOBAL STYLES ===== */
+	:global(html) {
+		overflow: auto;
+		overscroll-behavior: none; /* Verhindert Overscroll */
+		scrollbar-width: none; /* Firefox */
+		-ms-overflow-style: none; /* Internet Explorer 10+ */
+	}
+
+	:global(html::-webkit-scrollbar) {
+		display: none; /* Webkit (Chrome, Safari) */
+	}
+
 	:global(body) {
 		margin: 0;
 		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-		overflow-x: auto; /* Horizontal scrolling erlauben */
-		overflow-y: auto; /* Vertical scrolling erlauben */
+		overflow: auto;
+		overscroll-behavior: none; /* Verhindert Bounce-Effekt */
+		scrollbar-width: none; /* Firefox */
+		-ms-overflow-style: none; /* Internet Explorer 10+ */
+	}
+	
+	:global(body::-webkit-scrollbar) {
+		display: none; /* Webkit (Chrome, Safari) */
 	}
 
-	/* Main Container - Scrolling unterstützen */
+	/* Auch für alle anderen Container */
+	:global(*) {
+		scrollbar-width: none; /* Firefox */
+		-ms-overflow-style: none; /* Internet Explorer 10+ */
+	}
+
+	:global(*::-webkit-scrollbar) {
+		display: none; /* Webkit (Chrome, Safari) */
+	}
+
+	/* ===== LAYOUT ===== */
 	.page-container {
-		display: block; /* Flexbox entfernt für besseres Scrolling */
-		min-height: 100vh; /* Mindesthöhe statt feste Höhe */
 		width: 100%;
+		min-height: 100vh;
 	}
 
 	.map-container {
 		position: relative;
 		width: 100%;
-		min-height: 100vh; /* Mindesthöhe für Scrolling */
-		min-width: 1200px; /* Mindestbreite für horizontales Scrolling */
-		display: block; /* Kein Flexbox für besseres Scrolling */
+		min-height: 100vh;
+		min-width: 1200px;
 	}
 
 	.map-image {
 		width: 100%;
-		min-height: 100vh; /* Mindesthöhe */
-		object-fit: cover; /* Cover statt contain für bessere Darstellung */
+		min-height: 100vh;
+		object-fit: cover;
 		display: block;
 	}
 
-	/* SVG für Pfadlinien */
-	.path-lines-svg {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		pointer-events: none;
-		z-index: 1;
-	}
-
-	/* Header Overlay */
+	/* ===== HEADER ===== */
 	.map-header-overlay {
 		position: absolute;
 		top: 20px;
@@ -331,7 +321,7 @@
 		z-index: 100;
 		pointer-events: none;
 		
-		/* Glasmorphism-Effekt */
+		/* Glasmorphism */
 		background: rgba(255, 255, 255, 0.15);
 		backdrop-filter: blur(10px);
 		border: 1px solid rgba(255, 255, 255, 0.2);
@@ -351,12 +341,21 @@
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	}
 
-	/* Level Buttons */
+	/* ===== PATH LINES ===== */
+	.path-lines-svg {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+		z-index: 1;
+	}
+
+	/* ===== LEVEL BUTTONS ===== */
 	.level-button {
 		position: absolute;
 		transform: translate(-50%, -50%);
-		
-		/* Icon-Button Styling */
 		background: transparent;
 		border: none;
 		display: flex;
@@ -364,50 +363,39 @@
 		align-items: center;
 		cursor: pointer;
 		padding: 2px;
-		
-		/* Smoother Animationen */
 		transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 		user-select: none;
-		
-		/* Basis Shadow */
 		filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.4));
 		z-index: 10;
 	}
 
-	/* LARGE Icons */
+	/* Button Größen */
 	.level-button.large {
 		width: clamp(180px, 20vw, 400px);
 		height: clamp(180px, 20vw, 400px);
 		filter: drop-shadow(0 15px 40px rgba(0, 0, 0, 0.6));
 	}
 
-	/* MEDIUM Icons */
 	.level-button.medium {
 		width: clamp(120px, 12vw, 250px);
 		height: clamp(120px, 12vw, 250px);
 		filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
 	}
 
-	/* SMALL Icons */
 	.level-button.small {
 		width: clamp(80px, 8vw, 150px);
 		height: clamp(80px, 8vw, 150px);
 		filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.4));
 	}
 
-	/* Gesperrte Level Styles */
+	/* Gesperrte Level */
 	.level-button.locked {
 		filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.2)) grayscale(100%) brightness(0.5);
 		cursor: not-allowed;
 		pointer-events: none;
 	}
 
-	.level-button.locked:hover {
-		transform: translate(-50%, -50%);
-		filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.2)) grayscale(100%) brightness(0.5);
-	}
-
-	/* Level Icon Styling */
+	/* ===== LEVEL ICONS ===== */
 	.level-icon {
 		width: 100%;
 		height: 100%;
@@ -415,31 +403,25 @@
 		transition: all 0.3s ease;
 	}
 
-	/* Nummer auf dem Icon*/
 	.level-number-overlay {
 		position: absolute;
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		
 		font-size: clamp(10px, 1.5vw, 16px);
 		color: white;
 		font-family: 'Arial Black', sans-serif;
-		
-		/* Black Outline für bessere Sichtbarkeit */
 		text-shadow: 
 			-1px -1px 0 #000,
 			 1px -1px 0 #000,
 			-1px  1px 0 #000,
 			 1px  1px 0 #000,
 			 0 0 3px rgba(0, 0, 0, 1);
-		
 		pointer-events: none;
 		z-index: 1;
 		transition: all 0.3s ease;
 	}
 
-	/* Lock Overlay für gesperrte Level */
 	.lock-overlay {
 		position: absolute;
 		top: 50%;
@@ -450,7 +432,7 @@
 		pointer-events: none;
 	}
 
-	/* Fallback-Buttons */
+	/* ===== FALLBACK BUTTONS ===== */
 	.level-number-only {
 		width: 100%;
 		height: 100%;
@@ -467,7 +449,6 @@
 		transition: all 0.3s ease;
 	}
 
-	/* Größenspezifische Schriftgrößen */
 	.level-button.large .level-number-only {
 		font-size: clamp(24px, 4vw, 45px);
 	}
@@ -478,22 +459,21 @@
 		font-size: clamp(16px, 2.5vw, 24px);
 	}
 
-	/* Hover-Effekte für freigeschaltete Level */
+	/* ===== HOVER & ACTIVE EFFECTS ===== */
 	.level-button.unlocked:hover {
 		transform: translate(-50%, -50%) scale(1.05);
 		filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5));
 	}
 
-	/* Klick-Effekt für freigeschaltete Level */
 	.level-button.unlocked:active {
 		transform: translate(-50%, -50%) scale(1.15);
 		transition: all 0.1s ease;
 	}
 
-	/* Mobile Anpassungen für besseres Scrolling */
+	/* ===== MOBILE RESPONSIVE ===== */
 	@media (max-width: 768px) {
 		.map-container {
-			min-width: 800px; /* Kleinere Mindestbreite für Mobile */
+			min-width: 800px;
 		}
 		
 		.map-header-overlay {

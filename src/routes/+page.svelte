@@ -19,6 +19,12 @@
 </script>
 
 <style>
+  /* Overscroll-Schutz für die gesamte Seite */
+  :global(html) {
+    overflow: hidden;
+    height: 100%;
+  }
+
   /* Hintergrundfarbe der gesamten Seite */
   :global(body) {
     margin: 0;
@@ -26,6 +32,8 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #ffffff;
     overflow: hidden;
+    height: 100vh;
+    overscroll-behavior: none; /* Verhindert Bounce-Effekt */
   }
   
   /* Container für zentrierte Inhalte */
@@ -36,8 +44,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden; /* Verhindert Scrollen im Container */
   }
-  
+    
   .image-container {
     position: relative;
     width: 100%;
@@ -50,6 +59,8 @@
     height: 100%;
     object-fit: cover;
     display: block;
+    user-select: none; /* Verhindert Text-/Bildauswahl */
+    -webkit-user-drag: none; /* Verhindert Drag & Drop */
   }
 
   /* Buttons Container */
@@ -112,6 +123,7 @@
     box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    user-select: none; /* Verhindert Text-Auswahl */
   }
 
   button:hover {
