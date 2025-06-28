@@ -259,8 +259,8 @@ console.log(prompt)
   <div class="container">
     <div class="sidebar">
       <div class="header">
-        <h1>Javascript Abenteuer</h1>
-        <div class="subtitle">Programmieren lernen mit Leichtigkeit</div>
+        <h1>Pinu's Abenteuer</h1>
+        <div class="subtitle">Level {$levelID + 1}</div>
       </div>
       <slot />
     </div>

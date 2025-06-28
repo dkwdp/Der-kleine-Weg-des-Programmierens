@@ -1,15 +1,32 @@
 [
     {
         "id": 1,
-        "title": ["'Hello World!'","Rechnen mit Zahlen"],
-        "description": ["Schreibe deine erste Ausgabe!", "Schreib eine Rechnung mit zwei Zahlen, welche als Ergebnis vier ausgibt" ],
-        "expectedOutput": ["Hello World!", "4"],
-        "initialCode": ["console.log('')", "console.log()" ],
-        "type": "calculation",
+        "title": [
+                            "Einführung",
+                            "'Hello World!'",
+                            "Einführung Rechnen mit Zahlen"
+                ],
+        "description": [
+                            "Lass uns zuerst mit einer kleinen Einführung in deine Lernumgebung beginnen. Hier, wo dieser Text steht, findest du die Aufgabenstellungen. Auf der rechten Seite siehst du deinen Code-Editor. Dort wirst du für alle Level die Aufgaben lösen können.", 
+                            "'Hello World!' ist für viele Programmierer die erste Aufgabe gewesen. Das Ziel ist es, dass du am Ende die Worte 'Hello World!' zurückbekommst. Im Code-Editor siehst du 'console.log(' ')'. Das musst du dir so vorstellen, dass alles, was in diesen KLammern steht, dir am Ende vom Computer zurückgegeben wird. Probiere es aus!",
+                            "Schreib eine Rechnung mit zwei Zahlen, welche als Ergebnis vier ausgibt" 
+                        ],
+        "expectedOutput": [
+                            "undefined",
+                            "Hello World!",
+                            "4"
+                        ],
+        "initialCode": [
+                            "// Hier kommt dein Code hin!",
+                            "console.log('')",
+                            "console.log()"
+                        ],
+        "type":             "calculation",
         "hints": [
-                        "Mit dem Text console.log() kannst du Text im Computer anzeigen. Der Computer gibt genau das wieder was zwischen den Anführungszeichen steht."
-                        ,"Achtung! Bei Rechnungen brauch man keine Anführungsstriche. Schreib zum Beispiel: 2 + 2"
-        ]
+                            "Hier unter der Glühbirne, wirst du Hinweise finden, die dir beim Lösen der Aufgaben helfen können.",
+                            "Schreibe 'Hello World!' in die Klammern vom 'console.log(' ')'. Achte auf die Groß- und Kleinschreibung!",
+                            "Achtung! Bei Rechnungen brauch man keine Anführungsstriche. Schreib zum Beispiel: 2 + 2"
+                ]
     },
     {
         "id": 2,
