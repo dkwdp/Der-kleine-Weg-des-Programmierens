@@ -10,16 +10,15 @@
   import "/src/data/layout.css";
 
   let output = "";
-  let currentLevel = 0;
   let emotion = 'neutral';
   let message = '';
+  let pulseHint = false;
   let isDragging = false;
   let startX, startLeftWidth;
   let canvasRef;
   let showSettings = false;
   let codeOutput;
 
-  // Tracking für Level-Completion
   let currentLevelData = {};
   let solvedTasks = [];
   let allTasksSolved = false;
@@ -40,32 +39,14 @@
     neutral2: '/PinuNeutral2.png',
   };
 
-  function goToMap() {
-    window.location.href = '/map';
-  }
-
-  function goToHome() {
-    window.location.href = '/';
-  }
-
-  function goToNextLevel() {
-    if (allTasksSolved) {
-      unlockNextLevel($levelID);
-      goto(`/levels/level${$levelID + 2}`);
-    }
-  }
-
-  // Reactive statements für Level-Tracking
   $: currentLevelData = levels[$levelID] || {};
   $: if (currentLevelData.description) {
-    // Initialisiere solvedTasks array wenn sich das Level ändert
     if (solvedTasks.length !== currentLevelData.description.length) {
       solvedTasks = new Array(currentLevelData.description.length).fill(false);
       allTasksSolved = false;
     }
   }
 
-  // Überwache wenn eine Task gelöst wird
   $: if ($solvedLevel && $outputID >= 0 && $outputID < solvedTasks.length) {
     solvedTasks[$outputID] = true;
     checkLevelCompletion();
@@ -73,7 +54,21 @@
 
   function checkLevelCompletion() {
     allTasksSolved = solvedTasks.every(task => task === true);
-    console.log('Level completion check:', { solvedTasks, allTasksSolved });
+    if (allTasksSolved) {
+      emotion = 'happy';
+      message = '🎉 Level abgeschlossen! Klick auf 🗺️ um weiterzugehen!';
+      pulseHint = true;
+    } else {
+      pulseHint = false;
+    }
+  }
+
+  function goToMap() {
+    window.location.href = '/map';
+  }
+
+  function goToHome() {
+    window.location.href = '/';
   }
 
   function handleMascotClick() {
@@ -170,7 +165,8 @@
       message = 'Versuch es nochmal!';
     }
   }
-   let isOpen = false;
+
+  let isOpen = false;
 
   function toggleMenu() {
     isOpen = !isOpen;
@@ -180,20 +176,18 @@
     isOpen = false;
   }
 
-//bottom of script
-let loading = false;
+  let loading = false;
   let error = '';
   let code = '';
   let feedback = '';
 
   async function submitCode() {
-    if (codeOutput == levels[$levelID].expectedOutput[$outputID])return;
+    if (codeOutput == levels[$levelID].expectedOutput[$outputID]) return;
     loading = true;
     error = '';
     feedback = '';
     const code = get(myVariable);
 
-  
     const prompt = `Dieser Javascript Code wurde von einem Anfänger geschrieben:
 
 \`\`\`javascript 
@@ -208,9 +202,8 @@ Formatiere deine Antwort übersichtlich.
 Wenn keine Fehler da sind, sei motivierend. 
 Beantworte alles in maximal 3 Sätzen mit maximal 7 Wörtern pro Satz. 
 Die Antworten im Code sind auf Deutsch und Englisch möglich. 
-Antworte immer auf Deutsch. Der erwartete output ist '${levels[$levelID].expectedOutput[$outputID]}' beachte groß- und kleinschreibung und zeichensetzung"`;
+Antworte immer auf Deutsch. Der erwartete output ist '${levels[$levelID].expectedOutput[$outputID]}' beachte groß- und kleinschreibung und zeichensetzung`;
 
-console.log(prompt)
     try {
       const res = await fetch('http://141.45.153.208:5000/analyze', {
         method: 'POST',
@@ -232,30 +225,29 @@ console.log(prompt)
       loading = false;
     }
   }
+
 </script>
 
+
+
 <main>
-  <div class = "top-bar">
-    <button class = "banner-button" on:click={goto('/map')}>
-    <img src="/banner.png" alt="Header Background" class="header-image" />
+  <div class="top-bar">
+    <button class="banner-button" on:click={() => goto('/map')}>
+      <img src="/banner.png" alt="Header Background" class="header-image" />
     </button>
-    <button class ="beltButton" on:click={toggleMenu}>
-  Sammlung
-</button>
-{#if isOpen}
-  <div class="popup-menu">
-  
-    <button class="close-btn" on:click={closeMenu}>✕</button>
-
-    <div class="image-buttons">
-      <img src="/lockedBelt.png" alt="Option 1" />
-      <img src="/lockedBelt.png" alt="Option 2" />
-      <img src="/lockedBelt.png" alt="Option 3" />
-    </div>
+    <button class="beltButton" on:click={toggleMenu}>Sammlung</button>
+    {#if isOpen}
+      <div class="popup-menu">
+        <button class="close-btn" on:click={closeMenu}>✕</button>
+        <div class="image-buttons">
+          <img src="/lockedBelt.png" alt="Option 1" />
+          <img src="/lockedBelt.png" alt="Option 2" />
+          <img src="/lockedBelt.png" alt="Option 3" />
+        </div>
+      </div>
+    {/if}
   </div>
-{/if}
 
-  </div>
   <div class="container">
     <div class="sidebar">
       <div class="header">
@@ -270,7 +262,7 @@ console.log(prompt)
         <div class="editor-header">
           <h2>Code Editor</h2>
           {#if !$isCurrentLevelDrawing}
-          <button on:click={() => { runJavaScript(); submitCode();}}>Ausführen</button>
+            <button on:click={() => { runJavaScript(); submitCode(); }}>Ausführen</button>
           {/if}
         </div>
         <JavaScriptEditor />
@@ -302,24 +294,29 @@ console.log(prompt)
     </div>
   </div>
 
-  <!-- Neuer dezenter Navigationsbalken -->
-  <div class="navigation-bar">
-    <button class="nav-button" on:click={goToMap} aria-label="Zurück zur Karte">
+  <!-- Navigation -->
+  <div class="navigation-bar" style="margin-top: 2rem; display: flex; justify-content: center;">
+    <button 
+      class="nav-button {pulseHint ? 'pulse' : ''}" 
+      on:click={goToMap} 
+      aria-label="Zurück zur Karte"
+    >
       <span class="icon">🗺️</span>
       <span class="tooltip">Zurück zur Karte</span>
     </button>
-    <button class="nav-button" on:click={goToHome} aria-label="Hauptbildschirm">
+
+    <button 
+      class="nav-button" 
+      on:click={goToHome} 
+      aria-label="Hauptbildschirm"
+    >
       <span class="icon">🏠</span>
       <span class="tooltip">Hauptbildschirm</span>
     </button>
-    <button 
-      class="nav-button next-level {allTasksSolved ? 'enabled' : 'disabled'}" 
-      on:click={goToNextLevel} 
-      aria-label="Nächstes Level"
-      disabled={!allTasksSolved}
-    >
-      <span class="icon">⏭️</span>
-      <span class="tooltip">Nächstes Level</span>
-    </button>
   </div>
+
+  <button class="pulse">Ausführen</button>
+
+
+
 </main>
