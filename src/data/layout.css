@@ -1,6 +1,6 @@
 :root {
-  --primary: #5B7553;            /* dunkles grün */
-  --primary-light: #B3CBB9;      /* helles grün */
+  --primary: #66B2FF;            /* helleres, kinderfreundliches Blau */
+  --primary-light: #B3D7FF;      /* helleres Blau-Light */
   --secondary: #3A3F58;          /* dunkelblau/grau */
   --accent: #8EA8C3;             /* pastellblau */
   --light: #E9F0ED;              /* sehr helles grün */
@@ -318,7 +318,7 @@ h3 {
 }
 
 /* Stile für den dezenten Navigationsbalken */
- .navigation-bar {
+.navigation-bar {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -419,43 +419,44 @@ h3 {
 
 main button {
   padding: 0.75rem 1.5rem;
-  background-color: #FF6F61; /* knalliges, kinderfreundliches Orange */
+  background-color: #66B2FF; /* helleres, kinderfreundliches Blau */
   color: white;
   border: none;
   border-radius: 12px; /* runder */
   cursor: pointer;
   font-size: 1.1rem;
   font-weight: 700;
-  box-shadow: 0 4px 8px rgba(255, 111, 97, 0.5);
+  box-shadow: 0 4px 8px rgba(102, 178, 255, 0.7);
   transition: all 0.3s ease;
   text-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 
 main button:hover {
-  background-color: #FF8A76;
-  box-shadow: 0 6px 12px rgba(255, 111, 97, 0.7);
+  background-color: #3E99FF;
+  box-shadow: 0 6px 12px rgba(62, 153, 255, 0.8);
   transform: translateY(-3px) scale(1.05);
 }
 
 main button:active {
   transform: translateY(-1px) scale(0.98);
-  box-shadow: 0 3px 6px rgba(255, 111, 97, 0.4);
+  box-shadow: 0 3px 6px rgba(62, 153, 255, 0.5);
 }
 
-/* Optional: sanfter Puls für Aufmerksamkeit */
+/* Stärker pulsierende Animation für Buttons nach Levelabschluss */
 main button.pulse {
-  animation: pulse-glow 2s infinite;
+  animation: pulse-strong-blue 1.5s infinite;
 }
 
-@keyframes pulse-glow {
+@keyframes pulse-strong-blue {
   0%, 100% {
-    box-shadow: 0 0 8px #FF6F61;
+    box-shadow: 0 0 12px #66B2FF;
+    transform: scale(1);
   }
   50% {
-    box-shadow: 0 0 20px #FF6F61;
+    box-shadow: 0 0 30px #66B2FF;
+    transform: scale(1.1);
   }
 }
-
 
 @keyframes blink-glow {
   0%, 100% {
@@ -477,37 +478,20 @@ main button.pulse {
   margin: 1em auto;
   font-size: 1rem;
   border-radius: 8px;
-  max-width: 500px;
+  max-width: 600px;
   text-align: center;
+  color: #2e7d32;
+  font-weight: 600;
+  box-shadow: 0 0 10px #4caf50;
+  animation: blink-glow 2s infinite;
+}
+
+.blinking-button {
+  animation: blink-glow 1.5s infinite;
 }
 
 /* Alternative Nav-Button Variante (optional entfernen, falls nicht gebraucht) */
 /*
 .nav-button {
   background-color: white;
-  border: 2px solid #888;
-  border-radius: 10px;
-  padding: 0.5em 1em;
-  font-size: 1.2rem;
-  cursor: pointer;
-  margin: 0 10px;
-  display: flex;
-  align-items: center;
-  transition: background-color 0.3s ease;
-}
-
-.nav-button:hover {
-  background-color: #e0ffe0;
-  border-color: #4caf50;
-}
-
-.icon {
-  font-size: 1.8rem;
-  margin-right: 0.5em;
-}
-
-.tooltip {
-  font-size: 0.9rem;
-  color: #555;
-}
-*/
+  border: 2
