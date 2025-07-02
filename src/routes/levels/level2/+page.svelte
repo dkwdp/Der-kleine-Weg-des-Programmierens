@@ -63,13 +63,14 @@
   {/if}
 
   {#if $solvedLevel}
-    {#if $outputID > 0 && $outputID + 1 >= currentLevel.description.length}
-      <!-- Zurück-Button nur beim letzten Task anzeigen -->
-      <button on:click={previousTask}>Zurück</button>
-    {/if}
-    {#if $outputID + 1 < currentLevel.description.length}
-      <button on:click={nextTask}>Weiter</button>
-    {/if}
+    <div class="button-container">
+      {#if $outputID + 1 < currentLevel.description.length}
+        <button on:click={nextTask} >Weiter</button>
+      {/if}
+      {#if $outputID > 0}
+        <button on:click={previousTask} class="back-button">Zurück</button>
+      {/if}
+    </div>
   {/if}
 </main>
 
@@ -77,5 +78,23 @@
   main {
     padding: 20px;
     text-align: center;
+  }
+
+  button {
+    padding: 10px 250px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-top: 20px;
+  }
+
+  .back-button {
+    margin-top: 10px;
   }
 </style>
