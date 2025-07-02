@@ -185,22 +185,6 @@
 		iconLoadStates = { ...iconLoadStates }; 
 	}
 
-	// Keyboard Navigation
-	function handleKeyboardNavigation(event) {
-		if (!browser) return;
-		
-		switch(event.key) {
-			case 'ArrowUp':
-				event.preventDefault();
-				window.scrollBy(0, -100);
-				break;
-				
-			case 'ArrowDown':
-				event.preventDefault();
-				window.scrollBy(0, 100);
-				break;
-		}
-	}
 
 	// Initialisierung
 	onMount(() => {
@@ -208,11 +192,6 @@
 		emotion = 'neutral';
 		message = welcomeMsg;
 		resetInactivityTimer();
-
-		// Event Listener
-		if (browser) {
-			window.addEventListener('keydown', handleKeyboardNavigation);
-		}
 
 		// Auto-Scroll - nur wenn Level nicht sichtbar ist
 		setTimeout(() => {
@@ -244,13 +223,6 @@
 				}
 			}
 		}, 100);
-	});
-
-	onDestroy(() => {
-		clearTimeout(inactivityTimer);
-		if (browser) {
-			window.removeEventListener('keydown', handleKeyboardNavigation);
-		}
 	});
 </script>
 
@@ -551,7 +523,6 @@
 		transition: all 0.1s ease;
 	}
 
-	/* Home Button - gleiche Breite wie Progress Widget */
 	.home-button {
 		position: fixed;
 		bottom: 40px;
