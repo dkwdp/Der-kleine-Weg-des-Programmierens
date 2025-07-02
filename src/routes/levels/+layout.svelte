@@ -229,66 +229,6 @@ Antworte immer auf Deutsch. Der erwartete output ist '${levels[$levelID].expecte
   }
 </script>
 
-<style>
-  @keyframes pulse {
-    0%, 100% {
-      box-shadow: 0 0 10px 2px #00f7ff;
-      transform: scale(1);
-    }
-    50% {
-      box-shadow: 0 0 20px 6px #00f7ff;
-      transform: scale(1.1);
-    }
-  }
-
-  .nav-button {
-    font-size: 1.3rem;
-    padding: 0.5rem 1rem;
-    margin: 0 0.5rem;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    background-color: #222;
-    color: white;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    position: relative;
-    user-select: none;
-    transition: background-color 0.3s ease;
-  }
-
-  .nav-button:hover {
-    background-color: #444;
-  }
-
-  .pulse {
-    animation: pulse 1.5s infinite;
-  }
-
-  .icon {
-    font-size: 1.6rem;
-  }
-
-  .tooltip {
-    position: absolute;
-    bottom: 125%;
-    background-color: #333;
-    color: white;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
-  }
-
-  .nav-button:hover .tooltip {
-    opacity: 1;
-  }
-</style>
-
 <main>
   <div class="top-bar">
     <button class="banner-button" on:click={() => goto('/map')}>
