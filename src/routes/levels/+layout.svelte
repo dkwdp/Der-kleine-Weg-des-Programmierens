@@ -294,23 +294,25 @@ Antworte immer auf Deutsch. Der erwartete output ist '${levels[$levelID].expecte
   </div>
 
   <!-- Navigation -->
-  <div class="navigation-bar" style="margin-top: 2rem; display: flex; justify-content: center;">
-    <button 
-      class="nav-button {pulseHint ? 'pulse' : ''}" 
-      on:click={goToMap} 
-      aria-label="Zurück zur Karte"
-    >
-      <span class="icon">🗺️</span>
-      <span class="tooltip">Zurück zur Karte</span>
-    </button>
+<!-- Navigation Buttons unten links -->
+<div class="bottom-left-buttons">
+  <button 
+    class="nav-button {pulseHint ? 'pulse' : ''}" 
+    on:click={goToMap} 
+    aria-label="Zurück zur Karte"
+  >
+    <span class="icon">🗺️</span>
+    <span class="tooltip">Zurück zur Karte</span>
+  </button>
 
-    <button 
-      class="nav-button" 
-      on:click={goToHome} 
-      aria-label="Hauptbildschirm"
-    >
-      <span class="icon">🏠</span>
-      <span class="tooltip">Hauptbildschirm</span>
-    </button>
-  </div>
+  <button 
+    class="nav-button" 
+    on:click={goToHome} 
+    aria-label="Hauptbildschirm"
+  >
+    <span class="icon">🏠</span>
+    <span class="tooltip">Hauptbildschirm</span>
+  </button>
+</div>
+
 </main>
