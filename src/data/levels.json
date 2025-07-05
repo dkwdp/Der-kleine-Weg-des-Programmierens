@@ -32,53 +32,58 @@
         "id": 2,
         "title": ["Einführung in die Variablen"],
         "description": [
-                    "Erstelle die Variable a und setze diese auf fünf. Gib sie danach im console.log aus!",
-                    "Erstelle zwei Variablen a und b mit den Werten 5 und 3. Addiere a und b und gib das Ergebnis mit console.log() aus.",
-                    "Ergänze die Einkaufsliste mit Kaffee"
+                    "Hier siehst du, wie man eine Zahl speichert und sie mit console.log() ausgibt.",
+                    "Jetzt bist du dran. Probier mal die Lieblingszahl von mir auszugeben in der Konsole.",
+                    "Wie wärs wenn wir nun eine andere Zahl ausgeben so wie fünf? Probier das mal aus.",
+                    "Ok das hat ja super geklappt! Lass uns nun eine Variable namens spasszahl anlegen und ihr den Wert 9 zuweisen. Danach geben wir sie in der Konsole aus."
                     ],
         "expectedOutput": [
-                    "5"
+                    "9"
                     ,"8"
-                    ,"Cola Fanta Kaffee"
+                    ,"5"
+                    ,"9"
                     ],
         "initialCode": [
-                        "let a =\nconsole.log()",
-                    "let a =\nlet b =\nconsole.log()",
-                    "let a = 'Cola'\nlet b = \nconsole.log(a,'Fanta',b)"],
+                    "let zahl = 9\nconsole.log(zahl)",
+                    "let lieblingszahl = 8\nconsole.log()",
+                    "let zahl = \nconsole.log(zahl)",
+                    "let \nconsole.log()"
+                ],
         "type": "calculation",
         "hints": [
-                    "Deklariere Variablen mit let."
-                    ,"Nutze console.log(a + b), um das Ergebnis anzuzeigen"
-                    ,"Setze 'Kaffee' als Variable b. Dann gib Cola, Fanta und b zusammen aus."]
+                    "Drück auf den Ausführen Knopf und finde heraus was passiert."
+                    ,"Falls du nicht weiter kommst, drück den Zurück-Button und schau dir nochmal die Lösung an :)."
+                    ,"Mit dem let Befehl kannst du jeden Wert speichern den du willst. In unserem Fall brauchen wir die fünf ."
+                    ,"Was wir jetzt versuchen ist das gleiche wie beim letzten Level. Wir wollen nur die zahl zu einer spasszahl ändern und ihr einen anderen Wert geben."]
     },
     {
         "id": 3,
-        "title": ["Verstehen von Datentypen"],
+        "title": ["Datentypen entdecken"],
         "description": [
-                    "Gib eine Zahl wie 7 aus.",
-                    "Gib den Wert true aus.",
-                    "Was passiert, wenn du '7' (Text) und 6 (Zahl) mit + verbindest?",
-                    "Was passiert, wenn du true + 1 rechnest?",
-                    "Setze zwei Texte zusammen: 'Ich' und 'mag'."],
+                    "Zahlen hast du schon kennengelernt! Aber Computer können auch Texte und Ja/Nein-Werte speichern. Schau dir das Beispiel an.",
+                    "Speichere in einer Variable den Namen unseres Maskottchens und gib ihn aus. (Hinweis: Der Pinguin heißt Pinu!)",
+                    "Jetzt speichern wir, ob etwas wahr ist. Speichere in einer Variable namens istSonnig den Wert true (ohne Anführungszeichen!) und gib sie in der Konsole aus.",
+                    "Kommazahlen funktionieren auch. Lege eine Variable temperatur an und gib z.B. 22.5 als Wert aus.",
+                    "Was passiert, wenn du einen Text und eine Zahl zusammen mit + verbindest? Probier mal Pinu und eine Zahl aus."],
         "expectedOutput": [
-                    "7",
+                    "42\nHallo\ntrue",
+                    "Pinu",
                     "true",
-                    "76",
-                    "2",
-                    "Ichmag"],
+                    "22.5",
+                    "Pinu12"],
         "initialCode": [
-                    "console.log()",
-                    "console.log()",
-                    "let a = ''\nlet b = 6\nconsole.log(a + b)",
-                    "console.log(true + )",
-                    "console.log('Ich' + )"],
+                    "let zahl = 42\nlet text = 'Hallo'\nlet istWahr = true\nconsole.log(zahl)\nconsole.log(text)\nconsole.log(istWahr)",
+                    "let name = ''\nconsole.log(name)",
+                    "let istSonnig = \nconsole.log(istSonnig)",
+                    "let temperatur =  \nconsole.log(temperatur)",
+                    "console.log('Pinu' + 12)"],
         "type": "calculation",
         "hints": [
-                    "Zahlen kannst du direkt ohne Anführungszeichen ausgeben.",
-                    "true ist ein sogenannter Wahrheitswert  entweder true oder false.",
-                    "Ein Text plus eine Zahl ergibt einen neuen Text probier es!",
-                    "true wird in Rechnungen wie 1 behandelt. Also: true + 1 = ?",
-                    "Texte kann man mit + verbinden, z.B. 'Ich' + 'mag'."]
+                    "Das sind die drei Wichtigsten Datentypen, falls du in den nächsten Aufgaben nicht weiterkommst kannst du immer wieder herkommen :)",
+                    "Nun wollen wir ein Text ausgeben, z.B. 'Pinu'.",
+                    "Um zu schauen ob das Wetter wirklich Sonnig ist müssen wir entweder true (also Wahr) angeben oder false (also Falsch).",
+                    "Kommazahlen schreibst du mit Punkt, z.B. 22.5.",
+                    "Wenn du Text und Zahl addierst, werden beide einfach aneinander gehängt. Schau mal wie das Ergebins aussieht!"]
     },
     {
         "id": 4,
