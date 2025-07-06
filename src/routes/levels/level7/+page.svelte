@@ -82,22 +82,4 @@
   .hint-text{
     white-space: pre-wrap; 
   }
-
-  button {
-    padding: 10px 250px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-
-  .button-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    margin-top: 20px;
-  }
-
-  .back-button {
-    margin-top: 10px;
-  }
 </style>

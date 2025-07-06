@@ -525,6 +525,18 @@ main button.pulse {
   opacity: 1;
 }
 
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  margin-top: 20px;
+}
+
+.back-button {
+  margin-top: 10px;
+}
+
 /* Alternative Nav-Button Variante (optional entfernen, falls nicht gebraucht) */
 /*
 .nav-button {

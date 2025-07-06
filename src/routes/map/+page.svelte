@@ -115,8 +115,8 @@
 			return;
 		}
 		
-		// Speichere das besuchte Level
-		if (browser) {
+		// Speichere das besuchte Level (nur valide Level-IDs)
+		if (browser && levelId && typeof levelId === 'number' && levelId >= 1 && levelId <= 10) {
 			sessionStorage.setItem('lastVisitedLevel', levelId.toString());
 		}
 		
@@ -185,7 +185,7 @@
 		iconLoadStates = { ...iconLoadStates }; 
 	}
 
-
+	
 	// Initialisierung
 	onMount(() => {
 		const welcomeMsg = getWelcomeMessage();
@@ -201,28 +201,53 @@
 			const lastVisitedLevel = browser ? sessionStorage.getItem('lastVisitedLevel') : null;
 			const cameFromLevel = $page.url.searchParams.get('from') || lastVisitedLevel;
 			
-			if (cameFromLevel && isLevelUnlocked(parseInt(cameFromLevel))) {
-				targetLevel = parseInt(cameFromLevel);
+			// Safe parseInt mit Validation
+			const parsedLevel = cameFromLevel ? parseInt(cameFromLevel, 10) : null;
+			
+			if (parsedLevel && !isNaN(parsedLevel) && isLevelUnlocked(parsedLevel)) {
+				targetLevel = parsedLevel;
 				if (browser) sessionStorage.removeItem('lastVisitedLevel');
 			} else {
-				targetLevel = Math.max(...$unlockedLevels);
-			}
-			
-			const levelButton = document.querySelector(`[data-level="${targetLevel}"]`);
-			if (levelButton) {
-				// Prüfe ob Level bereits sichtbar ist
-				const rect = levelButton.getBoundingClientRect();
-				const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
-				
-				// Nur scrollen wenn Level NICHT sichtbar ist
-				if (!isVisible) {
-					levelButton.scrollIntoView({ 
-						behavior: 'smooth', 
-						block: 'center' 
-					});
+				// Schutz vor leerem unlockedLevels Array
+				if ($unlockedLevels.length === 0) {
+					targetLevel = 1; // Fallback auf Level 1
+				} else {
+					targetLevel = Math.max(...$unlockedLevels);
 				}
 			}
+			
+			// Warte bis DOM vollständig geladen ist
+			setTimeout(() => {
+				const levelButton = document.querySelector(`[data-level="${targetLevel}"]`);
+				if (levelButton) {
+					try {
+						// Prüfe ob Level bereits sichtbar ist
+						const rect = levelButton.getBoundingClientRect();
+						const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight && 
+										 rect.left >= 0 && rect.right <= window.innerWidth;
+						
+						// Nur scrollen wenn Level NICHT sichtbar ist
+						if (!isVisible) {
+							levelButton.scrollIntoView({ 
+								behavior: 'smooth', 
+								block: 'center' 
+							});
+						}
+					} catch (error) {
+						console.warn('Auto-scroll error:', error);
+						// Fallback: Scroll ohne Sichtbarkeits-Check
+						levelButton.scrollIntoView({ 
+							behavior: 'smooth', 
+							block: 'center' 
+						});
+					}
+				}
+			}, 200); // Länger warten für DOM/Icons
 		}, 100);
+	});
+
+	onDestroy(() => {
+		clearTimeout(inactivityTimer);
 	});
 </script>
 
@@ -236,12 +261,15 @@
 			<h1>Willkommen im Coder-Dojo Abenteuerpfad!</h1>
 		</div>
 
-		<div class="progress-widget">
-			<span class="progress-text">{$unlockedLevels.length}/10 Level freigeschaltet</span>
-			<div class="progress-bar">
-				<div class="progress-fill" style="width: {($unlockedLevels.length / 10) * 100}%"></div>
+		<!-- Progress Widget nur im progressive Modus anzeigen -->
+		{#if $gameMode === 'progressive'}
+			<div class="progress-widget">
+				<span class="progress-text">{$unlockedLevels.length}/10 Level freigeschaltet</span>
+				<div class="progress-bar">
+					<div class="progress-fill" style="width: {($unlockedLevels.length / 10) * 100}%"></div>
+				</div>
 			</div>
-		</div>
+		{/if}
 
 		<svg class="path-lines-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
 			{#each pathLines as line}
