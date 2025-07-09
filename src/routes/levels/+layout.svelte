@@ -228,7 +228,7 @@ Beachte Groß- und Kleinschreibung sowie Zeichensetzung.`;
     <button class="banner-button" on:click={() => goto('/map')}>
       <img src="/banner.png" alt="Header Background" class="header-image" />
     </button>
-    <button class="beltButton" on:click={toggleMenu}>Sammlung</button>
+   <!-- <button class="beltButton" on:click={toggleMenu}>Sammlung</button> -->
     {#if isOpen}
       <div class="popup-menu">
         <button class="close-btn" on:click={closeMenu}>✕</button>
@@ -254,10 +254,15 @@ Beachte Groß- und Kleinschreibung sowie Zeichensetzung.`;
       <div class="editor-container">
         <div class="editor-header">
           <h2>Code Editor</h2>
-          {#if !$isCurrentLevelDrawing}
+       <!--   {#if !$isCurrentLevelDrawing}
             <button on:click={() => { runJavaScript(); submitCode(); }}>Ausführen</button>
-          {/if}
+          {/if} -->
         </div>
+
+        {#if !$isCurrentLevelDrawing}
+            <button class="run-button" on:click={() => { runJavaScript(); submitCode(); }}>Ausführen</button>
+          {/if} 
+
         <JavaScriptEditor />
         {#if $isCurrentLevelDrawing}
           <P5Canvas bind:this={canvasRef} />
