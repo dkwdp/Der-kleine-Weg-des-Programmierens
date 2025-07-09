@@ -295,6 +295,16 @@ Beachte Groß- und Kleinschreibung sowie Zeichensetzung.`;
   <!-- Navigation -->
 <!-- Navigation Buttons unten links -->
 <div class="bottom-left-buttons">
+
+  <button 
+  class="nav-button" 
+  on:click={goToHome} 
+  aria-label="Hauptbildschirm"
+>
+  <span class="icon">🏠</span>
+  <span class="tooltip">Hauptbildschirm</span>
+</button>
+
   <button 
     class="nav-button {pulseHint ? 'pulse' : ''}" 
     on:click={goToMap} 
@@ -304,14 +314,14 @@ Beachte Groß- und Kleinschreibung sowie Zeichensetzung.`;
     <span class="tooltip">Zurück zur Karte</span>
   </button>
 
-  <button 
+  <!---<button 
     class="nav-button" 
     on:click={goToHome} 
     aria-label="Hauptbildschirm"
   >
     <span class="icon">🏠</span>
     <span class="tooltip">Hauptbildschirm</span>
-  </button>
+  </button> -->
 </div>
 
 </main>
