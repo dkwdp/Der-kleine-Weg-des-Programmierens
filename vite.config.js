@@ -9,5 +9,10 @@ export default defineConfig({
       $data: path.resolve('src/data'), // Alias für das Data-Verzeichnis
       $lib: path.resolve('src/lib'),   // Optional, falls noch nicht konfiguriert
     }
+  },
+  server: {
+    host: '127.0.0.1',
+    port: 5173,
+    allowedHosts: ['dkwdp.f4.htw-berlin.de']
   }
 });
