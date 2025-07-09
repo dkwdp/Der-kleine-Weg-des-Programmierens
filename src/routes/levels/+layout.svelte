@@ -233,7 +233,7 @@ Beachte Groß- und Kleinschreibung sowie Zeichensetzung.`;
     <button class="banner-button" on:click={() => goto('/map')}>
       <img src="/banner.png" alt="Header Background" class="header-image" />
     </button>
-    <button class="beltButton" on:click={toggleMenu}>Sammlung</button>
+   <!-- <button class="beltButton" on:click={toggleMenu}>Sammlung</button> -->
     {#if isOpen}
       <div class="popup-menu">
         <button class="close-btn" on:click={closeMenu}>✕</button>
@@ -259,10 +259,15 @@ Beachte Groß- und Kleinschreibung sowie Zeichensetzung.`;
       <div class="editor-container">
         <div class="editor-header">
           <h2>Code Editor</h2>
-          {#if !$isCurrentLevelDrawing}
+       <!--   {#if !$isCurrentLevelDrawing}
             <button on:click={() => { runJavaScript(); submitCode(); }}>Ausführen</button>
-          {/if}
+          {/if} -->
         </div>
+
+        {#if !$isCurrentLevelDrawing}
+            <button class="run-button" on:click={() => { runJavaScript(); submitCode(); }}>Ausführen</button>
+          {/if} 
+
         <JavaScriptEditor />
         {#if $isCurrentLevelDrawing}
           <P5Canvas bind:this={canvasRef} />
@@ -295,6 +300,16 @@ Beachte Groß- und Kleinschreibung sowie Zeichensetzung.`;
   <!-- Navigation -->
 <!-- Navigation Buttons unten links -->
 <div class="bottom-left-buttons">
+
+  <button 
+  class="nav-button" 
+  on:click={goToHome} 
+  aria-label="Hauptbildschirm"
+>
+  <span class="icon">🏠</span>
+  <span class="tooltip">Hauptbildschirm</span>
+</button>
+
   <button 
     class="nav-button {pulseHint ? 'pulse' : ''}" 
     on:click={goToMap} 
@@ -304,14 +319,14 @@ Beachte Groß- und Kleinschreibung sowie Zeichensetzung.`;
     <span class="tooltip">Zurück zur Karte</span>
   </button>
 
-  <button 
+  <!---<button 
     class="nav-button" 
     on:click={goToHome} 
     aria-label="Hauptbildschirm"
   >
     <span class="icon">🏠</span>
     <span class="tooltip">Hauptbildschirm</span>
-  </button>
+  </button> -->
 </div>
 
 </main>

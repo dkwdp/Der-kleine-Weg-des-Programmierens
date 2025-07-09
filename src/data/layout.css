@@ -351,7 +351,7 @@ h3 {
   border-radius: 6px;
   border: none;
   cursor: pointer;
-  background-color: #222;
+  background-color: #00bfff;
   color: white;
   display: flex;
   align-items: center;
@@ -362,7 +362,7 @@ h3 {
 }
 
 .nav-button:hover {
-  background-color: #444;
+  background-color: #27f1ff;
 }
 
 .nav-button .icon {
@@ -429,7 +429,7 @@ h3 {
 
 main button {
   padding: 0.75rem 1.5rem;
-  background-color: #66B2FF; /* helleres, kinderfreundliches Blau */
+  background-color: #66B2FF; 
   color: white;
   border: none;
   border-radius: 12px; /* runder */
@@ -442,7 +442,7 @@ main button {
 }
 
 main button:hover {
-  background-color: #3E99FF;
+  background-color: #1b1b1b;
   box-shadow: 0 6px 12px rgba(62, 153, 255, 0.8);
   transform: translateY(-3px) scale(1.05);
 }
@@ -454,7 +454,7 @@ main button:active {
 
 /* Stärker pulsierende Animation für Buttons nach Levelabschluss */
 main button.pulse {
-  animation: pulse-strong-blue 1.5s infinite;
+  animation: pulse-strong-blue 1s infinite;
 }
 
 @keyframes pulse-strong-blue {
@@ -510,7 +510,7 @@ main button.pulse {
 .tooltip {
   position: absolute;
   bottom: 125%;
-  background-color: #333;
+  background-color: #66B2FF;
   color: white;
   padding: 4px 8px;
   border-radius: 4px;
@@ -535,6 +535,70 @@ main button.pulse {
   z-index: 100;
 }
 
+.run-button {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  padding: 0.75rem 1.5rem;
+  background-color: #00bfff; 
+
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  box-shadow: 0 4px 8px rgba(102, 178, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  
+}
+
+.run-button:hover {
+  background-color: #27f1ff; 
+  box-shadow: 0 6px 12px rgba(62, 153, 255, 0.8);
+  transform: translateX(-50%) translateY(-3px) scale(1.05);
+}
+
+.run-button:active {
+  transform: translateX(-50%) translateY(-1px) scale(0.98);
+  box-shadow: 0 3px 6px rgba(62, 153, 255, 0.5);
+}
+
+
+
+.weiter-button {
+  background-color: #00bfff; 
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.weiter-button:hover {
+  background-color: #27f1ff; 
+}
+
+.zurueck-button {
+  background-color: #3fd2ff; 
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+}
+
+.zurueck-button:hover {
+  background-color: #18ebee;
+}
 /* Alternative Nav-Button Variante (optional entfernen, falls nicht gebraucht) */
 /*
 .nav-button {
