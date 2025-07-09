@@ -9,20 +9,19 @@
   let solvedTasks = new Array(currentLevel.description.length).fill(false);
   
   onMount(() => {
-    outputID.set(0);  
+    outputID.set(0);
     myVariable.set(currentLevel.initialCode[0]);
     solvedLevel.set(false);
     levelID.set(currentLevelIndex);
   });
 
-  
   $: if ($solvedLevel && $outputID >= 0) {
-    solvedTasks[$outputID] = true;  
+    solvedTasks[$outputID] = true;
     checkLevelCompletion();
   }
 
   function nextTask() {
-    let currentTask = $outputID + 1;  
+    let currentTask = $outputID + 1;
     
     if (currentTask >= currentLevel.description.length) {
       unlockNextLevel(currentLevelIndex + 1);
@@ -38,7 +37,6 @@
   }
   
   function previousTask() {
-    let currentTask = Math.max(0, $outputID - 1);
     let currentTask = Math.max(0, $outputID - 1);
     
     outputID.set(currentTask);
@@ -58,8 +56,6 @@
 
 <main>
   <h1>{currentLevel.title[$outputID]}</h1>
-  <h1>{currentLevel.title[$outputID]}</h1>
-  <h2>Levelbeschreibung</h2>
   <p>{currentLevel.description[$outputID]}</p>
   {#if currentLevel.hints}
       <h3>💡 Tipps:</h3>

@@ -1,28 +1,17 @@
 <script>
-  import { myVariable, isCurrentLevelDrawing, solvedLevel, levelID, outputID, unlockNextLevel } from '$lib/stores/editorStore';
+  import { showOutput,myVariable, isCurrentLevelDrawing, solvedLevel, levelID, outputID, unlockNextLevel } from '$lib/stores/editorStore';
   import levels from '$data/levels.json';
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
-  import { onMount } from 'svelte';
-  import { goto } from '$app/navigation';
 
-  let currentLevelIndex = 5; // Level 6 = Index 5
+  let currentLevelIndex = 5;
   let currentLevel = levels[currentLevelIndex];
-  let solvedTasks = new Array(currentLevel.description.length).fill(false);
   let solvedTasks = new Array(currentLevel.description.length).fill(false);
   
   onMount(() => {
     outputID.set(0);
-    outputID.set(0);
     myVariable.set(currentLevel.initialCode[0]);
     solvedLevel.set(false);
-    levelID.set(currentLevelIndex);
-  });
-
-  $: if ($solvedLevel && $outputID >= 0) {
-    solvedTasks[$outputID] = true;
-    checkLevelCompletion();
-  }
     levelID.set(currentLevelIndex);
   });
 
@@ -37,12 +26,14 @@
     if (currentTask >= currentLevel.description.length) {
       unlockNextLevel(currentLevelIndex + 1);
       goto(`/levels/level${currentLevelIndex + 2}`);
+      showOutput.set(false);
       return;
     }
     
     outputID.set(currentTask);
     myVariable.set(currentLevel.initialCode[currentTask]);
     solvedLevel.set(false);
+    showOutput.set(false)
   }
   
   function previousTask() {
@@ -50,7 +41,6 @@
     
     outputID.set(currentTask);
     myVariable.set(currentLevel.initialCode[currentTask]);
-    solvedLevel.set(false);
     showOutput.set(false)
   }
   
@@ -66,13 +56,10 @@
 
 <main>
   <h1>{currentLevel.title[$outputID]}</h1>
-  <h1>{currentLevel.title[$outputID]}</h1>
-  <h2>Levelbeschreibung</h2>
-  <p>{currentLevel.description[$outputID]}</p>
   <p>{currentLevel.description[$outputID]}</p>
   {#if currentLevel.hints}
       <h3>💡 Tipps:</h3>
-       <p class="hint-text">{currentLevel.hints[$outputID]}</p>
+       <p>{currentLevel.hints[$outputID]}</p>
   {/if}
 
   {#if $solvedLevel}
@@ -92,8 +79,9 @@
     padding: 20px;
     text-align: center;
   }
-  
-  .hint-text{
-    white-space: pre-wrap; 
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
   }
 </style>
