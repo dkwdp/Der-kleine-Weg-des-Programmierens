@@ -145,7 +145,7 @@
 
     const sketch = (p) => {
       p.setup = () => {
-        const canvas = p.createCanvas(300, 300);
+        const canvas = p.createCanvas(400, 400);
         canvas.parent(canvasContainer);
         p.background(255);
         customFunctions = setupCustomFunctions(p);
@@ -212,11 +212,8 @@
     <!-- p5.js Canvas wird hier eingefügt -->
   </div>
   <div class="canvas-controls">
-    <button on:click={runDrawingCode}>🎨 Zeichnung ausführen</button>
-    <button on:click={clearCanvas}>🗑️ Canvas leeren</button>
-    <button on:click={() => (safeMode = !safeMode)}>
-      {safeMode ? "🔒 Sicherer Modus" : "🔓 Voller p5-Modus"}
-    </button>
+    <button on:click={runDrawingCode}>Zeichnung ausführen</button>
+    <button on:click={clearCanvas}>Canvas leeren</button>
     
   </div>
 </div>

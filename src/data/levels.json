@@ -2,280 +2,297 @@
     {
         "id": 1,
         "title": [
-                            "Einführung",
-                            "'Hello World!'",
-                            "Einführung Rechnen mit Zahlen"
-                ],
+            "Einführung",
+            "'Hello World!'",
+            "Einführung Rechnen mit Zahlen"
+        ],
         "description": [
-                            "Lass uns zuerst mit einer kleinen Einführung in deine Lernumgebung beginnen. Hier, wo dieser Text steht, findest du die Aufgabenstellungen. Auf der rechten Seite siehst du deinen Code-Editor. Dort wirst du für alle Level die Aufgaben lösen können.", 
-                            "'Hello World!' ist für viele Programmierer die erste Aufgabe gewesen. Das Ziel ist es, dass du am Ende die Worte 'Hello World!' zurückbekommst. Im Code-Editor siehst du 'console.log(' ')'. Das musst du dir so vorstellen, dass alles, was in diesen KLammern steht, dir am Ende vom Computer zurückgegeben wird. Probiere es aus!",
-                            "Schreib eine Rechnung mit zwei Zahlen, welche als Ergebnis vier ausgibt" 
-                        ],
+            "Lass uns zuerst mit einer kleinen Einführung in deine Lernumgebung beginnen. Hier, wo dieser Text steht, findest du die Aufgabenstellungen. Auf der rechten Seite siehst du deinen Code-Editor. Dort wirst du für alle Level die Aufgaben lösen können.",
+            "'Hello World!' ist für viele Programmierer die erste Aufgabe gewesen. Das Ziel ist es, dass du am Ende die Worte 'Hello World!' zurückbekommst. Im Code-Editor siehst du 'console.log(' ')'. Das musst du dir so vorstellen, dass alles, was in diesen KLammern steht, dir am Ende vom Computer zurückgegeben wird. Probiere es aus!",
+            "Schreib eine Rechnung mit zwei Zahlen, welche als Ergebnis vier ausgibt"
+        ],
         "expectedOutput": [
-                            "undefined",
-                            "Hello World!",
-                            "4"
-                        ],
+            "undefined",
+            "Hello World!",
+            "4"
+        ],
         "initialCode": [
-                            "// Hier kommt dein Code hin!",
-                            "console.log('')",
-                            "console.log()"
-                        ],
-        "type":             "calculation",
+            "// Hier kommt dein Code hin!",
+            "console.log('')",
+            "console.log()"
+        ],
+        "type": "calculation",
         "hints": [
-                            "Hier unter der Glühbirne, wirst du Hinweise finden, die dir beim Lösen der Aufgaben helfen können.",
-                            "Schreibe 'Hello World!' in die Klammern vom 'console.log(' ')'. Achte auf die Groß- und Kleinschreibung!",
-                            "Achtung! Bei Rechnungen brauch man keine Anführungsstriche. Schreib zum Beispiel: 2 + 2"
-                ]
+            "Hier unter der Glühbirne, wirst du Hinweise finden, die dir beim Lösen der Aufgaben helfen können.",
+            "Schreibe 'Hello World!' in die Klammern vom 'console.log(' ')'. Achte auf die Groß- und Kleinschreibung!",
+            "Achtung! Bei Rechnungen brauch man keine Anführungsstriche. Schreib zum Beispiel: 2 + 2"
+        ]
     },
     {
         "id": 2,
-        "title": ["Einführung in die Variablen"],
+        "title": [
+            "Einführung in die Variablen"
+        ],
         "description": [
-                    "Hier siehst du, wie man eine Zahl speichert und sie mit console.log() ausgibt.",
-                    "Jetzt bist du dran. Probier mal die Lieblingszahl von mir auszugeben in der Konsole.",
-                    "Wie wärs wenn wir nun eine andere Zahl ausgeben so wie fünf? Probier das mal aus.",
-                    "Ok das hat ja super geklappt! Lass uns nun eine Variable namens spasszahl anlegen und ihr den Wert 9 zuweisen. Danach geben wir sie in der Konsole aus."
-                    ],
+            "Hier siehst du, wie man eine Zahl speichert und sie mit console.log() ausgibt.",
+            "Jetzt bist du dran. Probier mal die Lieblingszahl von mir auszugeben in der Konsole.",
+            "Wie wärs wenn wir nun eine andere Zahl ausgeben so wie fünf? Probier das mal aus.",
+            "Ok das hat ja super geklappt! Lass uns nun eine Variable namens spasszahl anlegen und ihr den Wert 9 zuweisen. Danach geben wir sie in der Konsole aus."
+        ],
         "expectedOutput": [
-                    "9"
-                    ,"8"
-                    ,"5"
-                    ,"9"
-                    ],
+            "9",
+            "8",
+            "5",
+            "9"
+        ],
         "initialCode": [
-                    "let zahl = 9\nconsole.log(zahl)",
-                    "let lieblingszahl = 8\nconsole.log()",
-                    "let zahl = \nconsole.log(zahl)",
-                    "let \nconsole.log()"
-                ],
+            "let zahl = 9\nconsole.log(zahl)",
+            "let lieblingszahl = 8\nconsole.log()",
+            "let zahl = \nconsole.log(zahl)",
+            "let \nconsole.log()"
+        ],
         "type": "calculation",
         "hints": [
-                    "Drück auf den Ausführen Knopf und finde heraus was passiert."
-                    ,"Falls du nicht weiter kommst, drück den Zurück-Button und schau dir nochmal die Lösung an :)."
-                    ,"Mit dem let Befehl kannst du jeden Wert speichern den du willst. In unserem Fall brauchen wir die fünf ."
-                    ,"Was wir jetzt versuchen ist das gleiche wie beim letzten Level. Wir wollen nur die zahl zu einer spasszahl ändern und ihr einen anderen Wert geben."]
+            "Drück auf den Ausführen Knopf und finde heraus was passiert.",
+            "Falls du nicht weiter kommst, drück den Zurück-Button und schau dir nochmal die Lösung an :).",
+            "Mit dem let Befehl kannst du jeden Wert speichern den du willst. In unserem Fall brauchen wir die fünf .",
+            "Was wir jetzt versuchen ist das gleiche wie beim letzten Level. Wir wollen nur die zahl zu einer spasszahl ändern und ihr einen anderen Wert geben."
+        ]
     },
     {
         "id": 3,
-        "title": ["Datentypen entdecken"],
+        "title": [
+            "Datentypen entdecken"
+        ],
         "description": [
-                    "Zahlen hast du schon kennengelernt! Aber Computer können auch Texte und Ja/Nein-Werte speichern. Schau dir das Beispiel an.",
-                    "Speichere in einer Variable den Namen unseres Maskottchens und gib ihn aus. (Hinweis: Der Pinguin heißt Pinu!)",
-                    "Jetzt speichern wir, ob etwas wahr ist. Speichere in einer Variable namens istSonnig den Wert true (ohne Anführungszeichen!) und gib sie in der Konsole aus.",
-                    "Kommazahlen funktionieren auch. Lege eine Variable temperatur an und gib z.B. 22.5 als Wert aus.",
-                    "Was passiert, wenn du einen Text und eine Zahl zusammen mit + verbindest? Probier mal Pinu und eine Zahl aus."],
+            "Zahlen hast du schon kennengelernt! Aber Computer können auch Texte und Ja/Nein-Werte speichern. Schau dir das Beispiel an.",
+            "Speichere in einer Variable den Namen unseres Maskottchens und gib ihn aus. (Hinweis: Der Pinguin heißt Pinu!)",
+            "Jetzt speichern wir, ob etwas wahr ist. Speichere in einer Variable namens istSonnig den Wert true (ohne Anführungszeichen!) und gib sie in der Konsole aus.",
+            "Kommazahlen funktionieren auch. Lege eine Variable temperatur an und gib z.B. 22.5 als Wert aus.",
+            "Was passiert, wenn du einen Text und eine Zahl zusammen mit + verbindest? Probier mal Pinu und eine Zahl aus."
+        ],
         "expectedOutput": [
-                    "42\nHallo\ntrue",
-                    "Pinu",
-                    "true",
-                    "22.5",
-                    "Pinu12"],
+            "42\nHallo\ntrue",
+            "Pinu",
+            "true",
+            "22.5",
+            "Pinu12"
+        ],
         "initialCode": [
-                    "let zahl = 42\nlet text = 'Hallo'\nlet istWahr = true\nconsole.log(zahl)\nconsole.log(text)\nconsole.log(istWahr)",
-                    "let name = ''\nconsole.log(name)",
-                    "let istSonnig = \nconsole.log(istSonnig)",
-                    "let temperatur =  \nconsole.log(temperatur)",
-                    "console.log('Pinu' + 12)"],
+            "let zahl = 42\nlet text = 'Hallo'\nlet istWahr = true\nconsole.log(zahl)\nconsole.log(text)\nconsole.log(istWahr)",
+            "let name = ''\nconsole.log(name)",
+            "let istSonnig = \nconsole.log(istSonnig)",
+            "let temperatur =  \nconsole.log(temperatur)",
+            "console.log('Pinu' + 12)"
+        ],
         "type": "calculation",
         "hints": [
-                    "Das sind die drei Wichtigsten Datentypen, falls du in den nächsten Aufgaben nicht weiterkommst kannst du immer wieder herkommen :)",
-                    "Nun wollen wir ein Text ausgeben, z.B. 'Pinu'.",
-                    "Um zu schauen ob das Wetter wirklich Sonnig ist müssen wir entweder true (also Wahr) angeben oder false (also Falsch).",
-                    "Kommazahlen schreibst du mit Punkt, z.B. 22.5.",
-                    "Wenn du Text und Zahl addierst, werden beide einfach aneinander gehängt. Schau mal wie das Ergebins aussieht!"]
+            "Das sind die drei Wichtigsten Datentypen, falls du in den nächsten Aufgaben nicht weiterkommst kannst du immer wieder herkommen :)",
+            "Nun wollen wir ein Text ausgeben, z.B. 'Pinu'.",
+            "Um zu schauen ob das Wetter wirklich Sonnig ist müssen wir entweder true (also Wahr) angeben oder false (also Falsch).",
+            "Kommazahlen schreibst du mit Punkt, z.B. 22.5.",
+            "Wenn du Text und Zahl addierst, werden beide einfach aneinander gehängt. Schau mal wie das Ergebins aussieht!"
+        ]
     },
     {
         "id": 4,
-        "title": [  "So funktioniert Rechnen am Computer",
-                    "Mit Minus rechnen",
-                    "Nun rechnen wir mit Mal",
-                    "Zahlen miteinander teilen",
-                    "Zwei Zahlen miteinander Vergleichen",
-                    "Variablen Wiederholung"
-                ],
+        "title": [
+            "So funktioniert Rechnen am Computer",
+            "Mit Minus rechnen",
+            "Nun rechnen wir mit Mal",
+            "Zahlen miteinander teilen",
+            "Zwei Zahlen miteinander Vergleichen",
+            "Variablen Wiederholung"
+        ],
         "description": [
-                    "Hier siehst du Beispiel-Lösungen zu den wichtigsten Rechenarten. Schau sie dir in Ruhe an und probiere aus, wie sich das Ergebnis verändert, wenn du die Zahlen änderst.",
-                    "Probier mal von der Zahl 10 die 4 abzuziehen und gib das Ergebnis in der Konsole aus.",
-                    "Am Computer benutzt man nicht den herkömmlichen Punkt um eine Zahl wie fünf mit einer anderen mal zu nehmen. Stattdessen nimmt man das * Symbol. Multiplizier 7 mal 3 in der Konsole.",
-                    "Auch hier wird am Computer ein anderes Symbol benutzt. In diesem Fall ist es das / Symbol. Teile 12 durch 4 und gib das Ergebnis wieder in der Konsole aus.",
-                    "Um zu schauen ob eine Zahl größer oder kleiner als eine andere Zahl ist, benutzt man die < und > Symbole. Probier mal aus, ob 10 größer als 2 ist.",
-                    "Kannst du dich noch an Level zwei mit den Varialben erinnern? Mit Variablen rechnen ist sehr interessant und wichtig. Ich hab dir mal ein Beispiel vorbereitet. Teste daran deine gelernten neuen Symbole so wie du willst."
+            "Hier siehst du Beispiel-Lösungen zu den wichtigsten Rechenarten. Schau sie dir in Ruhe an und probiere aus, wie sich das Ergebnis verändert, wenn du die Zahlen änderst.",
+            "Probier mal von der Zahl 10 die 4 abzuziehen und gib das Ergebnis in der Konsole aus.",
+            "Am Computer benutzt man nicht den herkömmlichen Punkt um eine Zahl wie fünf mit einer anderen mal zu nehmen. Stattdessen nimmt man das * Symbol. Multiplizier 7 mal 3 in der Konsole.",
+            "Auch hier wird am Computer ein anderes Symbol benutzt. In diesem Fall ist es das / Symbol. Teile 12 durch 3 und gib das Ergebnis wieder in der Konsole aus.",
+            "Um zu schauen ob eine Zahl größer oder kleiner als eine andere Zahl ist, benutzt man die < und > Symbole. Probier mal aus, ob 10 größer als 2 ist.",
+            "Kannst du dich noch an Level zwei mit den Varialben erinnern? Mit Variablen rechnen ist sehr interessant und wichtig. Ich hab dir mal ein Beispiel vorbereitet. Teste daran deine gelernten neuen Symbole so wie du willst."
         ],
         "expectedOutput": [
-                    "8\n21\n5\ntrue",
-                    "6",
-                    "21",
-                    "3",
-                    "true",
-                    "7"
+            "8\n21\n5\ntrue",
+            "6",
+            "21",
+            "3",
+            "true",
+            "7"
         ],
         "initialCode": [
-                    "console.log(12 - 4)\nconsole.log(7 * 3)\nconsole.log(20 / 4)\nconsole.log(10 > 2)",
-                    "console.log()",
-                    "console.log()",
-                    "console.log()",
-                    "console.log()",
-                    "let a = 5\nlet b = 2\n console.log( a + b )"
+            "console.log(12 - 4)\nconsole.log(7 * 3)\nconsole.log(20 / 4)\nconsole.log(10 > 2)",
+            "console.log()",
+            "console.log()",
+            "console.log()",
+            "console.log()",
+            "let a = 5\nlet b = 2\n console.log( a + b )"
         ],
         "type": "calculation",
         "hints": [
-                    "Wenn du nicht weiterweißt, kannst du jederzeit hierher zurückspringen und nachschauen, wie die Rechnungen funktionieren.",
-                    "Mit - kannst du subtrahieren, also abziehen. Mit dem Zurück-Button kannst du dir auch nochmal die Lösung anschauen. ",
-                    "Das Sternchen Symbol * ist das gleiche wie das Malzeichen. Es multipliziert zwei Zahlen.",
-                    "Im Regelfall nimmt man fürs Teilen in der Schule den Doppelpunkt : aber am Computer ist es das / Symbol. Beides funktioniert aber gleich also keine Sorge",
-                    "In der Schule kennt man das Kleiner und Größer Symbol als Krokodil, welches das größere Stück frisst.",
-                    "Du kannst die Zahlen ändern oder das Plus Symbol durch ein anderes Symbol ändern. Vergleichen kannst du damit auch die Variablen. Teste dich einmal durch!"
+            "Wenn du nicht weiterweißt, kannst du jederzeit hierher zurückspringen und nachschauen, wie die Rechnungen funktionieren.",
+            "Mit - kannst du subtrahieren, also abziehen. Mit dem Zurück-Button kannst du dir auch nochmal die Lösung anschauen. ",
+            "Das Sternchen Symbol * ist das gleiche wie das Malzeichen. Es multipliziert zwei Zahlen.",
+            "Im Regelfall nimmt man fürs Teilen in der Schule den Doppelpunkt : aber am Computer ist es das / Symbol. Beides funktioniert aber gleich also keine Sorge",
+            "In der Schule kennt man das Kleiner und Größer Symbol als Krokodil, welches das größere Stück frisst.",
+            "Du kannst die Zahlen ändern oder das Plus Symbol durch ein anderes Symbol ändern. Vergleichen kannst du damit auch die Variablen. Teste dich einmal durch!"
         ]
     },
     {
         "id": 5,
-        "title": [  "So funktioniert eine Liste am Computer",
-                    "Meine Einkaufsliste benutzen",
-                    "Stehen die Bananen auch wirklich auf der Liste?",
-                    "Wie viele Dinge sind meiner Liste?"
+        "title": [
+            "So funktioniert eine Liste am Computer",
+            "Meine Einkaufsliste benutzen",
+            "Stehen die Bananen auch wirklich auf der Liste?",
+            "Wie viele Dinge sind meiner Liste?"
         ],
         "description": [
-                    "In diesem Level lernst du eine Liste, wie zum Beispiel eine Einkaufsliste, zu erstellen. Außerdem benutzt du neue Funktionen, um zu schauen wie viele Sachen auf deiner Liste drauf sind und ob manche Sachen überhaupt drauf sind.",
-                    "Ich hab dir mal meine Einkaufsliste vorbereitet. Leider hab ich vergessen meine Bananen einzutragen. Kannst du das für mich machen?",
-                    "Die Liste sieht schonmal sehr gut aus. Nun wollen wir mit dem includes Befehl mal schauen ob die Bananen auch wirklich auf der Liste stehen. Leider hab ich in meinem jetzigen Code nur nachgeschaut ob die Milchpackung auch wirklich drin steht. Kannst du das für mich zu Bananen ändern?",
-                    "Wow diese Liste ist ja viel länger als ich dachte. Ich bin zu Faul das nachzuzählen. Kannst du mir die Länge der Liste ausgeben? Dafür gibts einen coolen Befehl namens length. Den fügen wir genau so wie den includes Befehl hinten an die Konsole ran."
+            "In diesem Level lernst du eine Liste, wie zum Beispiel eine Einkaufsliste, zu erstellen. Außerdem benutzt du neue Funktionen, um zu schauen wie viele Sachen auf deiner Liste drauf sind und ob manche Sachen überhaupt drauf sind.",
+            "Ich hab dir mal meine Einkaufsliste vorbereitet. Leider hab ich vergessen meine Bananen einzutragen. Kannst du das für mich machen?",
+            "Die Liste sieht schonmal sehr gut aus. Nun wollen wir mit dem includes Befehl mal schauen ob die Bananen auch wirklich auf der Liste stehen. Leider hab ich in meinem jetzigen Code nur nachgeschaut ob die Milchpackung auch wirklich drin steht. Kannst du das für mich zu Bananen ändern?",
+            "Wow diese Liste ist ja viel länger als ich dachte. Ich bin zu Faul das nachzuzählen. Kannst du mir die Länge der Liste ausgeben? Dafür gibts einen coolen Befehl namens length. Den fügen wir genau so wie den includes Befehl hinten an die Konsole ran."
         ],
         "expectedOutput": [
-                    "Schokolade,Kerzen,Getränke\ntrue\n3",
-                    "Buch,Stift,Radiergummi,Bananen",
-                    "true",
-                    "7"
+            "Schokolade,Kerzen,Getränke\ntrue\n3",
+            "Buch,Stift,Radiergummi,Bananen",
+            "true",
+            "7"
         ],
         "initialCode": [
-                    "let einkaufsliste = ['Schokolade', 'Kerzen', 'Getränke']\nconsole.log(einkaufsliste)\nconsole.log(einkaufsliste.includes('Kerzen'))\nconsole.log(einkaufsliste.length)",
-                    "let einkaufsliste = ['Buch', 'Stift', 'Radiergummi','//Hier kommt der fehlende Teil rein bitte :)' ]\nconsole.log(einkaufsliste)",
-                    "let einkaufsliste = ['Buch', 'Stift', 'Radiergummi','Bananen' ]\nconsole.log(einkaufsliste.includes('Milchpackung'))",
-                    "let einkaufsliste = ['Buch', 'Stift', 'Radiergummi','Bananen' ,'VBucks', 'Cornflakes', 'Milch' ]\nconsole.log(einkaufsliste.) //Hinter dem Punkt in der Klammer muss der neue length Befehl hin" 
+            "let einkaufsliste = ['Schokolade', 'Kerzen', 'Getränke']\nconsole.log(einkaufsliste)\nconsole.log(einkaufsliste.includes('Kerzen'))\nconsole.log(einkaufsliste.length)",
+            "let einkaufsliste = ['Buch', 'Stift', 'Radiergummi','//Hier kommt der fehlende Teil rein bitte :)' ]\nconsole.log(einkaufsliste)",
+            "let einkaufsliste = ['Buch', 'Stift', 'Radiergummi','Bananen' ]\nconsole.log(einkaufsliste.includes('Milchpackung'))",
+            "let einkaufsliste = ['Buch', 'Stift', 'Radiergummi','Bananen' ,'VBucks', 'Cornflakes', 'Milch' ]\nconsole.log(einkaufsliste.) //Hinter dem Punkt in der Klammer muss der neue length Befehl hin"
         ],
         "type": "calculation",
         "hints": [
-                    "Listen werden in eckigen Klammern geschrieben. Sie können ganz viele Einträge haben und können die Anzahl mit einem length Befehel in der Konsole abfragen. Außerdem kann man mit dem includes Befehl herausfinden ob etwas auf der Liste auch wirklich drin ist.",
-                    "Um meine Einkaufsliste zu erweitern müssen wir in der Variable einkaufsliste einen neue Sache eintragen. Falls du Hilfe bruachst, schau dir die Lösung auf der ersten Seite an.",
-                    "Der includes Befehl prüft, ob die Liste auch wirklich ein bestimmtes Wort enthält. In diesem Fall ist unser Ziel zu schauen ob Bananen auch wirklich auf der Liste stehen. ",
-                    "Der length Befehl schaut einfach nur nach wie viele Sachen in der Liste drinstehen."
+            "Listen werden in eckigen Klammern geschrieben. Sie können ganz viele Einträge haben und können die Anzahl mit einem length Befehel in der Konsole abfragen. Außerdem kann man mit dem includes Befehl herausfinden ob etwas auf der Liste auch wirklich drin ist.",
+            "Um meine Einkaufsliste zu erweitern müssen wir in der Variable einkaufsliste einen neue Sache eintragen. Falls du Hilfe bruachst, schau dir die Lösung auf der ersten Seite an.",
+            "Der includes Befehl prüft, ob die Liste auch wirklich ein bestimmtes Wort enthält. In diesem Fall ist unser Ziel zu schauen ob Bananen auch wirklich auf der Liste stehen. ",
+            "Der length Befehl schaut einfach nur nach wie viele Sachen in der Liste drinstehen."
         ]
     },
     {
         "id": 6,
-        "title": [  "Hier zeige ich dir wie ein if/else Block funktioniert",
-                    "Erster eigener if-Block",
-                    "Unser erster richtiger if/else Block",
-                    "Was passiert wenn die Zahl genau fünf ist?"
+        "title": [
+            "Hier zeige ich dir wie ein if/else Block funtkioniert",
+            "Erster eigener if-Block",
+            "Unser erster richtiger if/else Block",
+            "Was passiert wenn die Zahl genau fünf ist?"
         ],
-       "description": [
-                    "Hier siehst du das Ziel dieses Levels. Wir wollen einen vollständigen if/else Block schreiben, der prüft ob eine Zahl größer, kleiner oder genau gleich 5 ist.",
-                    "Das erste Level war sehr viel Code. Wir fangen erstmal etwas einfacher an und wollen nur schauen ob die Zahl auch wirklich größer als 5 ist. Dafür brauchen wir nur einen kleinen if-Block",
-                    "Ergänze nun den if-Block, damit wenn die Zahl kleiner als fünf ist dies auch in der Konsole ausgegeben wird. Die Konsole soll im else Block 'Die Zahl ist klein' ausgeben",
-                    "Jetzt kommt noch ein if-Block dazu, der Prüft ob die Zahl genau fünf ist. Falls das so ist, sollen wir in der Konsole 'Die Zahl ist genau fünf' ausgegeben bekommen."
+        "description": [
+            "Hier siehst du das Ziel dieses Levels. Wir wollen einen vollständigen if/else Block schrieben, der prüft ob eine Zahl größer, kleiner oder genau gleich 5 ist.",
+            "Das erste Level war sehr viel Code. Wir fangen erstmal etwas einfacher an und wollen nur schauen ob die Zahl auch wirklich größer als 5 ist. Dafür brauchen wir nur einen kleinen if-Block",
+            "Ergänze nun den if-Block, damit wenn die Zahl kleiner als fünf ist dies auch in der Konsole ausgegeben wird. Die Konsole soll im else Block 'Die Zahl ist klein' ausgeben",
+            "Jetzt kommt noch ein if-Block dazu, der Prüft ob die Zahl genau fünf ist. Falls das so ist, sollen wir in der Konsole 'Die Zahl ist genau fünf' ausgegeben bekommen."
         ],
         "expectedOutput": [
-                    "Die Zahl ist genau fünf",
-                    "Die Zahl ist groß",
-                    "Die Zahl ist klein",
-                    "Die Zahl ist genau fünf"
+            "Die Zahl ist genau fünf",
+            "Die Zahl ist groß",
+            "Die Zahl ist klein",
+            "Die Zahl ist genau fünf"
         ],
         "initialCode": [
-                    "let zahl = 5\nif (zahl > 5) {\n    console.log('Die Zahl ist groß')\n} else if (zahl == 5) {\n    console.log('Die Zahl ist genau fünf')\n} else {\n    console.log('Die Zahl ist klein')\n}",
-                    "let zahl = 7\nif (zahl > 5) {\n    console.log('Die Zahl ist groß')\n}",
-                    "let zahl = 4\nif (zahl > 5) {\n    console.log('Die Zahl ist groß')\n}\n//Der neue else Block\n else {\n    console.log('')\n} //Schreib hier rein was passieren soll, wenn die Zahl nicht groß ist", 
-                    "let zahl = 5\nif (zahl > 5) {\n    console.log('Die Zahl ist groß')\n}\n else if (//Hier muss dein Code rein) {\n    console.log('Die Zahl ist genau fünf')\n}\n else {\n    console.log('Die Zahl ist klein')\n}  "
+            "let zahl = 5\nif (zahl > 5) {\n    console.log('Die Zahl ist groß')\n} else if (zahl == 5) {\n    console.log('Die Zahl ist genau fünf')\n} else {\n    console.log('Die Zahl ist klein')\n}",
+            "let zahl = 7\nif (zahl > 5) {\n    console.log('Die Zahl ist groß')\n}",
+            "let zahl = 4\nif (zahl > 5) {\n    console.log('Die Zahl ist groß')\n}\n//Der neue else Block\n else {\n    console.log('')\n} //Schreib hier rein was passieren soll, wenn die Zahl nicht groß ist",
+            "let zahl = 5\nif (zahl > 5) {\n    console.log('Die Zahl ist groß')\n}\n else if (//Hier muss dein Code rein) {\n    console.log('Die Zahl ist genau fünf')\n}\n else {\n    console.log('Die Zahl ist klein')\n}  "
         ],
         "type": "calculation",
         "hints": [
-                    "Dieser Level ist eine Art Checkpoint. Du kannst hier immer wiedr mit dem Zurück-Button herkommen und dir die Lösung anschauen. Der if-Block ist viel Text also schau ihn dir so oft an wie du willst. :D}",
-                    "Der if-Block prüft, die Aussage in den Klammern. In unserem Beispiel ob die Variable zahl größer als 5 ist. Falls das so ist, wird der Text 'Die Zahl ist groß' ausgegeben.",
-                    "Der else Block ist wie eine zweiet Chance. Wenn die Zahl bei der ersten Chance nicht funktioniert kann man bei der else Methode vielleicht die Zahl noch richtig benutzen. \n",
-                    "Falls du nicht weiterkommst kannst du dir die Lösung auf der ersten Seite anschauen. Beim neuen else if Block wollen wir gucken ob die Variable zahl gleich fünf ist. "
+            "Dieser Level ist eine Art Checkpoint. Du kannst hier immer wiedr mit dem Zurück-Button herkommen und dir die Lösung anschauen. Der if-Block ist viel Text also schau ihn dir so oft an wie du willst. :D}",
+            "Der if-Block prüft, die Aussage in den Klammern. In unserem Beispiel ob die Variable zahl größer als 5 ist. Falls das so ist, wird der Text 'Die Zahl ist groß' ausgegeben.",
+            "Der else Block ist wie eine zweiet Chance. Wenn die Zahl bei der ersten Chance nicht funktioniert kann man bei der else Methode vielleicht die Zahl noch richtig benutzen. \n",
+            "Falls du nicht weiterkommst kannst du dir die Lösung auf der ersten Seite anschauen. Beim neuen else if Block wollen wir gucken ob die Variable zahl gleich fünf ist. "
         ]
     },
     {
         "id": 7,
-        "title": [  "So funktionieren Schleifen (aber nicht die Schuhschleifen!",
-                    "Zähle von 0 bis 8 mit deiner eigenen while-Schleife",
-                    "Jetzt zeige ich dir die for-Schleife",
-                    "Die for-Schleife selber ausprobieren"
+        "title": [
+            "So funktionieren Schleifen (aber nicht die Schuhschleifen!",
+            "Zähle von 0 bis 8 mit deiner eigenen while-Schleife",
+            "Jetzt zeige ich dir die for-Schleife",
+            "Die for-Schleife selber ausprobieren"
         ],
         "description": [
-                    "In diesem Level verstehst du das System hinter while-Schleifen. Also Schleifen, die so lange laufen, bis eine Bedingung nicht mehr erfüllt ist. In unserem Fall wollen wir eine Schleife von 0 bis 5 zählen lassen und aufhören tut sie wenn die Zahl größer als 5 ist.",
-                    "Nun willst du deine eigene Schleife bauen, welche bis 8 zählen soll. Der vorgegebene Code ist schon fast fertig aber zählt leider nur bis 5. Probier dich aus und teste wie du das ändern kannst",
-                    "Die for-Schleife ist wie der kleine Bruder der while-Schleife. Mit ihr funktioniert das Zählen noch einfacher. Schau dir das Beispiel an und versuch es selbst",
-                    "Jetzt bist du an der Reihe. Schreibe eine for-Schleife, die von 3 bis 7 zählt und gib die Zahlen wieder in der Konsole aus."
+            "In diesem Level verstehst du das System hinter while-Schleifen. Also Schleifen, die so lange laufen, bis eine Bedingung nicht mehr erfüllt ist. In unserem Fall wollen wir eine Schleife von 0 bis 5 zählen lassen und aufhören tut sie wenn die Zahl größer als 5 ist.",
+            "Nun willst du deine eigene Schleife bauen, welche bis 8 zählen soll. Der vorgegebene Code ist schon fast fertig aber zählt leider nur bis 5. Probier dich aus und teste wie du das ändern kannst",
+            "Die for-Schleife ist wie der kleine Bruder der while-Schleife. Mit ihr funktioniert das Zählen noch einfacher. Schau dir das Beispiel an und versuch es selbst",
+            "Jetzt bist du an der Reihe. Schreibe eine for-Schleife, die von 3 bis 7 zählt und gib die Zahlen wieder in der Konsole aus."
         ],
         "expectedOutput": [
-                    "0\n1\n2\n3\n4\n5",
-                    "0\n1\n2\n3\n4\n5\n6\n7\n8",
-                    "0\n1\n2\n3\n4\n5",
-                    "3\n4\n5\n6\n7"
-
+            "0\n1\n2\n3\n4\n5",
+            "0\n1\n2\n3\n4\n5\n6\n7\n8",
+            "0\n1\n2\n3\n4\n5",
+            "3\n4\n5\n6\n7"
         ],
         "initialCode": [
-                    "let zahl = 0;\nwhile (zahl <= 5) {\n  console.log(zahl);\n  zahl++;\n}",
-                    "let zahl = 0;\nwhile (zahl <= 5) {\n  console.log(zahl);\n  zahl++;\n}",
-                    "for (let zahl = 0; zahl <= 5; zahl++) {\n  console.log(zahl);\n}",
-                    "for (let zahl = ?; zahl <= ?; zahl++) {\n  console.log(zahl);\n}"
+            "let zahl = 0;\nwhile (zahl <= 5) {\n  console.log(zahl);\n  zahl++;\n}",
+            "let zahl = 0;\nwhile (zahl <= 5) {\n  console.log(zahl);\n  zahl++;\n}",
+            "for (let zahl = 0; zahl <= 5; zahl++) {\n  console.log(zahl);\n}",
+            "for (let zahl = ?; zahl <= ?; zahl++) {\n  console.log(zahl);\n}"
         ],
         "type": "calculation",
         "hints": [
-                    "Teste dich ruhig durch und änder die Zahlen in der Schleife. Vielleicht ändert sich ja das Ergebnis. ",
-                    "Wir wollen bis 8 zählen. Das heißt unsere Schelife muss so lange laufen(while) bis die Zahl größer oder gleich 8 ist. Das heißt am besten ändern wir die fünf in der while-Schleife",
-                    "In der for-Schleife wird die Variable zahl automatisch hochgezählt. Das heißt wir brauche nur die Startzahl und die Endzahl. In Unserem Fall ist das 0 und 5",
-                    "Merk dir; die Reihenfolge in der for-Schleife ist: Startwert, Endwert und die Schrittweite. " 
+            "Teste dich ruhig durch und änder die Zahlen in der Schleife. Vielleicht ändert sich ja das Ergebnis. ",
+            "Wir wollen bis 8 zählen. Das heißt unsere Schelife muss so lange laufen(while) bis die Zahl größer oder gleich 8 ist. Das heißt am besten ändern wir die fünf in der while-Schleife",
+            "In der for-Schleife wird die Variable zahl automatisch hochgezählt. Das heißt wir brauche nur die Startzahl und die Endzahl. In Unserem Fall ist das 0 und 5",
+            "Merk dir; die Reihenfolge in der for-Schleife ist: Startwert, Endwert und die Schrittweite. "
         ]
     },
     {
         "id": 8,
-        "title": [  "Anfänge mit Funktionen - Was ist das?",
-                    "So funktionieren Funktionen",
-                    "Funktionen zum verdoppeln selbst schreiben",
-                    "Rechnen mit zwei Zahlen in einer Funktion"
+        "title": [
+            "Anfänge mit Funktionen - Was ist das?",
+            "So funktionieren Funktionen",
+            "Funktionen zum verdoppeln selbst schreiben",
+            "Rechnen mit zwei Zahlen in einer Funktion"
         ],
         "description": [
-                    "Eine Funktion ist wie eine kleine Maschine, die du selbst bauen kannst. Du gibst ihr einen oder mehrere Werte (zum Beispiel eine Zahl) und die Funktion spuckt dir das Ergebnis aus. So musst du Befehle nicht immer wieder neu schreiben, sondern kannst sie immer wieder verwenden!",
-                    "Hier siehst du eine Beispiel-Funktion, die eine Zahl verdoppelt. Sie hat den Namen verdopple und kann in deinem Code immer wieder benutzt werden.",
-                    "Jetzt bist du wieder an der Reihe. Schreibe die Funktion verdopple, so dass sie eine Zahl verdoppelt. Danach rufst du die Funktion verdopple mit der Zahl 9 auf.",
-                    "Jetzt wird es etwas spannender. Funktionen können mehr als nur einen Wert benutzen. Wir haben die ganze Zeit den Wert zahl benutzt aber jetzt wollen wir mal zwei Zahlen benutzen."
+            "Eine Funktion ist wie eine kleine Maschine, die du selbst bauen kannst. Du gibst ihr einen oder mehrere Werte (zum Beispiel eine Zahl) und die Funktion spuckt dir das Ergebnis aus. So musst du Befehle nicht immer wieder neu schreiben, sondern kannst sie immer wieder verwenden!",
+            "Hier siehst du eine Beispiel-Funktion, die eine Zahl verdoppelt. Sie hat den Namen verdopple und kann in deinem Code immer wieder benutzt werden.",
+            "Jetzt bist du wieder an der Reihe. Schreibe die Funktion verdopple, so dass sie eine Zahl verdoppelt. Danach rufst du die Funktion verdopple mit der Zahl 9 auf.",
+            "Jetzt wird es etwas spannender. Funktionen können mehr als nur einen Wert benutzen. Wir haben die ganze Zeit den Wert zahl benutzt aber jetzt wollen wir mal zwei Zahlen benutzen."
         ],
         "expectedOutput": [
-                    "undefined",
-                    "8",
-                    "18",
-                    "11"
+            "undefined",
+            "8",
+            "18",
+            "11"
         ],
         "initialCode": [
-                    "//Lies dir die Erklärung durch, bevor du weitermachst! ",
-                    "function verdopple(zahl) {\n  return zahl * 2;\n}\nconsole.log(verdopple(4))",
-                    "function verdopple(zahl) {\n  return zahl //Hier muss die Rechnung rein\n}\nconsole.log(verdopple())//Hier muss die Zahl rein, die verdoppelt werden soll",
-                    "let a = 4; //In den ersten drei Zeilen musst du nichts ändern\nlet b = 7;\nfunction addiere(zahl1, zahl2) {\n  return zahl1 + \n}\nconsole.log(addiere(a, b)) //Hier wird anstatt einer Zahl nun zwei Variablen benutzt"
+            "//Lies dir die Erklärung durch, bevor du weitermachst! ",
+            "function verdopple(zahl) {\n  return zahl * 2;\n}\nconsole.log(verdopple(4))",
+            "function verdopple(zahl) {\n  return zahl //Hier muss die Rechnung rein\n}\nconsole.log(verdopple())//Hier muss die Zahl rein, die verdoppelt werden soll",
+            "let a = 4; //In den ersten drei Zeilen musst du nichts ändern\nlet b = 7;\nfunction addiere(zahl1, zahl2) {\n  return zahl1 + \n}\nconsole.log(addiere(a, b)) //Hier wird anstatt einer Zahl nun zwei Variablen benutzt"
         ],
         "type": "calculation",
         "hints": [
-                    "Kurzgefasst ist eine Funktion ein Codeblock, der dir hilft Code zu wiederholen. Du kannst ihr einen Namen geben und dann immer wieder aufrufen",
-                    "In diesem genauen Beispiel wird die zahl 4 im unteren Teil des Codes eingesetzt in die Funktion verdopple. Du kannst ja mal die Zahl abändern und schauen was rauskommt",
-                    "Um die Zahl zu verdoppeln, musst du die Zahl mit 2 multiplizieren. Und im console.log musst du eine bestimmte Zahl einsetzen, die verdoppelt werden soll. In dem Fall die 9.",
-                    "Wir haben der Funktion die Werte zahl1 und zahl2 gegeben also müssen wir beide Werte in der Funktion addieren damit das Ergebnis stimmt. "
+            "Kurzgefasst ist eine Funktion ein Codeblock, der dir hilft Code zu wiederholen. Du kannst ihr einen Namen geben und dann immer wieder aufrufen",
+            "In diesem genauen Beispiel wird die zahl 4 im unteren Teil des Codes eingesetzt in die Funktion verdopple. Du kannst ja mal die Zahl abändern und schauen was rauskommt",
+            "Um die Zahl zu verdoppeln, musst du die Zahl mit 2 multiplizieren. Und im console.log musst du eine bestimmte Zahl einsetzen, die verdoppelt werden soll. In dem Fall die 9.",
+            "Wir haben der Funktion die Werte zahl1 und zahl2 gegeben also müssen wir beide Werte in der Funktion addieren damit das Ergebnis stimmt. "
         ]
     },
-{
+    {
         "id": 100,
-        "title": ["Zeichne deinen ersten Kreis"],
-        "description": ["Verwende draw_line(x1, y1, x2, y2, farbe) um eine Linie zu zeichnen."],
-        "initialCode": ["set_background('white');\ndraw_circle(150, 150, 50, 'blue')\ndraw_line(180,120,160,140,'red');\ndraw_line(120,120,140,140,'red');\ndraw_circle(120,140,10,'lightblue');\ndraw_circle(180,140,10,'lightblue');\ndraw_text('f**k', 140,180,'black');"],
+        "title": [
+            "Bonus Zeichen Level"
+        ],
+        "description": [
+            "Das ist ein Bonus Level, indem du Zeichnen kannst, Probiere dich einfach aus"
+        ],
+        "initialCode": [
+            "background('blue');\ncircle(150,150,100);"
+        ],
         "type": "drawing",
         "hints": [
             "Die Koordinaten beginnen oben links bei (0,0)",
-            "Der Canvas ist 400px breit und 300px hoch ",
+            "Der Canvas ist 400px breit und 400px hoch ",
             "Verfügbare Farben: 'red', 'blue', 'green', 'yellow', 'purple', etc."
         ]
     },
-
     {
-
         "id": 9,
         "title": "If/Else Bedingungen",
         "type": "javascript",
@@ -308,44 +325,41 @@
             "Beachte Groß- und Kleinschreibung bei Strings!",
             "Ein if-else-Zweig braucht immer eine Bedingung in Klammern",
             "Du kannst auch mehrere Bedingungen mit && und || kombinieren"
-    ]
+        ]
     },
-
-
     {
-            "id": 10,
-            "title": "for-Schleifen",
-            "type": "javascript",
-            "titles": [
-                "Was ist eine for-Schleife?",
-                "Mini-Level: Zahlen zählen",
-                "Mini-Level: Quadratzahlen",
-                "Bonus: Eigenes Beispiel"
-            ],
-            "descriptions": [
-                "Eine <code>for</code>-Schleife wiederholt etwas. <br><strong>Beispiel:</strong><br><code>for (let i = 0; i < 5; i++) { console.log(i); }</code>",
-                "Zähle die Zahlen von 1 bis 4 und gib die Zahlen aus.",
-                "Gib die Quadratzahlen von 1 bis 5 aus.",
-                "Erstelle deinen eigenen Code mit einer <code>for</code>-Schleife, z.B. um Sterne zu zeichnen."
-            ],
-            "codes": [
-                "for (let i = 0; i < 5; i++) {\n  console.log(i);\n}",
-                "for (let i = 1; i <= 4; i++) {\n  console.log(i);\n}",
-                "for (let i = 1; i <= 5; i++) {\n  console.log(i * i);\n}",
-                "// Dein Code hier"
-            ],
-            "expectedOutputs": [
-                "0\n1\n2\n3\n4",
-                "1\n2\n3\n4",
-                "1\n4\n9\n16\n25",
-                ""
-            ],
-            "hints": [
-                "Die Schleife läuft mit i = 0 bis i < 5.",
-                "Nutze console.log, um jede Zahl zu drucken.",
-                "Multipliziere i mit sich selbst: i * i.",
-                "Nutze deine Kreativität für eine for-Schleife!"
+        "id": 10,
+        "title": "for-Schleifen",
+        "type": "javascript",
+        "titles": [
+            "Was ist eine for-Schleife?",
+            "Mini-Level: Zahlen zählen",
+            "Mini-Level: Quadratzahlen",
+            "Bonus: Eigenes Beispiel"
+        ],
+        "descriptions": [
+            "Eine <code>for</code>-Schleife wiederholt etwas. <br><strong>Beispiel:</strong><br><code>for (let i = 0; i < 5; i++) { console.log(i); }</code>",
+            "Zähle die Zahlen von 1 bis 4 und gib die Zahlen aus.",
+            "Gib die Quadratzahlen von 1 bis 5 aus.",
+            "Erstelle deinen eigenen Code mit einer <code>for</code>-Schleife, z.B. um Sterne zu zeichnen."
+        ],
+        "codes": [
+            "for (let i = 0; i < 5; i++) {\n  console.log(i);\n}",
+            "for (let i = 1; i <= 4; i++) {\n  console.log(i);\n}",
+            "for (let i = 1; i <= 5; i++) {\n  console.log(i * i);\n}",
+            "// Dein Code hier"
+        ],
+        "expectedOutputs": [
+            "0\n1\n2\n3\n4",
+            "1\n2\n3\n4",
+            "1\n4\n9\n16\n25",
+            ""
+        ],
+        "hints": [
+            "Die Schleife läuft mit i = 0 bis i < 5.",
+            "Nutze console.log, um jede Zahl zu drucken.",
+            "Multipliziere i mit sich selbst: i * i.",
+            "Nutze deine Kreativität für eine for-Schleife!"
         ]
     }
-
 ]

@@ -534,6 +534,13 @@ main button.pulse {
   gap: 0.5rem; /* kleiner Abstand zwischen den Buttons */
   z-index: 100;
 }
+.canvas{
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}
 
 /* Alternative Nav-Button Variante (optional entfernen, falls nicht gebraucht) */
 /*
