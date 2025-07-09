@@ -92,7 +92,7 @@
 .mascot-and-settings-container {
   position: fixed;
   right: 1.5rem;
-  bottom: 5rem; /* Angepasst wegen dem neuen Navigationsbalken */
+  bottom: 2rem; 
   display: flex;
   align-items: flex-end;
   gap: 1rem;
@@ -329,12 +329,12 @@ h3 {
 }
 
 /* Stile für den dezenten Navigationsbalken */
-.navigation-bar {
+ /* .navigation-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(58, 63, 88, 0.9); /* Leicht transparent */
+  background: rgba(58, 63, 88, 0.9); 
   display: flex;
   justify-content: center;
   padding: 0.5rem;
@@ -342,7 +342,7 @@ h3 {
   z-index: 90;
   backdrop-filter: blur(5px);
   border-top: 1px solid var(--border);
-} 
+}  */
 
 .nav-button {
   font-size: 1.3rem;
@@ -378,7 +378,7 @@ h3 {
   color: white;
   padding: 0.3rem 0.6rem;
   border-radius: var(--border-radius);
-  font-size: 0.8rem;
+  font-size: 0.65rem;
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
@@ -523,6 +523,16 @@ main button.pulse {
 
 .nav-button:hover .tooltip {
   opacity: 1;
+}
+
+.bottom-left-buttons {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  display: flex;
+  flex-direction: row; /* ist Standard, aber zur Sicherheit */
+  gap: 0.5rem; /* kleiner Abstand zwischen den Buttons */
+  z-index: 100;
 }
 
 /* Alternative Nav-Button Variante (optional entfernen, falls nicht gebraucht) */
