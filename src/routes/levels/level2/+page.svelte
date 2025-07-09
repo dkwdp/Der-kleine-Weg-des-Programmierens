@@ -63,12 +63,12 @@
   {/if}
 
   {#if $solvedLevel}
-    <div class="button-container">
+    <div>
       {#if $outputID + 1 < currentLevel.description.length}
         <button on:click={nextTask} >Weiter</button>
       {/if}
       {#if $outputID > 0}
-        <button on:click={previousTask} class="back-button">Zurück</button>
+        <button on:click={previousTask}>Zurück</button>
       {/if}
     </div>
   {/if}
