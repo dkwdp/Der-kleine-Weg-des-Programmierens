@@ -269,9 +269,11 @@ Beachte Groß- und Kleinschreibung sowie Zeichensetzung.`;
           {/if} 
 
         <JavaScriptEditor />
-        {#if $isCurrentLevelDrawing}
-          <P5Canvas bind:this={canvasRef} />
-        {/if}
+        <div class = "canvas">
+          {#if $isCurrentLevelDrawing}
+            <P5Canvas bind:this={canvasRef} />
+          {/if}
+        </div>
         {#if output && $showOutput}
           <div class="output-container {emotion}">
             <h3>Ergebnis</h3>
