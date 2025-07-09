@@ -98,7 +98,7 @@
                     "Hier siehst du Beispiel-Lösungen zu den wichtigsten Rechenarten. Schau sie dir in Ruhe an und probiere aus, wie sich das Ergebnis verändert, wenn du die Zahlen änderst.",
                     "Probier mal von der Zahl 10 die 4 abzuziehen und gib das Ergebnis in der Konsole aus.",
                     "Am Computer benutzt man nicht den herkömmlichen Punkt um eine Zahl wie fünf mit einer anderen mal zu nehmen. Stattdessen nimmt man das * Symbol. Multiplizier 7 mal 3 in der Konsole.",
-                    "Auch hier wird am Computer ein anderes Symbol benutzt. In diesem Fall ist es das / Symbol. Teile 12 durch 3 und gib das Ergebnis wieder in der Konsole aus.",
+                    "Auch hier wird am Computer ein anderes Symbol benutzt. In diesem Fall ist es das / Symbol. Teile 12 durch 4 und gib das Ergebnis wieder in der Konsole aus.",
                     "Um zu schauen ob eine Zahl größer oder kleiner als eine andere Zahl ist, benutzt man die < und > Symbole. Probier mal aus, ob 10 größer als 2 ist.",
                     "Kannst du dich noch an Level zwei mit den Varialben erinnern? Mit Variablen rechnen ist sehr interessant und wichtig. Ich hab dir mal ein Beispiel vorbereitet. Teste daran deine gelernten neuen Symbole so wie du willst."
         ],
@@ -163,13 +163,13 @@
     },
     {
         "id": 6,
-        "title": [  "Hier zeige ich dir wie ein if/else Block funtkioniert",
+        "title": [  "Hier zeige ich dir wie ein if/else Block funktioniert",
                     "Erster eigener if-Block",
                     "Unser erster richtiger if/else Block",
                     "Was passiert wenn die Zahl genau fünf ist?"
         ],
        "description": [
-                    "Hier siehst du das Ziel dieses Levels. Wir wollen einen vollständigen if/else Block schrieben, der prüft ob eine Zahl größer, kleiner oder genau gleich 5 ist.",
+                    "Hier siehst du das Ziel dieses Levels. Wir wollen einen vollständigen if/else Block schreiben, der prüft ob eine Zahl größer, kleiner oder genau gleich 5 ist.",
                     "Das erste Level war sehr viel Code. Wir fangen erstmal etwas einfacher an und wollen nur schauen ob die Zahl auch wirklich größer als 5 ist. Dafür brauchen wir nur einen kleinen if-Block",
                     "Ergänze nun den if-Block, damit wenn die Zahl kleiner als fünf ist dies auch in der Konsole ausgegeben wird. Die Konsole soll im else Block 'Die Zahl ist klein' ausgeben",
                     "Jetzt kommt noch ein if-Block dazu, der Prüft ob die Zahl genau fünf ist. Falls das so ist, sollen wir in der Konsole 'Die Zahl ist genau fünf' ausgegeben bekommen."
