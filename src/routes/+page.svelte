@@ -4,20 +4,27 @@
   
   let selectedLevel = 1;
   
-  // Funktion für freien Modus
+  // Funktion für freien Modus - mit Timing-Fix
   function startFreeMode() {
     gameMode.set('free');
-    goto('/map');
+    
+    // Kurz warten, damit Store sich aktualisiert
+    setTimeout(() => {
+      goto('/map');
+    }, 100);
   }
   
-  // Funktion zum Starten mit gewähltem Level
+  // Funktion zum Starten mit gewähltem Level - mit Timing-Fix
   function startWithSelectedLevel() {
     gameMode.set('progressive');
     unlockLevelsUpTo(selectedLevel);
-    goto(`/map`);
+    
+    // Kurz warten, damit Stores sich aktualisieren
+    setTimeout(() => {
+      goto('/map');
+    }, 100);
   }
 </script>
-
 <style>
   /* Overscroll-Schutz für die gesamte Seite */
   :global(html) {

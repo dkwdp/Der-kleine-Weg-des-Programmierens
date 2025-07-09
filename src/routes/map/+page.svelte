@@ -52,47 +52,35 @@
 	// Message Arrays
 	const welcomeMessages = [
 		'Yo, wieder da! 🐧',
-		'Pingu ist zurück! Bock zu coden?',
+		'Bock zu coden?',
 		'Chillig hier, oder? Los geht\'s!',
-		'Watschel-Zeit! Bereit für Code-Magie?',
+		'Coding-Zeit! Bereit?',
 		'Eis to see you! 🧊',
-		'Pinguin-Power aktiviert!'
+		'Hi',
+		'Willkommen beim Coder-Dojo!'
 	];
 
 	const idleMessages = [
 		'Chillst du noch oder codest du schon? 🐧',
-		'Pssst... die Level warten auf dich!',
+		'Die Level warten auf dich!',
 		'Watschel watschel... langweilig hier! 😴',
-		'Eisbär-Modus: entspannt warten...',
 		'Flossen bereit? Lass uns eintauchen!',
 		'Eis-kalte Coding-Skills kommen!',
-		'Flossen-Tipp: Einfach mal klicken!',
 		'Rutsch ins Coden wie ein Pinguin! 🧊',
-		'Kein Stress, jeder fängt mal an!',
-		'Coolness-Level: Pinguin! ❄️',
+		'Kein Stress, lass dir Zeit!',
 		'Watschel rüber und wähl ein Level!',
 		'Fisch später, coden jetzt! 🐟'
 	];
 
 	const hoverMessages = [
-		'ist eis-oliert und wartet!',
-		'braucht deine Flossen-Skills!',
+		'braucht deine Skills!',
 		'sieht chill aus! 🧊',
-		'wartet auf deinen Watschel!',
 		'ist bereit für Fisch-Action! 🐟',
 		'braucht deine Pinguin-Power!',
 		'sieht eis-genial aus!',
 		'wartet auf die Rutschpartie!',
-		'ist flossen-bereit!',
+		'ist bereit!',
 		'braucht Pinguin-Magie! ✨'
-	];
-
-	const lockedMessages = [
-		'ist noch eingefroren! 🧊',
-		'wartet auf das Auftauen!',
-		'ist noch nicht bereit!',
-		'braucht mehr Pinguin-Power!',
-		'ist noch im Eis gefangen!'
 	];
 
 	// Hilfsfunktionen
@@ -110,11 +98,6 @@
 
 	// Level Interaktion
 	function LevelJoin(levelId) {
-		if (!isLevelUnlocked(levelId)) {
-			updateMascot('sad', `Level ${levelId} ${getRandomMessage(lockedMessages)}`);
-			return;
-		}
-		
 		// Speichere das besuchte Level (nur valide Level-IDs)
 		if (browser && levelId && typeof levelId === 'number' && levelId >= 1 && levelId <= 10) {
 			sessionStorage.setItem('lastVisitedLevel', levelId.toString());
@@ -134,12 +117,7 @@
 		}, 800);
 	}
 
-	function onLevelHover(level) {
-		if (!isLevelUnlocked(level.id)) {
-			updateMascot('sad', `Level ${level.id} ${getRandomMessage(lockedMessages)}`);
-			return;
-		}
-		
+	function onLevelHover(level) {		
 		const hoverMessage = getRandomMessage(hoverMessages);
 		updateMascot('think', `Level ${level.id} ${hoverMessage}`);
 	}
@@ -193,58 +171,58 @@
 		message = welcomeMsg;
 		resetInactivityTimer();
 
-		// Auto-Scroll - nur wenn Level nicht sichtbar ist
-		setTimeout(() => {
-			let targetLevel;
-			
-			// Prüfe ob von einem Level zurückgekommen
-			const lastVisitedLevel = browser ? sessionStorage.getItem('lastVisitedLevel') : null;
-			const cameFromLevel = $page.url.searchParams.get('from') || lastVisitedLevel;
-			
-			// Safe parseInt mit Validation
-			const parsedLevel = cameFromLevel ? parseInt(cameFromLevel, 10) : null;
-			
-			if (parsedLevel && !isNaN(parsedLevel) && isLevelUnlocked(parsedLevel)) {
-				targetLevel = parsedLevel;
-				if (browser) sessionStorage.removeItem('lastVisitedLevel');
-			} else {
-				// Schutz vor leerem unlockedLevels Array
-				if ($unlockedLevels.length === 0) {
-					targetLevel = 1; // Fallback auf Level 1
-				} else {
-					targetLevel = Math.max(...$unlockedLevels);
-				}
-			}
-			
-			// Warte bis DOM vollständig geladen ist
+			// Auto-Scroll - nur wenn Level nicht sichtbar ist
 			setTimeout(() => {
-				const levelButton = document.querySelector(`[data-level="${targetLevel}"]`);
-				if (levelButton) {
-					try {
-						// Prüfe ob Level bereits sichtbar ist
-						const rect = levelButton.getBoundingClientRect();
-						const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight && 
-										 rect.left >= 0 && rect.right <= window.innerWidth;
-						
-						// Nur scrollen wenn Level NICHT sichtbar ist
-						if (!isVisible) {
+				let targetLevel;
+				
+				// Prüfe ob von einem Level zurückgekommen
+				const lastVisitedLevel = browser ? sessionStorage.getItem('lastVisitedLevel') : null;
+				const cameFromLevel = $page.url.searchParams.get('from') || lastVisitedLevel;
+				
+				// Safe parseInt mit Validation
+				const parsedLevel = cameFromLevel ? parseInt(cameFromLevel, 10) : null;
+				
+				if (parsedLevel && !isNaN(parsedLevel) && isLevelUnlocked(parsedLevel)) {
+					targetLevel = parsedLevel;
+					if (browser) sessionStorage.removeItem('lastVisitedLevel');
+				} else {
+					// Schutz vor leerem unlockedLevels Array
+					if ($unlockedLevels.length === 0) {
+						targetLevel = 1; // Fallback auf Level 1
+					} else {
+						targetLevel = Math.max(...$unlockedLevels);
+					}
+				}
+				
+				// Warte bis DOM vollständig geladen ist
+				setTimeout(() => {
+					const levelButton = document.querySelector(`[data-level="${targetLevel}"]`);
+					if (levelButton) {
+						try {
+							// Prüfe ob Level bereits sichtbar ist
+							const rect = levelButton.getBoundingClientRect();
+							const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight && 
+											rect.left >= 0 && rect.right <= window.innerWidth;
+							
+							// Nur scrollen wenn Level NICHT sichtbar ist
+							if (!isVisible) {
+								levelButton.scrollIntoView({ 
+									behavior: 'smooth', 
+									block: 'center' 
+								});
+							}
+						} catch (error) {
+							console.warn('Auto-scroll error:', error);
+							// Fallback: Scroll ohne Sichtbarkeits-Check
 							levelButton.scrollIntoView({ 
 								behavior: 'smooth', 
 								block: 'center' 
 							});
 						}
-					} catch (error) {
-						console.warn('Auto-scroll error:', error);
-						// Fallback: Scroll ohne Sichtbarkeits-Check
-						levelButton.scrollIntoView({ 
-							behavior: 'smooth', 
-							block: 'center' 
-						});
 					}
-				}
-			}, 200); // Länger warten für DOM/Icons
-		}, 100);
-	});
+				}, 200); // Länger warten für DOM/Icons
+			}, 100);
+		});
 
 	onDestroy(() => {
 		clearTimeout(inactivityTimer);
@@ -556,27 +534,19 @@
 		bottom: 40px;
 		left: 40px;
 		width: 225px;
-		background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
 		color: white;
-		border: none;
-		padding: 12px 20px;
 		border-radius: 25px;
 		font-size: 16px;
 		font-weight: 600;
-		cursor: pointer;
-		z-index: 1000;
-		box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
 		transition: all 0.3s ease;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 8px;
+		background: rgba(255, 255, 255, 0.3);
+		border: 3px solid rgba(255, 255, 255, 0.2);
+		padding: 0.6rem;
 	}
 
 	.home-button:hover {
-		background: linear-gradient(135deg, #2980b9 0%, #1f618d 100%);
-		transform: translateY(-2px);
-		box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+		transform: translateY(-5px);
+		box-shadow: 0 6px 20px rgba(52, 152, 219, 0.1);
 	}
 
 	.home-button:active {
