@@ -92,7 +92,7 @@
 .mascot-and-settings-container {
   position: fixed;
   right: 1.5rem;
-  bottom: 5rem; /* Angepasst wegen dem neuen Navigationsbalken */
+  bottom: 2rem; 
   display: flex;
   align-items: flex-end;
   gap: 1rem;
@@ -378,7 +378,7 @@ h3 {
   color: white;
   padding: 0.3rem 0.6rem;
   border-radius: var(--border-radius);
-  font-size: 0.8rem;
+  font-size: 0.65rem;
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
