@@ -18,7 +18,7 @@ app.post('/analyze', async (req, res) => {
 
   try {
     const response = await axios.post(OLLAMA_URL, {
-      model: "deepseek-coder:6.7b-instruct",
+      model: "mistral-small3.1:24b-instruct-2503-q4_K_M",
       prompt: prompt,
       stream: false
     });

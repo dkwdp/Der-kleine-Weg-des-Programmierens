@@ -190,21 +190,15 @@
     feedback = '';
     const code = get(myVariable);
 
-    const prompt = `Dieser Javascript Code wurde von einem Anfänger geschrieben:
+     const prompt = `Hier ist sehr simpler JavaScript-Code zwischen zwei Sternchen. Alles Notwendige für den Code sei gegeben:
 
-\`\`\`javascript 
+*
 ${code}
-\`\`\`
-Deine Aufgabe ist: Der Code ist von einem Kind. 
-Zeige dem Kind die Fehler und helfe ihm diese zu lösen. 
-Sei nett und nicht zu hart. 
-Erkläre die Fehler und stelle sicher, dass bei dem Kind alles verständlich ankommt. 
-Gib nicht die Lösung vor.
-Formatiere deine Antwort übersichtlich. 
-Wenn keine Fehler da sind, sei motivierend. 
-Beantworte alles in maximal 3 Sätzen mit maximal 7 Wörtern pro Satz. 
-Die Antworten im Code sind auf Deutsch und Englisch möglich. 
-Antworte immer auf Deutsch. Der erwartete output ist '${levels[$levelID].expectedOutput[$outputID]}' beachte groß- und kleinschreibung und zeichensetzung`;
+*
+
+Ignoriere die Sternchen. ANTWORTE KURZ! **ANTWORTE AUF DEUTSCH** Erkläre auf nette und kinderfreundliche Art **einen** Fehler im Code – **ohne die Lösung zu geben**.
+Antworte **sehr kurz** auf **Deutsch**. Der erwartete Output ist '${levels[$levelID].expectedOutput[$outputID]}'.
+Beachte Groß- und Kleinschreibung sowie Zeichensetzung.`;
 
     try {
       const res = await fetch('http://141.45.153.208:5000/analyze', {
