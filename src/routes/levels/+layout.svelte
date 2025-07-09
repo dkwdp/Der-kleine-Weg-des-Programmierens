@@ -2,7 +2,7 @@
   import { goto } from '$app/navigation';
   import { onMount } from "svelte";
   import { get } from "svelte/store";
-  import { myVariable, isCurrentLevelDrawing, outputID, solvedLevel, levelID, unlockNextLevel } from "$lib/stores/editorStore";
+  import { showOutput,myVariable, isCurrentLevelDrawing, outputID, solvedLevel, levelID, unlockNextLevel } from "$lib/stores/editorStore";
   import JavaScriptEditor from "$lib/JavaScriptEditor.svelte";
   import levels from "$data/levels.json";
   import P5Canvas from "$lib/Canvas/p5Canvas.svelte";
@@ -151,17 +151,20 @@
         codeOutput = trimmedOutput;
 
         if(trimmedOutput === expectedOutput) {
+          showOutput.set(true);
           output = "✓ Richtig: " + trimmedOutput;
           emotion = 'happy';
           message = 'Gut gemacht!';
           solvedLevel.set(true);
         } else {
+          showOutput.set(true);
           output = "↳ Ergebnis: " + trimmedOutput + " | Erwartet: " + expectedOutput;
           emotion = 'think';
           message = 'Fast geschafft!';
         }
       }
     } catch (err) {
+      showOutput.set(true);
       output = "✗ Fehler: " + err.message;
       emotion = 'sad';
       message = 'Versuch es nochmal!';
@@ -227,6 +230,8 @@ Antworte immer auf Deutsch. Der erwartete output ist '${levels[$levelID].expecte
       loading = false;
     }
   }
+
+  // versuch
 </script>
 
 <main>
@@ -268,7 +273,7 @@ Antworte immer auf Deutsch. Der erwartete output ist '${levels[$levelID].expecte
         {#if $isCurrentLevelDrawing}
           <P5Canvas bind:this={canvasRef} />
         {/if}
-        {#if output}
+        {#if output && $showOutput}
           <div class="output-container {emotion}">
             <h3>Ergebnis</h3>
             <pre class="output">{output}</pre>

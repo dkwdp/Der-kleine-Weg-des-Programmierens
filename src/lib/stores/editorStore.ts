@@ -9,6 +9,7 @@ export const isCurrentLevelDrawing = writable(false);
 export const solvedLevel = writable(false);
 export const levelID = writable(0);
 export const outputID = writable(0);
+export const showOutput = writable(false)
 
 // Level-System Stores
 export const unlockedLevels = writable([1]); 
