@@ -3,15 +3,26 @@
   import levels from '$data/levels.json';
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
+  import { onMount } from 'svelte';
+  import { goto } from '$app/navigation';
 
   let currentLevelIndex = 2; // Level 3 = Index 2
   let currentLevel = levels[currentLevelIndex];
   let solvedTasks = new Array(currentLevel.description.length).fill(false);
+  let solvedTasks = new Array(currentLevel.description.length).fill(false);
   
   onMount(() => {
     outputID.set(0);
+    outputID.set(0);
     myVariable.set(currentLevel.initialCode[0]);
     solvedLevel.set(false);
+    levelID.set(currentLevelIndex);
+  });
+
+  $: if ($solvedLevel && $outputID >= 0) {
+    solvedTasks[$outputID] = true;
+    checkLevelCompletion();
+  }
     levelID.set(currentLevelIndex);
   });
 
@@ -40,6 +51,7 @@
     outputID.set(currentTask);
     myVariable.set(currentLevel.initialCode[currentTask]);
     solvedLevel.set(false);
+    showOutput.set(false)
   }
   
   function checkLevelCompletion() {
@@ -54,10 +66,13 @@
 
 <main>
   <h1>{currentLevel.title[$outputID]}</h1>
+  <h1>{currentLevel.title[$outputID]}</h1>
   <h2>Levelbeschreibung</h2>
+  <p>{currentLevel.description[$outputID]}</p>
   <p>{currentLevel.description[$outputID]}</p>
   {#if currentLevel.hints}
       <h3>💡 Tipps:</h3>
+       <p>{currentLevel.hints[$outputID]}</p>
        <p>{currentLevel.hints[$outputID]}</p>
   {/if}
 

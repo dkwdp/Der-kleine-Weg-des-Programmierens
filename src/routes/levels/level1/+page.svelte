@@ -1,5 +1,5 @@
 <script>
-  import { myVariable, isCurrentLevelDrawing, solvedLevel, levelID, outputID, unlockNextLevel } from '$lib/stores/editorStore';
+  import { showOutput,myVariable, isCurrentLevelDrawing, solvedLevel, levelID, outputID, unlockNextLevel } from '$lib/stores/editorStore';
   import levels from '$data/levels.json';
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
@@ -26,12 +26,14 @@
     if (currentTask >= currentLevel.description.length) {
       unlockNextLevel(currentLevelIndex + 1);
       goto(`/levels/level${currentLevelIndex + 2}`);
+      showOutput.set(false);
       return;
     }
     
     outputID.set(currentTask);
     myVariable.set(currentLevel.initialCode[currentTask]);
     solvedLevel.set(false);
+    showOutput.set(false)
   }
   
   function previousTask() {
@@ -39,7 +41,7 @@
     
     outputID.set(currentTask);
     myVariable.set(currentLevel.initialCode[currentTask]);
-    solvedLevel.set(false);
+    showOutput.set(false)
   }
   
   function checkLevelCompletion() {
