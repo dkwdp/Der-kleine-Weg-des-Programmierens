@@ -9,20 +9,20 @@
   let solvedTasks = new Array(currentLevel.description.length).fill(false);
   
   onMount(() => {
-    outputID.set(0);  // ← WICHTIG: outputID initialisieren!
+    outputID.set(0);  
     myVariable.set(currentLevel.initialCode[0]);
     solvedLevel.set(false);
     levelID.set(currentLevelIndex);
   });
 
-  // Verwende nur $outputID, nicht i
+  
   $: if ($solvedLevel && $outputID >= 0) {
-    solvedTasks[$outputID] = true;  // ← Verwende $outputID
+    solvedTasks[$outputID] = true;  
     checkLevelCompletion();
   }
 
   function nextTask() {
-    let currentTask = $outputID + 1;  // ← Neue lokale Variable
+    let currentTask = $outputID + 1;  
     
     if (currentTask >= currentLevel.description.length) {
       unlockNextLevel(currentLevelIndex + 1);
@@ -36,7 +36,7 @@
   }
   
   function previousTask() {
-    let currentTask = Math.max(0, $outputID - 1);  // ← Verhindert negative Werte
+    let currentTask = Math.max(0, $outputID - 1);
     
     outputID.set(currentTask);
     myVariable.set(currentLevel.initialCode[currentTask]);
@@ -54,7 +54,7 @@
 </script>
 
 <main>
-  <h1>{currentLevel.title[$outputID]}</h1>  <!-- ← Verwende $outputID statt i -->
+  <h1>{currentLevel.title[$outputID]}</h1>
   <h2>Levelbeschreibung</h2>
   <p>{currentLevel.description[$outputID]}</p>
   {#if currentLevel.hints}
@@ -63,13 +63,14 @@
   {/if}
 
   {#if $solvedLevel}
-    {#if $outputID > 0 && $outputID + 1 >= currentLevel.description.length}
-      <!-- Zurück-Button nur beim letzten Task anzeigen -->
-      <button on:click={previousTask}>Zurück</button>
-    {/if}
-    {#if $outputID + 1 < currentLevel.description.length}
-      <button on:click={nextTask}>Weiter</button>
-    {/if}
+    <div>
+      {#if $outputID + 1 < currentLevel.description.length}
+        <button on:click={nextTask} >Weiter</button>
+      {/if}
+      {#if $outputID > 0}
+        <button on:click={previousTask}>Zurück</button>
+      {/if}
+    </div>
   {/if}
 </main>
 

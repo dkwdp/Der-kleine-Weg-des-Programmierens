@@ -36,8 +36,8 @@
 <style>
   .mascot-container {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 40px;
+    right: 40px;
     width: 120px;
     height: 120px;
     z-index: 1000;

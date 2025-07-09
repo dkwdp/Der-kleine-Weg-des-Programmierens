@@ -1,6 +1,9 @@
 <script>
 	import { goto } from '$app/navigation';
 	import { gameMode, unlockedLevels } from '$lib/stores/editorStore';
+	import { browser } from '$app/environment';
+	import { onMount, onDestroy } from 'svelte';
+	import { page } from '$app/stores';
 	import Mascot from '../mascot/Mascot.svelte';
 
 	// Mascot State Management
@@ -112,6 +115,11 @@
 			return;
 		}
 		
+		// Speichere das besuchte Level (nur valide Level-IDs)
+		if (browser && levelId && typeof levelId === 'number' && levelId >= 1 && levelId <= 10) {
+			sessionStorage.setItem('lastVisitedLevel', levelId.toString());
+		}
+		
 		const goMessages = [
 			'Rutsch-Zeit! 🐧',
 			'Auf geht\'s zum Watscheln!',
@@ -177,14 +185,65 @@
 		iconLoadStates = { ...iconLoadStates }; 
 	}
 
-	// Initialisierung
-	import { onMount, onDestroy } from 'svelte';
 	
+	// Initialisierung
 	onMount(() => {
 		const welcomeMsg = getWelcomeMessage();
 		emotion = 'neutral';
 		message = welcomeMsg;
 		resetInactivityTimer();
+
+		// Auto-Scroll - nur wenn Level nicht sichtbar ist
+		setTimeout(() => {
+			let targetLevel;
+			
+			// Prüfe ob von einem Level zurückgekommen
+			const lastVisitedLevel = browser ? sessionStorage.getItem('lastVisitedLevel') : null;
+			const cameFromLevel = $page.url.searchParams.get('from') || lastVisitedLevel;
+			
+			// Safe parseInt mit Validation
+			const parsedLevel = cameFromLevel ? parseInt(cameFromLevel, 10) : null;
+			
+			if (parsedLevel && !isNaN(parsedLevel) && isLevelUnlocked(parsedLevel)) {
+				targetLevel = parsedLevel;
+				if (browser) sessionStorage.removeItem('lastVisitedLevel');
+			} else {
+				// Schutz vor leerem unlockedLevels Array
+				if ($unlockedLevels.length === 0) {
+					targetLevel = 1; // Fallback auf Level 1
+				} else {
+					targetLevel = Math.max(...$unlockedLevels);
+				}
+			}
+			
+			// Warte bis DOM vollständig geladen ist
+			setTimeout(() => {
+				const levelButton = document.querySelector(`[data-level="${targetLevel}"]`);
+				if (levelButton) {
+					try {
+						// Prüfe ob Level bereits sichtbar ist
+						const rect = levelButton.getBoundingClientRect();
+						const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight && 
+										 rect.left >= 0 && rect.right <= window.innerWidth;
+						
+						// Nur scrollen wenn Level NICHT sichtbar ist
+						if (!isVisible) {
+							levelButton.scrollIntoView({ 
+								behavior: 'smooth', 
+								block: 'center' 
+							});
+						}
+					} catch (error) {
+						console.warn('Auto-scroll error:', error);
+						// Fallback: Scroll ohne Sichtbarkeits-Check
+						levelButton.scrollIntoView({ 
+							behavior: 'smooth', 
+							block: 'center' 
+						});
+					}
+				}
+			}, 200); // Länger warten für DOM/Icons
+		}, 100);
 	});
 
 	onDestroy(() => {
@@ -195,12 +254,22 @@
 <Mascot {emotion} {message} />
 
 <div class="page-container">
-	<div class="map-container" role="application">
+	<div class="map-container">
 		<img src="/map.png" alt="Adventure Map" class="map-image" />
 		
 		<div class="map-header-overlay">
 			<h1>Willkommen im Coder-Dojo Abenteuerpfad!</h1>
 		</div>
+
+		<!-- Progress Widget nur im progressive Modus anzeigen -->
+		{#if $gameMode === 'progressive'}
+			<div class="progress-widget">
+				<span class="progress-text">{$unlockedLevels.length}/10 Level freigeschaltet</span>
+				<div class="progress-bar">
+					<div class="progress-fill" style="width: {($unlockedLevels.length / 10) * 100}%"></div>
+				</div>
+			</div>
+		{/if}
 
 		<svg class="path-lines-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
 			{#each pathLines as line}
@@ -208,8 +277,7 @@
 					x1="{line.x1}%" 
 					y1="{line.y1}%" 
 					x2="{line.x2}%" 
-					y2="{line.y2}%" 
-					class="path-line"
+					y2="{line.y2}" 
 					stroke="rgba(160, 160, 160, 0.3)"
 					stroke-width="0.3"
 					stroke-dasharray="1,0.5"
@@ -217,10 +285,19 @@
 			{/each}
 		</svg>
 		
+		<button 
+			class="home-button"
+			on:click={() => goto('/')}
+			title="Zurück zur Startseite"
+		>
+			🏠 Home
+		</button>
+
 		{#each levelData as level}
 			<button 
 				class="level-button {level.size} {isLevelUnlocked(level.id) ? 'unlocked' : 'locked'}"
 				style="top: {level.y}%; left: {level.x}%;"
+				data-level="{level.id}"
 				on:click={() => LevelJoin(level.id)}
 				on:mouseenter={() => onLevelHover(level)}
 				on:mouseleave={onLevelLeave}
@@ -255,41 +332,19 @@
 </div>
 
 <style>
-	:global(html) {
-		overflow: auto;
-		overscroll-behavior: none; /* Verhindert Overscroll */
-		scrollbar-width: none; /* Firefox */
-		-ms-overflow-style: none; /* Internet Explorer 10+ */
-	}
-
-	:global(html::-webkit-scrollbar) {
-		display: none; /* Webkit (Chrome, Safari) */
-	}
-
-	:global(body) {
+	:global(html, body) {
 		margin: 0;
 		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 		overflow: auto;
-		overscroll-behavior: none; /* Verhindert Bounce-Effekt */
-		scrollbar-width: none; /* Firefox */
-		-ms-overflow-style: none; /* Internet Explorer 10+ */
+		overscroll-behavior: none;
+		scrollbar-width: none;
+		-ms-overflow-style: none;
 	}
 	
-	:global(body::-webkit-scrollbar) {
-		display: none; /* Webkit (Chrome, Safari) */
+	:global(html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar) {
+		display: none;
 	}
 
-	/* Auch für alle anderen Container */
-	:global(*) {
-		scrollbar-width: none; /* Firefox */
-		-ms-overflow-style: none; /* Internet Explorer 10+ */
-	}
-
-	:global(*::-webkit-scrollbar) {
-		display: none; /* Webkit (Chrome, Safari) */
-	}
-
-	/* Layout */
 	.page-container {
 		width: 100%;
 		min-height: 100vh;
@@ -312,31 +367,69 @@
 	/* Header */
 	.map-header-overlay {
 		position: absolute;
-		top: 20px;
+		top: 30px;
 		left: 50%;
 		transform: translateX(-50%);
 		text-align: center;
 		z-index: 100;
 		pointer-events: none;
-		
-		/* Glasmorphism */
 		background: rgba(255, 255, 255, 0.15);
 		backdrop-filter: blur(10px);
 		border: 1px solid rgba(255, 255, 255, 0.2);
 		border-radius: 20px;
 		padding: 1.5rem 2.5rem;
-		box-shadow: 
-			0 8px 32px rgba(0, 0, 0, 0.1),
-			0 4px 16px rgba(0, 0, 0, 0.05);
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.05);
 	}
 
 	.map-header-overlay h1 {
 		font-size: clamp(1.5rem, 3.5vw, 2.2rem);
 		color: #2c3e50;
-		margin: 0 0 0.5rem 0;
+		margin: 0;
 		font-weight: 700;
 		letter-spacing: -0.02em;
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+
+	/* Progress Widget über Home Button */
+	.progress-widget {
+		position: fixed;
+		bottom: 105px;
+		left: 40px;
+		pointer-events: none;
+		padding: 1rem 1rem;
+		background: rgba(255, 255, 255, 0.1);
+		backdrop-filter: blur(8px);
+		border: 1px solid rgba(255, 255, 255, 0.15);
+		border-radius: 15px;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.progress-text {
+		font-size: 0.9rem;
+		color: #000000;
+		font-weight: 600;
+		text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+		background: rgba(255, 255, 255, 0.4);
+		padding: 0.3rem 0.8rem;
+		border-radius: 12px;
+		border: 1px solid rgba(255, 255, 255, 0.4);
+	}
+
+	.progress-bar {
+		width: 190px;
+		height: 10px;
+		background: rgba(0, 0, 0, 0.1);
+		border-radius: 4px;
+		overflow: hidden;
+		border: 1px solid rgba(255, 255, 255, 0.2);
+	}
+
+	.progress-fill {
+		height: 100%;
+		background: linear-gradient(90deg, #27ae60 0%, #2ecc71 100%);
+		border-radius: 4px;
 	}
 
 	/* Path Linien */
@@ -367,7 +460,6 @@
 		z-index: 10;
 	}
 
-	/* Button Größen */
 	.level-button.large {
 		width: clamp(180px, 20vw, 400px);
 		height: clamp(180px, 20vw, 400px);
@@ -386,14 +478,12 @@
 		filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.4));
 	}
 
-	/* Gesperrte Level */
 	.level-button.locked {
 		filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.2)) grayscale(100%) brightness(0.5);
 		cursor: not-allowed;
 		pointer-events: none;
 	}
 
-	/* Level Icons */
 	.level-icon {
 		width: 100%;
 		height: 100%;
@@ -409,12 +499,7 @@
 		font-size: clamp(10px, 1.5vw, 16px);
 		color: white;
 		font-family: 'Arial Black', sans-serif;
-		text-shadow: 
-			-1px -1px 0 #000,
-			 1px -1px 0 #000,
-			-1px  1px 0 #000,
-			 1px  1px 0 #000,
-			 0 0 3px rgba(0, 0, 0, 1);
+		text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 3px rgba(0, 0, 0, 1);
 		pointer-events: none;
 		z-index: 1;
 		transition: all 0.3s ease;
@@ -430,7 +515,6 @@
 		pointer-events: none;
 	}
 
-	/* Fallback Buttons */
 	.level-number-only {
 		width: 100%;
 		height: 100%;
@@ -457,7 +541,6 @@
 		font-size: clamp(16px, 2.5vw, 24px);
 	}
 
-	/* Hover Effekte */
 	.level-button.unlocked:hover {
 		transform: translate(-50%, -50%) scale(1.05);
 		filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5));
@@ -466,5 +549,38 @@
 	.level-button.unlocked:active {
 		transform: translate(-50%, -50%) scale(1.15);
 		transition: all 0.1s ease;
+	}
+
+	.home-button {
+		position: fixed;
+		bottom: 40px;
+		left: 40px;
+		width: 225px;
+		background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+		color: white;
+		border: none;
+		padding: 12px 20px;
+		border-radius: 25px;
+		font-size: 16px;
+		font-weight: 600;
+		cursor: pointer;
+		z-index: 1000;
+		box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+		transition: all 0.3s ease;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+	}
+
+	.home-button:hover {
+		background: linear-gradient(135deg, #2980b9 0%, #1f618d 100%);
+		transform: translateY(-2px);
+		box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+	}
+
+	.home-button:active {
+		transform: translateY(0);
+		box-shadow: 0 2px 10px rgba(52, 152, 219, 0.3);
 	}
 </style>
