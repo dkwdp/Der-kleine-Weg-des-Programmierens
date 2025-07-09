@@ -54,7 +54,6 @@
 
 <main>
   <h1>{currentLevel.title[$outputID]}</h1>
-  <h2>Levelbeschreibung</h2>
   <p>{currentLevel.description[$outputID]}</p>
   {#if currentLevel.hints}
       <h3>💡 Tipps:</h3>
@@ -74,6 +73,6 @@
 <style>
   main {
     padding: 20px;
-    text-align: center;
+    text-align: left;
   }
 </style>
