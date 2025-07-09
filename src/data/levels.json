@@ -272,6 +272,80 @@
             "Der Canvas ist 400px breit und 300px hoch ",
             "Verfügbare Farben: 'red', 'blue', 'green', 'yellow', 'purple', etc."
         ]
+    },
+
+    {
+
+        "id": 9,
+        "title": "If/Else Bedingungen",
+        "type": "javascript",
+        "titles": [
+            "Was ist if/else?",
+            "Mini-Level: Alter prüfen",
+            "Mini-Level: Farben vergleichen",
+            "Bonus: Eigenes Beispiel"
+        ],
+        "descriptions": [
+            "Ein <code>if</code>-Zweig testet Bedingungen. Wenn sie wahr ist, passiert etwas. <br><code>if (x > 5) { console.log('ja'); } else { console.log('nein'); }</code>",
+            "Ist jemand alt genug fürs Kino? Ergänze die Bedingung so, dass die Ausgabe stimmt.",
+            "Lerne, wie du Farben vergleichst.",
+            "Erstelle deinen eigenen Code mit <code>if/else</code>."
+        ],
+        "codes": [
+            "let x = 6;\nif (x > 5) {\n  console.log('ja');\n} else {\n  console.log('nein');\n}",
+            "let alter = 18;\nif (alter >= 18) {\n  console.log('Du bist erwachsen!');\n} else {\n  console.log('Du bist noch ein Kind');\n}",
+            "let farbe = 'blau';\nif (farbe === 'blau') {\n  console.log('Cool!');\n} else {\n  console.log('Hmm');\n}",
+            "// Dein Code hier"
+        ],
+        "expectedOutputs": [
+            "ja",
+            "Du bist erwachsen!",
+            "Cool!",
+            ""
+        ],
+        "hints": [
+            "Verwende Vergleichsoperatoren wie >, >=, ===",
+            "Beachte Groß- und Kleinschreibung bei Strings!",
+            "Ein if-else-Zweig braucht immer eine Bedingung in Klammern",
+            "Du kannst auch mehrere Bedingungen mit && und || kombinieren"
+    ]
+    },
+
+
+    {
+            "id": 10,
+            "title": "for-Schleifen",
+            "type": "javascript",
+            "titles": [
+                "Was ist eine for-Schleife?",
+                "Mini-Level: Zahlen zählen",
+                "Mini-Level: Quadratzahlen",
+                "Bonus: Eigenes Beispiel"
+            ],
+            "descriptions": [
+                "Eine <code>for</code>-Schleife wiederholt etwas. <br><strong>Beispiel:</strong><br><code>for (let i = 0; i < 5; i++) { console.log(i); }</code>",
+                "Zähle die Zahlen von 1 bis 4 und gib die Zahlen aus.",
+                "Gib die Quadratzahlen von 1 bis 5 aus.",
+                "Erstelle deinen eigenen Code mit einer <code>for</code>-Schleife, z.B. um Sterne zu zeichnen."
+            ],
+            "codes": [
+                "for (let i = 0; i < 5; i++) {\n  console.log(i);\n}",
+                "for (let i = 1; i <= 4; i++) {\n  console.log(i);\n}",
+                "for (let i = 1; i <= 5; i++) {\n  console.log(i * i);\n}",
+                "// Dein Code hier"
+            ],
+            "expectedOutputs": [
+                "0\n1\n2\n3\n4",
+                "1\n2\n3\n4",
+                "1\n4\n9\n16\n25",
+                ""
+            ],
+            "hints": [
+                "Die Schleife läuft mit i = 0 bis i < 5.",
+                "Nutze console.log, um jede Zahl zu drucken.",
+                "Multipliziere i mit sich selbst: i * i.",
+                "Nutze deine Kreativität für eine for-Schleife!"
+        ]
     }
 
 ]
