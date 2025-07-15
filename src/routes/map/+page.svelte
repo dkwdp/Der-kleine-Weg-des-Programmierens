@@ -1,6 +1,6 @@
 <script>
 	import { goto } from '$app/navigation';
-	import { gameMode, unlockedLevels } from '$lib/stores/editorStore';
+	import { gameMode, unlockedLevels, bonusLevelsUnlocked } from '$lib/stores/editorStore';
 	import { browser } from '$app/environment';
 	import { onMount, onDestroy } from 'svelte';
 	import { page } from '$app/stores';
@@ -12,7 +12,7 @@
 	let inactivityTimer;
 	let currentNeutralState = 'neutral';
 	
-	// Level-Daten
+	// Level-Daten (bestehend)
 	const levelData = [
 		{ id: 1, x: 60, y: 12, icon: 'polarbear', name: 'Polarbaer', size: 'medium' },
 		{ id: 2, x: 22, y: 22, icon: 'tent', name: 'Zelt', size: 'medium' },
@@ -26,11 +26,58 @@
 		{ id: 10, x: 43, y: 95, icon: 'fish', name: 'Fisch', size: 'small' },
 	];
 
+	const bonusLevelData = [
+		{ 
+			id: 1, 
+			x: 50, 
+			y: 42, 
+			icon: '⚙️', 
+			name: 'Bonus 1', 
+			description: 'Canvas-Programmierung',
+			unlockAfter: 3,
+			route: '/levels/bonusLevel/bonus1'
+		},
+		{ 
+			id: 2, 
+			x: 59, 
+			y: 65, 
+			icon: '⚙️', 
+			name: 'Bonus 2', 
+			description: 'Programmiere den Roboter',
+			unlockAfter: 6,
+			route: '/levels/bonusLevel/bonus2'
+		},
+		{ 
+			id: 3, 
+			x: 45, 
+			y: 87.5, 
+			icon: '⚙️', 
+			name: 'Bonus 3', 
+			description: 'For- und While-Schleifen meistern',
+			unlockAfter: 8,
+			route: '/levels/bonusLevel/bonus3'
+		},
+		{ 
+			id: 4, 
+			x: 55, 
+			y: 92.5, 
+			icon: '⚙️', 
+			name: 'Bonus 4', 
+			description: 'If/Else',
+			unlockAfter: 9,
+			route: '/levels/bonusLevel/bonus4'
+		}
+	];
+
 	let iconLoadStates = {};
 
 	function isLevelUnlocked(levelId) {
 		return $gameMode === 'free' || $unlockedLevels.includes(levelId);
 	}
+
+	function isBonusLevelUnlocked(bonusId) {
+    return $bonusLevelsUnlocked.includes(bonusId);
+}
 
 	// Maskottchen
 	function updateMascot(newEmotion, newMessage) {
@@ -83,6 +130,13 @@
 		'braucht Pinguin-Magie! ✨'
 	];
 
+	const bonusHoverMessages = [
+		'ist ein geheimes Abenteuer! ✨',
+		'ist voller Überraschungen!',
+		'ist bereit für Bonus-Action! 💫',
+		'ist ein Bonus-Level'
+	];
+
 	// Hilfsfunktionen
 	function getRandomMessage(messageArray) {
 		return messageArray[Math.floor(Math.random() * messageArray.length)];
@@ -96,30 +150,31 @@
 		return getRandomMessage(welcomeMessages);
 	}
 
-	// Level Interaktion
 	function LevelJoin(levelId) {
-		// Speichere das besuchte Level (nur valide Level-IDs)
-		if (browser && levelId && typeof levelId === 'number' && levelId >= 1 && levelId <= 10) {
-			sessionStorage.setItem('lastVisitedLevel', levelId.toString());
-		}
-		
-		const goMessages = [
-			'Rutsch-Zeit! 🐧',
-			'Auf geht\'s zum Watscheln!',
-			'Eis to meet you, Level!',
-			'Flossen-Action aktiviert!',
-			'Lass uns eintauchen! 🌊'
-		];
-		updateMascot('switch', getRandomMessage(goMessages));
-		
+	// Speichere das besuchte Level (nur valide Level-IDs)
+	if (browser && levelId && typeof levelId === 'number' && levelId >= 1 && levelId <= 10) {
+		sessionStorage.setItem('lastVisitedLevel', levelId.toString());
+	}
+	
 		setTimeout(() => {
-			goto(`/levels/level${levelId}`);
-		}, 800);
+        	goto(`/levels/level${levelId}`);
+    	}, 200);
+	}
+
+	function BonusLevelJoin(bonusLevel) {
+		setTimeout(() => {
+        	goto(bonusLevel.route);
+    	}, 200);
 	}
 
 	function onLevelHover(level) {		
 		const hoverMessage = getRandomMessage(hoverMessages);
 		updateMascot('think', `Level ${level.id} ${hoverMessage}`);
+	}
+
+	function onBonusLevelHover(bonusLevel) {
+		const hoverMessage = getRandomMessage(bonusHoverMessages);
+		updateMascot('think', `${bonusLevel.name} ${hoverMessage}`);
 	}
 
 	function onLevelLeave() {
@@ -162,7 +217,6 @@
 		iconLoadStates[levelId] = true;
 		iconLoadStates = { ...iconLoadStates }; 
 	}
-
 	
 	// Initialisierung
 	onMount(() => {
@@ -171,58 +225,51 @@
 		message = welcomeMsg;
 		resetInactivityTimer();
 
-			// Auto-Scroll - nur wenn Level nicht sichtbar ist
-			setTimeout(() => {
-				let targetLevel;
-				
-				// Prüfe ob von einem Level zurückgekommen
-				const lastVisitedLevel = browser ? sessionStorage.getItem('lastVisitedLevel') : null;
-				const cameFromLevel = $page.url.searchParams.get('from') || lastVisitedLevel;
-				
-				// Safe parseInt mit Validation
-				const parsedLevel = cameFromLevel ? parseInt(cameFromLevel, 10) : null;
-				
-				if (parsedLevel && !isNaN(parsedLevel) && isLevelUnlocked(parsedLevel)) {
-					targetLevel = parsedLevel;
-					if (browser) sessionStorage.removeItem('lastVisitedLevel');
+		// Auto-Scroll - nur wenn Level nicht sichtbar ist
+		setTimeout(() => {
+			let targetLevel;
+			
+			const lastVisitedLevel = browser ? sessionStorage.getItem('lastVisitedLevel') : null;
+			const cameFromLevel = $page.url.searchParams.get('from') || lastVisitedLevel;
+			
+			const parsedLevel = cameFromLevel ? parseInt(cameFromLevel, 10) : null;
+			
+			if (parsedLevel && !isNaN(parsedLevel) && isLevelUnlocked(parsedLevel)) {
+				targetLevel = parsedLevel;
+				if (browser) sessionStorage.removeItem('lastVisitedLevel');
+			} else {
+				if ($unlockedLevels.length === 0) {
+					targetLevel = 1;
 				} else {
-					// Schutz vor leerem unlockedLevels Array
-					if ($unlockedLevels.length === 0) {
-						targetLevel = 1; // Fallback auf Level 1
-					} else {
-						targetLevel = Math.max(...$unlockedLevels);
-					}
+					targetLevel = Math.max(...$unlockedLevels);
 				}
-				
-				// Warte bis DOM vollständig geladen ist
-				setTimeout(() => {
-					const levelButton = document.querySelector(`[data-level="${targetLevel}"]`);
-					if (levelButton) {
-						try {
-							// Prüfe ob Level bereits sichtbar ist
-							const rect = levelButton.getBoundingClientRect();
-							const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight && 
-											rect.left >= 0 && rect.right <= window.innerWidth;
-							
-							// Nur scrollen wenn Level NICHT sichtbar ist
-							if (!isVisible) {
-								levelButton.scrollIntoView({ 
-									behavior: 'smooth', 
-									block: 'center' 
-								});
-							}
-						} catch (error) {
-							console.warn('Auto-scroll error:', error);
-							// Fallback: Scroll ohne Sichtbarkeits-Check
+			}
+			
+			setTimeout(() => {
+				const levelButton = document.querySelector(`[data-level="${targetLevel}"]`);
+				if (levelButton) {
+					try {
+						const rect = levelButton.getBoundingClientRect();
+						const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight && 
+										rect.left >= 0 && rect.right <= window.innerWidth;
+						
+						if (!isVisible) {
 							levelButton.scrollIntoView({ 
 								behavior: 'smooth', 
 								block: 'center' 
 							});
 						}
+					} catch (error) {
+						console.warn('Auto-scroll error:', error);
+						levelButton.scrollIntoView({ 
+							behavior: 'smooth', 
+							block: 'center' 
+						});
 					}
-				}, 200); // Länger warten für DOM/Icons
-			}, 100);
-		});
+				}
+			}, 200);
+		}, 100);
+	});
 
 	onDestroy(() => {
 		clearTimeout(inactivityTimer);
@@ -239,13 +286,17 @@
 			<h1>Willkommen im Coder-Dojo Abenteuerpfad!</h1>
 		</div>
 
-		<!-- Progress Widget nur im progressive Modus anzeigen -->
+		<!-- Progress Widget erweitert -->
 		{#if $gameMode === 'progressive'}
 			<div class="progress-widget">
 				<span class="progress-text">{$unlockedLevels.length}/10 Level freigeschaltet</span>
 				<div class="progress-bar">
 					<div class="progress-fill" style="width: {($unlockedLevels.length / 10) * 100}%"></div>
 				</div>
+				<!-- BONUS PROGRESS -->
+				{#if $bonusLevelsUnlocked.length > 0}
+					<span class="bonus-progress-text">✨ {$bonusLevelsUnlocked.length}/4 Bonus entdeckt</span>
+				{/if}
 			</div>
 		{/if}
 
@@ -306,6 +357,25 @@
 				{/if}
 			</button>
 		{/each}
+
+		{#each bonusLevelData as bonusLevel}
+			{#if isBonusLevelUnlocked(bonusLevel.id)}
+				<button 
+					class="bonus-level-button"
+					style="top: {bonusLevel.y}%; left: {bonusLevel.x}%;"
+					data-bonus-level="{bonusLevel.id}"
+					on:click={() => BonusLevelJoin(bonusLevel)}
+					on:mouseenter={() => onBonusLevelHover(bonusLevel)}
+					on:mouseleave={onLevelLeave}
+					title="{bonusLevel.name} - {bonusLevel.description}"
+				>
+					<div class="bonus-icon">
+						{bonusLevel.icon}
+					</div>
+					<div class="bonus-glow"></div>
+				</button>
+			{/if}
+		{/each}
 	</div>
 </div>
 
@@ -315,12 +385,7 @@
 		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 		overflow: auto;
 		overscroll-behavior: none;
-		scrollbar-width: none;
 		-ms-overflow-style: none;
-	}
-	
-	:global(html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar) {
-		display: none;
 	}
 
 	.page-container {
@@ -368,7 +433,6 @@
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	}
 
-	/* Progress Widget über Home Button */
 	.progress-widget {
 		position: fixed;
 		bottom: 105px;
@@ -410,6 +474,18 @@
 		border-radius: 4px;
 	}
 
+	.bonus-progress-text {
+		font-size: 0.8rem;
+		color: #d4af37;
+		font-weight: 600;
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+		background: rgba(212, 175, 55, 0.2);
+		padding: 0.2rem 0.6rem;
+		border-radius: 10px;
+		border: 1px solid rgba(212, 175, 55, 0.4);
+		text-align: center;
+	}
+
 	/* Path Linien */
 	.path-lines-svg {
 		position: absolute;
@@ -436,6 +512,77 @@
 		user-select: none;
 		filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.4));
 		z-index: 10;
+	}
+
+	.bonus-level-button {
+		position: absolute;
+		transform: translate(-50%, -50%);
+		background: transparent;
+		border: none;
+		width: clamp(50px, 6vw, 100px);
+		height: clamp(50px, 6vw, 100px);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+		transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+		user-select: none;
+		z-index: 15;
+		filter: drop-shadow(0 6px 20px rgba(212, 175, 55, 0.6));
+	}
+
+	.bonus-icon {
+		font-size: clamp(24px, 3vw, 48px);
+		z-index: 2;
+		position: relative;
+		animation: bonusPulse 2s ease-in-out infinite;
+	}
+
+	.bonus-glow {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 120%;
+		height: 120%;
+		background: radial-gradient(circle, rgba(212, 175, 55, 0.3) 0%, transparent 70%);
+		border-radius: 50%;
+		animation: bonusGlow 3s ease-in-out infinite;
+		z-index: 1;
+	}
+
+	@keyframes bonusPulse {
+		0%, 100% { transform: scale(1); }
+		50% { transform: scale(1.1); }
+	}
+
+	@keyframes bonusGlow {
+		0%, 100% { 
+			opacity: 0.5; 
+			transform: translate(-50%, -50%) scale(1);
+		}
+		50% { 
+			opacity: 0.8; 
+			transform: translate(-50%, -50%) scale(1.2);
+		}
+	}
+
+	.bonus-level-button:hover {
+		transform: translate(-50%, -50%) scale(1.15);
+		filter: drop-shadow(0 8px 25px rgba(212, 175, 55, 0.8));
+	}
+
+	.bonus-level-button:hover .bonus-icon {
+		animation-duration: 1s;
+	}
+
+	.bonus-level-button:hover .bonus-glow {
+		animation-duration: 1.5s;
+	}
+
+	.bonus-level-button:active {
+		transform: translate(-50%, -50%) scale(1.25);
+		transition: all 0.1s ease;
 	}
 
 	.level-button.large {

@@ -21,7 +21,7 @@
     
     // Kurz warten, damit Stores sich aktualisieren
     setTimeout(() => {
-      goto('/map');
+      goto('/map');s
     }, 100);
   }
 </script>
