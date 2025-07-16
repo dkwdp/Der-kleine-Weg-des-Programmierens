@@ -4,60 +4,32 @@
   
   let selectedLevel = 1;
   
-  // Funktion für freien Modus - mit Timing-Fix
+  // Funktion für freien Modus
   function startFreeMode() {
     gameMode.set('free');
-    
-    // Kurz warten, damit Store sich aktualisiert
-    setTimeout(() => {
-      goto('/map');
-    }, 100);
+    goto('/map');
   }
   
-  // Funktion zum Starten mit gewähltem Level - mit Timing-Fix
-  function startWithSelectedLevel() {
+  // Funktion für Level-Auswahl
+  function startProgressionMode() {
     gameMode.set('progressive');
     unlockLevelsUpTo(selectedLevel);
-    
-    // Kurz warten, damit Stores sich aktualisieren
-    setTimeout(() => {
-      goto('/map');s
-    }, 100);
+    goto('/map');
   }
 </script>
-<style>
-  /* Overscroll-Schutz für die gesamte Seite */
-  :global(html) {
-    overflow: hidden;
-    height: 100%;
-  }
 
-  /* Hintergrundfarbe der gesamten Seite */
+<style>
   :global(body) {
     margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #ffffff;
-    height: 100vh;
-    overscroll-behavior: none; /* Verhindert Bounce-Effekt */
+    overscroll-behavior: none;
   }
   
-  /* Container für zentrierte Inhalte */
   .page-container {
-    position: relative;
-    width: 100vw;
     height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden; /* Verhindert Scrollen im Container */
   }
     
   .image-container {
-    position: relative;
-    width: 100%;
     height: 100%;
-    overflow: hidden;
   }
 
   .homescreen-image {
@@ -65,47 +37,31 @@
     height: 100%;
     object-fit: cover;
     display: block;
-    user-select: none; /* Verhindert Text-/Bildauswahl */
-    -webkit-user-drag: none; /* Verhindert Drag & Drop */
   }
 
-  /* Buttons Container */
   .buttons {
     position: absolute;
-    bottom: 15%;
+    bottom: 28%;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    z-index: 10;
-    align-items: center;
-  }
-
-  /* Level Selection */
-  .level-selection {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
+    gap: 18px;
   }
   
   .level-select {
     padding: 12px 16px;
     font-size: 1.1rem;
-    border: 2px solid #3498db;
+    border: 3px solid #3498db;
     border-radius: 10px;
-    background: white;
-    width: 140px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: 500;
+    background: rgb(255, 255, 255);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 
   .level-select:hover {
     border-color: #2980b9;
     box-shadow: 0 6px 16px rgba(52, 152, 219, 0.3);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 
   .level-select:focus {
@@ -114,22 +70,17 @@
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
   }
 
-  /* Button Styling */
   button {
     background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-    color: white;
-    padding: 15px 30px;
-    font-size: 1.1rem;
-    font-weight: 600;
+    color: #ffffff;
+    padding: 13px 22px;
+    font-size: 1.2rem;
+    font-weight: 700;
     border: none;
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    min-width: 180px;
-    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
-    text-transform: uppercase;
     letter-spacing: 0.5px;
-    user-select: none; /* Verhindert Text-Auswahl */
   }
 
   button:hover {
@@ -143,12 +94,21 @@
     box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
   }
 
-  .free-mode-btn {
+  button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+  }
+
+  .free-mode-button:focus {
+      box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
+  }
+
+  .free-mode-button {
     background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
     box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
   }
 
-  .free-mode-btn:hover {
+  .free-mode-button:hover {
     background: linear-gradient(135deg, #229954 0%, #1e8449 100%);
     box-shadow: 0 8px 25px rgba(39, 174, 96, 0.5);
   }
@@ -156,22 +116,22 @@
 
 <div class="page-container">
   <div class="image-container">
-    <img src="/homescreen_resized.png" alt="CoderDojo Adventure Background" class="homescreen-image" />
+    <img src="/homescreen_resized.png" alt="Adventure Background" class="homescreen-image" />
     
     <div class="buttons">
-      <div class="level-selection">
-        <select bind:value={selectedLevel} class="level-select" aria-label="Startlevel auswählen">
+      <div>
+        <select bind:value={selectedLevel} class="level-select">
           {#each Array(10) as _, i}
             <option value={i + 1}>Level {i + 1}</option>
           {/each}
         </select>
-        <button on:click={startWithSelectedLevel}>
+        <button on:click={startProgressionMode}>
           Reiseziel setzen
         </button>
       </div>
       
-      <button class="free-mode-btn" on:click={startFreeMode}>
-        Freier Modus
+      <button class="free-mode-button" on:click={startFreeMode}>
+        - Freier Modus -
       </button>
     </div>
   </div>

@@ -445,6 +445,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
+		z-index: 20;
 	}
 
 	.progress-text {
@@ -688,6 +689,7 @@
 		background: rgba(255, 255, 255, 0.3);
 		border: 3px solid rgba(255, 255, 255, 0.2);
 		padding: 0.6rem;
+		z-index: 20;
 	}
 
 	.home-button:hover {

@@ -102,8 +102,6 @@ export function unlockLevelsUpTo(targetLevel: number) {
     checkAndUnlockBonusLevels(targetLevel);
 }
 
-// BONUS-LEVEL FUNKTIONEN
-
 // Prüft und schaltet Bonus-Level frei basierend auf abgeschlossenem Level
 export function checkAndUnlockBonusLevels(completedLevel: number) {
     bonusLevelsUnlocked.update(currentBonusLevels => {
@@ -118,46 +116,10 @@ export function checkAndUnlockBonusLevels(completedLevel: number) {
             if (completedLevel >= requiredLevel && !newBonusLevels.includes(bonusIdNum)) {
                 newBonusLevels.push(bonusIdNum);
                 unlocked = true;
-                console.log(`🌟 Bonus-Level ${bonusIdNum} freigeschaltet! (Nach Level ${completedLevel})`);
+                console.log(`Bonus-Level ${bonusIdNum} freigeschaltet! (Nach Level ${completedLevel})`);
             }
         }
         
         return unlocked ? newBonusLevels.sort() : currentBonusLevels;
     });
-}
-
-// Prüft ob ein bestimmtes Bonus-Level freigeschaltet ist
-export function isBonusLevelUnlocked(bonusId: number): boolean {
-    let isUnlocked = false;
-    bonusLevelsUnlocked.subscribe(bonusLevels => {
-        isUnlocked = bonusLevels.includes(bonusId);
-    })();
-    return isUnlocked;
-}
-
-// Gibt alle verfügbaren Bonus-Level für aktuellen Fortschritt zurück
-export function getAvailableBonusLevels(): number[] {
-    let unlockedMainLevels: number[] = [];
-    let bonusLevels: number[] = [];
-    
-    unlockedLevels.subscribe(levels => unlockedMainLevels = levels)();
-    bonusLevelsUnlocked.subscribe(bonus => bonusLevels = bonus)();
-    
-    const maxLevel = Math.max(...unlockedMainLevels);
-    const availableBonus: number[] = [];
-    
-    for (const [bonusId, requiredLevel] of Object.entries(bonusUnlockRequirements)) {
-        if (maxLevel >= requiredLevel) {
-            availableBonus.push(parseInt(bonusId));
-        }
-    }
-    
-    return availableBonus;
-}
-
-// Fortschritt zurücksetzen (für Testing oder Reset-Button)
-export function resetProgress() {
-    unlockedLevels.set([1]);
-    bonusLevelsUnlocked.set([]);
-    console.log('🔄 Gesamter Fortschritt zurückgesetzt!');
 }
