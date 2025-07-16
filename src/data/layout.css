@@ -345,13 +345,13 @@ h3 {
 }  */
 
 .nav-button {
-  font-size: 1.3rem;
-  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  padding: 0.7rem 1.2rem;
   margin: 0 0.5rem;
   border-radius: 6px;
   border: none;
   cursor: pointer;
-  background-color: #00bfff;
+  background-color: #66B2FF;
   color: white;
   display: flex;
   align-items: center;
@@ -362,11 +362,11 @@ h3 {
 }
 
 .nav-button:hover {
-  background-color: #27f1ff;
+  background-color: #00a2ff; 
 }
 
 .nav-button .icon {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 }
 
 .nav-button .tooltip {
@@ -378,7 +378,7 @@ h3 {
   color: white;
   padding: 0.3rem 0.6rem;
   border-radius: var(--border-radius);
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
@@ -442,7 +442,7 @@ main button {
 }
 
 main button:hover {
-  background-color: #1b1b1b;
+  background-color: #00a2ff; 
   box-shadow: 0 6px 12px rgba(62, 153, 255, 0.8);
   transform: translateY(-3px) scale(1.05);
 }
@@ -548,15 +548,15 @@ main button.pulse {
   left: 50%;
   transform: translateX(-50%);
   z-index: 100;
-  padding: 0.75rem 1.5rem;
-  background-color: #00bfff; 
+  padding: 0.9rem 1.7rem;
+  background-color: #e93737; 
 
   color: white;
   border: none;
   border-radius: 12px;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   font-weight: 700;
-  box-shadow: 0 4px 8px rgba(102, 178, 255, 0.7);
+  box-shadow: 0 4px 8px rgba(255, 102, 102, 0.7);
   cursor: pointer;
   transition: all 0.3s ease;
   text-shadow: 0 1px 2px rgba(0,0,0,0.2);
@@ -564,7 +564,7 @@ main button.pulse {
 }
 
 .run-button:hover {
-  background-color: #27f1ff; 
+  background-color: #ff275d; 
   box-shadow: 0 6px 12px rgba(62, 153, 255, 0.8);
   transform: translateX(-50%) translateY(-3px) scale(1.05);
 }
@@ -575,9 +575,8 @@ main button.pulse {
 }
 
 
-
 .weiter-button {
-  background-color: #00bfff; 
+  background-color: #66B2FF; 
   color: white;
   border: none;
   padding: 10px 20px;
@@ -588,11 +587,11 @@ main button.pulse {
 }
 
 .weiter-button:hover {
-  background-color: #27f1ff; 
+  background-color: #00a2ff; 
 }
 
 .zurueck-button {
-  background-color: #3fd2ff; 
+  background-color: #66B2FF; 
   color: white;
   border: none;
   padding: 10px 20px;
@@ -604,11 +603,7 @@ main button.pulse {
 }
 
 .zurueck-button:hover {
-  background-color: #18ebee;
+  background-color: #00a2ff; 
 }
-/* Alternative Nav-Button Variante (optional entfernen, falls nicht gebraucht) */
-/*
-.nav-button {
-  background-color: white;
-  border: 2
+
 
