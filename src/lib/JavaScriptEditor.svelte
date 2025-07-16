@@ -15,7 +15,7 @@
   import { defaultKeymap, indentWithTab } from "@codemirror/commands";
   import { syntaxHighlighting, defaultHighlightStyle } from "@codemirror/language";
 
-  import { myVariable,pythonCode } from '$lib/stores/editorStore';
+  import { myVariable } from '$lib/stores/editorStore';
 
   let editorDiv;
   let editor; // speichern wir hier rein
