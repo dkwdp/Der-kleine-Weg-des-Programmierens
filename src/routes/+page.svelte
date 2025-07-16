@@ -38,7 +38,6 @@
     padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #ffffff;
-    overflow: hidden;
     height: 100vh;
     overscroll-behavior: none; /* Verhindert Bounce-Effekt */
   }

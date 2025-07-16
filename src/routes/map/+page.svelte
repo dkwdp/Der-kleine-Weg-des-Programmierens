@@ -385,7 +385,6 @@
 		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 		overflow: auto;
 		overscroll-behavior: none;
-		-ms-overflow-style: none;
 	}
 
 	.page-container {
