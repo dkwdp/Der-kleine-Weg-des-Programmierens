@@ -83,7 +83,7 @@
         <button on:click={previousTask}>Zurück</button>
       {/if}
         {#if $outputID + 1 < currentLevel.description.length}
-          <button on:click={nextTask}>Weiter</button>
+          <button class="weiter-button { $solvedLevel ? 'blinking' : '' }" on:click={nextTask}>Weiter</button>
         {/if}
       </div>
     {/if}

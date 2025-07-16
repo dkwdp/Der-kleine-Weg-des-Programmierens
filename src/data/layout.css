@@ -490,13 +490,13 @@ main button.pulse {
 
 @keyframes blink-glow {
   0%, 100% {
-    background-color: white;
-    box-shadow: 0 0 5px #4caf50;
-    transform: scale(1);
+  background-color: #66B2FF; 
+  box-shadow: 0 0 5px #00f7ff;
+  transform: scale(1);
   }
   50% {
-    background-color: #eaffea;
-    box-shadow: 0 0 20px #4caf50;
+  background-color: #66B2FF; 
+    box-shadow: 0 0 20px #00f7ff;
     transform: scale(1.1);
   }
 }
@@ -626,4 +626,7 @@ main button.pulse {
   background-color: #00a2ff; 
 }
 
+.weiter-button.blinking {
+  animation: blink-glow 1.5s infinite;
+}
 

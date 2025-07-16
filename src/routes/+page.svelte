@@ -25,6 +25,8 @@
     }, 100);
   }
 </script>
+
+
 <style>
   /* Overscroll-Schutz für die gesamte Seite */
   :global(html) {
