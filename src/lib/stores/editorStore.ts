@@ -1,10 +1,8 @@
 import { writable } from 'svelte/store';
 import { browser } from '$app/environment';
 
-// Bestehende Stores
+// Stores
 export const myVariable = writable("# Initial code");
-export const pythonCode = writable("");
-export const pythonOutput = writable("");
 export const isCurrentLevelDrawing = writable(false);
 export const solvedLevel = writable(false);
 export const levelID = writable(0);
@@ -14,7 +12,6 @@ export const outputID = writable(0);
 export const unlockedLevels = writable([1]); 
 export const gameMode = writable('progressive');
 
-// BONUS-LEVEL STORE
 export const bonusLevelsUnlocked = writable([]);
 
 // Bonus-Level Freischaltungs-Bedingungen
@@ -27,7 +24,7 @@ const bonusUnlockRequirements = {
 
 // localStorage nur im Browser verwenden
 if (browser) {
-    // Gespeicherte Werte laden
+    // Gespeicherte Werte aus dem localStorage (Browserspeicher) laden
     try {
         const savedLevels = localStorage.getItem('unlockedLevels');
         const savedMode = localStorage.getItem('gameMode');
@@ -46,7 +43,7 @@ if (browser) {
         console.error('Fehler beim Laden:', e);
     }
     
-    // Automatisch speichern bei Änderungen
+    // Automatisch speichern bei Änderungen im Store für Level
     unlockedLevels.subscribe(levels => {
         try {
             localStorage.setItem('unlockedLevels', JSON.stringify(levels));
@@ -56,6 +53,7 @@ if (browser) {
         }
     });
     
+     // Automatisch speichern bei Änderungen im Store für Game Mode
     gameMode.subscribe(mode => {
         try {
             localStorage.setItem('gameMode', JSON.stringify(mode));
@@ -63,7 +61,8 @@ if (browser) {
             console.error('Fehler beim Speichern:', e);
         }
     });
-
+    
+    // Automatisch speichern bei Änderungen im Store vom Bonus Level
     bonusLevelsUnlocked.subscribe(bonusLevels => {
         try {
             localStorage.setItem('bonusLevelsUnlocked', JSON.stringify(bonusLevels));
