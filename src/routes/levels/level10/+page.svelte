@@ -1,70 +1,80 @@
 <script>
-  import { onMount } from 'svelte';
-  import { myVariable } from '$lib/stores/editorStore';
+  import { myVariable, isCurrentLevelDrawing, solvedLevel, levelID, outputID, unlockNextLevel } from '$lib/stores/editorStore';
   import levels from '$data/levels.json';
+  import { onMount } from 'svelte';
+  import { goto } from '$app/navigation';
 
-  let currentLevelIndex = 10; // z.B. Level 10: for-Schleifen
-  let currentStepIndex = 0;
+  let currentLevelIndex = 9; // Level 10 = Index 9
+  let currentLevel = levels[currentLevelIndex];
+  let solvedTasks = new Array(currentLevel.description.length).fill(false);
   
-  let currentLevel;
-  let currentStep;
+  onMount(() => {
+    outputID.set(0);
+    myVariable.set(currentLevel.initialCode[0]);
+    solvedLevel.set(false);
+    levelID.set(currentLevelIndex);
+  });
 
-  function updateLevel() {
-    currentLevel = levels.find((lvl) => lvl.id === currentLevelIndex);
-
-    if (currentLevel?.titles?.length) {
-      currentStep = {
-        title: currentLevel.titles[currentStepIndex],
-        description: currentLevel.descriptions[currentStepIndex],
-        code: currentLevel.codes[currentStepIndex],
-        expectedOutput: currentLevel.expectedOutputs[currentStepIndex]
-      };
-      myVariable.set(currentStep.code);
-    }
+  $: if ($solvedLevel && $outputID >= 0) {
+    solvedTasks[$outputID] = true;
+    checkLevelCompletion();
   }
 
-  function nextStep() {
-    if (currentStepIndex < currentLevel.titles.length - 1) {
-      currentStepIndex++;
-      updateLevel();
+  function nextTask() {
+    let currentTask = $outputID + 1;
+    
+    if (currentTask >= currentLevel.description.length) {
+      unlockNextLevel(currentLevelIndex + 1);
+      goto(`/levels/level${currentLevelIndex + 2}`);
+      return;
+    }
+    
+    outputID.set(currentTask);
+    myVariable.set(currentLevel.initialCode[currentTask]);
+    solvedLevel.set(false);
+  }
+  
+  function previousTask() {
+    let currentTask = Math.max(0, $outputID - 1);
+    
+    outputID.set(currentTask);
+    myVariable.set(currentLevel.initialCode[currentTask]);
+    solvedLevel.set(false);
+  }
+  
+  function checkLevelCompletion() {
+    const allTasksSolved = solvedTasks.every(task => task === true);
+    
+    if (allTasksSolved) {
+      unlockNextLevel(currentLevelIndex + 1);
+      console.log(`Level ${currentLevelIndex + 2} wurde freigeschaltet!`);
     }
   }
-
-  function prevStep() {
-    if (currentStepIndex > 0) {
-      currentStepIndex--;
-      updateLevel();
-    }
-  }
-
-  onMount(updateLevel);
 </script>
 
 <main>
-  {#if currentStep}
-    <h1>{currentStep.title}</h1>
-    <p>{@html currentStep.description}</p>
+  <h1>{currentLevel.title[$outputID]}</h1>
+  <p>{currentLevel.description[$outputID]}</p>
+  {#if currentLevel.hints}
+      <h3>💡 Tipps:</h3>
+       <p>{currentLevel.hints[$outputID]}</p>
+  {/if}
 
-    <div class="navigation">
-      <button on:click={prevStep} disabled={currentStepIndex === 0}>Zurück</button>
-      <button on:click={nextStep} disabled={currentStepIndex === currentLevel.titles.length - 1}>Weiter</button>
+  {#if $solvedLevel}
+    <div>
+      {#if $outputID + 1 < currentLevel.description.length}
+        <button on:click={nextTask} >Weiter</button>
+      {/if}
+      {#if $outputID > 0}
+        <button on:click={previousTask}>Zurück</button>
+      {/if}
     </div>
-  {:else}
-    <p>Lade Level...</p>
   {/if}
 </main>
 
 <style>
   main {
     padding: 20px;
-    font-family: sans-serif;
-    max-width: 800px;
-    margin: auto;
-  }
-
-  button {
-    margin: 10px;
-    padding: 10px 20px;
-    font-size: 16px;
+    text-align: left;
   }
 </style>
