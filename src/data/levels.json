@@ -261,90 +261,65 @@
                     "Wir haben der Funktion die Werte zahl1 und zahl2 gegeben also müssen wir beide Werte in der Funktion addieren damit das Ergebnis stimmt. "
         ]
     },
-{
-        "id": 100,
-        "title": ["Zeichne deinen ersten Kreis"],
-        "description": ["Verwende draw_line(x1, y1, x2, y2, farbe) um eine Linie zu zeichnen."],
-        "initialCode": ["set_background('white');\ndraw_circle(150, 150, 50, 'blue')\ndraw_line(180,120,160,140,'red');\ndraw_line(120,120,140,140,'red');\ndraw_circle(120,140,10,'lightblue');\ndraw_circle(180,140,10,'lightblue');\ndraw_text('f**k', 140,180,'black');"],
-        "type": "drawing",
+    {
+    
+        "id": 9,
+        "title": [
+                    "Was ist if/else?",
+                    "Mini-Level: Alter prüfen",
+                    "Mini-Level: Farben vergleichen"
+        ],
+        "description": [
+                    "Stell dir vor, dein Computer ist ein kleiner Roboter, der gerne Fragen beantwortet. Du sagst ihm: „Wenn es draußen regnet, ziehe ich meine Regenjacke an. Sonst ziehe ich mein T-Shirt an.“ Das ist ein Beispiel für eine Entscheidung. Dein Roboter prüft, ob es regnet – das ist das „if“ (Wenn). Wenn es wirklich regnet, macht er das Erste. Wenn nicht, macht er das Zweite – das ist das „else“ (Sonst).",
+                    "Ist jemand alt genug fürs Kino? Ergänze die Bedingung so, dass die Ausgabe stimmt.",
+                    "Lerne, wie du Farben vergleichst."
+        ],
+        "expectedOutput": [
+                    "Ich ziehe meine Regenjacke an",
+                    "Du bist erwachsen!",
+                    "Cool!"
+        ],
+        "initialCode": [
+                    "let regen = true;\nif (regen) {\n  console.log(\"Ich ziehe meine Regenjacke an\");\n} else {\n  console.log(\"Ich ziehe mein T-Shirt an\");\n}",
+                    "let alter = 15;\nif (alter >= 18) {\n  console.log('Du bist erwachsen!');\n} else {\n  console.log('Du bist noch ein Kind');\n}",
+                    "let farbe = 'rot';\nif (farbe === 'blau') {\n  console.log('Cool!');\n} else {\n  console.log('Hmm');\n}"
+        ],
+        "type":     "calculation",
         "hints": [
-            "Die Koordinaten beginnen oben links bei (0,0)",
-            "Der Canvas ist 400px breit und 300px hoch ",
-            "Verfügbare Farben: 'red', 'blue', 'green', 'yellow', 'purple', etc."
+                    "Was bedeutet das?\nif heißt: „Wenn etwas stimmt“.\nelse heißt: „Wenn es nicht stimmt, mach etwas anderes",
+                    "Beachte Groß- und Kleinschreibung bei Strings!",
+                    "Ein if-else-Zweig braucht immer eine Bedingung in Klammern"
         ]
     },
 
-    {
 
-        "id": 9,
-        "title": "If/Else Bedingungen",
-        "type": "javascript",
-        "titles": [
-            "Was ist if/else?",
-            "Mini-Level: Alter prüfen",
-            "Mini-Level: Farben vergleichen",
-            "Bonus: Eigenes Beispiel"
+    {
+        "id": 10,
+        "title": [
+                    "Was ist eine for-Schleife?",
+                    "Mini-Level: Zahlen zählen",
+                    "Mini-Level: Quadratzahlen"
         ],
-        "descriptions": [
-            "Ein <code>if</code>-Zweig testet Bedingungen. Wenn sie wahr ist, passiert etwas. <br><code>if (x > 5) { console.log('ja'); } else { console.log('nein'); }</code>",
-            "Ist jemand alt genug fürs Kino? Ergänze die Bedingung so, dass die Ausgabe stimmt.",
-            "Lerne, wie du Farben vergleichst.",
-            "Erstelle deinen eigenen Code mit <code>if/else</code>."
+        "description": [
+                    "Eine for Schleife wiederholt etwas. Beispiel: for (let i = 0; i < 5; i++) { console.log(i); }",
+                    "Zähle die Zahlen von 1 bis 4 und gib die Zahlen aus.",
+                    "Gib die Quadratzahlen von 1 bis 5 aus."
         ],
-        "codes": [
-            "let x = 6;\nif (x > 5) {\n  console.log('ja');\n} else {\n  console.log('nein');\n}",
-            "let alter = 18;\nif (alter >= 18) {\n  console.log('Du bist erwachsen!');\n} else {\n  console.log('Du bist noch ein Kind');\n}",
-            "let farbe = 'blau';\nif (farbe === 'blau') {\n  console.log('Cool!');\n} else {\n  console.log('Hmm');\n}",
-            "// Dein Code hier"
+        "expectedOutput": [
+                    "0\n1\n2\n3\n4",
+                    "1\n2\n3\n4",
+                    "1\n4\n9\n16\n25"
         ],
-        "expectedOutputs": [
-            "ja",
-            "Du bist erwachsen!",
-            "Cool!",
-            ""
+        "initialCode": [
+                    "for (let i = 0; i < 5; i++) {\n  console.log(i);\n}",
+                    "for (let i = 0; i <= 0; i++) {\n  console.log();\n}",
+                    "for (let i = 0; i <= 0; i++) {\n  console.log();\n}"
         ],
+        "type":     "calculation",
         "hints": [
-            "Verwende Vergleichsoperatoren wie >, >=, ===",
-            "Beachte Groß- und Kleinschreibung bei Strings!",
-            "Ein if-else-Zweig braucht immer eine Bedingung in Klammern",
-            "Du kannst auch mehrere Bedingungen mit && und || kombinieren"
-    ]
-    },
-
-
-    {
-            "id": 10,
-            "title": "for-Schleifen",
-            "type": "javascript",
-            "titles": [
-                "Was ist eine for-Schleife?",
-                "Mini-Level: Zahlen zählen",
-                "Mini-Level: Quadratzahlen",
-                "Bonus: Eigenes Beispiel"
-            ],
-            "descriptions": [
-                "Eine <code>for</code>-Schleife wiederholt etwas. <br><strong>Beispiel:</strong><br><code>for (let i = 0; i < 5; i++) { console.log(i); }</code>",
-                "Zähle die Zahlen von 1 bis 4 und gib die Zahlen aus.",
-                "Gib die Quadratzahlen von 1 bis 5 aus.",
-                "Erstelle deinen eigenen Code mit einer <code>for</code>-Schleife, z.B. um Sterne zu zeichnen."
-            ],
-            "codes": [
-                "for (let i = 0; i < 5; i++) {\n  console.log(i);\n}",
-                "for (let i = 1; i <= 4; i++) {\n  console.log(i);\n}",
-                "for (let i = 1; i <= 5; i++) {\n  console.log(i * i);\n}",
-                "// Dein Code hier"
-            ],
-            "expectedOutputs": [
-                "0\n1\n2\n3\n4",
-                "1\n2\n3\n4",
-                "1\n4\n9\n16\n25",
-                ""
-            ],
-            "hints": [
-                "Die Schleife läuft mit i = 0 bis i < 5.",
-                "Nutze console.log, um jede Zahl zu drucken.",
-                "Multipliziere i mit sich selbst: i * i.",
-                "Nutze deine Kreativität für eine for-Schleife!"
+                    "Die Schleife läuft mit i = 0 bis i < 5.",
+                    "Nutze console.log, um jede Zahl zu drucken.",
+                    "Multipliziere i mit sich selbst: i * i."
         ]
     }
 
