@@ -6,11 +6,11 @@
     solvedLevel,
     levelID,
     outputID,
-    unlockNextLevel
-  } from '$lib/stores/editorStore';
-  import levels from '$data/levels.json';
-  import { onMount } from 'svelte';
-  import { goto } from '$app/navigation';
+    unlockNextLevel,
+  } from "$lib/stores/editorStore";
+  import levels from "$data/levels.json";
+  import { onMount } from "svelte";
+  import { goto } from "$app/navigation";
 
   // diese Prop wird von der Page übergeben
   export let levelIndex;
@@ -80,8 +80,8 @@
     {#if $solvedLevel}
       <div>
         {#if $outputID > 0}
-        <button on:click={previousTask}>Zurück</button>
-      {/if}
+          <button on:click={previousTask}>Zurück</button>
+        {/if}
         {#if $outputID + 1 < currentLevel.description.length}
           <button on:click={nextTask}>Weiter</button>
         {/if}

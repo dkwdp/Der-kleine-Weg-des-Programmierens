@@ -66,10 +66,12 @@
   }
 
   function goToMap() {
+    outputID.set(0);
     goto('/map');
   }
 
   function goToHome() {
+    outputID.set(0);
     goto('/');
   }
 
@@ -230,7 +232,7 @@ Beachte Groß- und Kleinschreibung sowie Zeichensetzung.`;
 
 <main>
   <div class="top-bar">
-    <button class="banner-button" on:click={() => goto('/map')}>
+    <button class="banner-button" on:click={goToMap()}>
       <img src="/banner.png" alt="Header Background" class="header-image" />
     </button>
    <!-- <button class="beltButton" on:click={toggleMenu}>Sammlung</button> -->
