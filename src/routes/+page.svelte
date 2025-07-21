@@ -121,8 +121,8 @@
     <div class="buttons">
       <div>
         <select bind:value={selectedLevel} class="level-select">
-          {#each Array(10) as _, i}
-            <option value={i + 1}>Level {i + 1}</option>
+          {#each Array.from({length: 10}, (_, i) => 10 - i) as level}
+            <option value={level}>Level {level}</option>
           {/each}
         </select>
         <button on:click={startProgressionMode}>

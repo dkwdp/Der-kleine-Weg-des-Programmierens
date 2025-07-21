@@ -76,8 +76,8 @@
 	}
 
 	function isBonusLevelUnlocked(bonusId) {
-    return $bonusLevelsUnlocked.includes(bonusId);
-}
+		return $bonusLevelsUnlocked.includes(bonusId);
+	}
 
 	// Maskottchen
 	function updateMascot(newEmotion, newMessage) {
@@ -87,14 +87,14 @@
 	}
 
 	function resetInactivityTimer() {
-		clearTimeout(inactivityTimer);
-		inactivityTimer = setTimeout(() => {
-			if (emotion === 'neutral' || emotion === 'neutral2') {
-				currentNeutralState = currentNeutralState === 'neutral' ? 'neutral2' : 'neutral';
-				updateMascot(currentNeutralState, getRandomIdleMessage());
-			}
-		}, 7000);
-	}
+    clearTimeout(inactivityTimer);
+    inactivityTimer = setTimeout(() => {
+        if (emotion === 'neutral' || emotion === 'neutral2') {
+            currentNeutralState = currentNeutralState === 'neutral' ? 'neutral2' : 'neutral';
+            updateMascot(currentNeutralState, getRandomIdleMessage());
+        }
+    }, 5000);
+}
 
 	// Message Arrays
 	const welcomeMessages = [
@@ -218,14 +218,12 @@
 		iconLoadStates = { ...iconLoadStates }; 
 	}
 	
-	// Initialisierung
 	onMount(() => {
 		const welcomeMsg = getWelcomeMessage();
 		emotion = 'neutral';
 		message = welcomeMsg;
 		resetInactivityTimer();
 
-		// Auto-Scroll - nur wenn Level nicht sichtbar ist
 		setTimeout(() => {
 			let targetLevel;
 			
@@ -245,30 +243,28 @@
 				}
 			}
 			
-			setTimeout(() => {
-				const levelButton = document.querySelector(`[data-level="${targetLevel}"]`);
-				if (levelButton) {
-					try {
-						const rect = levelButton.getBoundingClientRect();
-						const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight && 
-										rect.left >= 0 && rect.right <= window.innerWidth;
-						
-						if (!isVisible) {
-							levelButton.scrollIntoView({ 
-								behavior: 'smooth', 
-								block: 'center' 
-							});
-						}
-					} catch (error) {
-						console.warn('Auto-scroll error:', error);
+			const levelButton = document.querySelector(`[data-level="${targetLevel}"]`);
+			if (levelButton) {
+				try {
+					const rect = levelButton.getBoundingClientRect();
+					const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight && 
+									rect.left >= 0 && rect.right <= window.innerWidth;
+					
+					if (!isVisible) {
 						levelButton.scrollIntoView({ 
 							behavior: 'smooth', 
 							block: 'center' 
 						});
 					}
+				} catch (error) {
+					console.warn('Auto-scroll error:', error);
+					levelButton.scrollIntoView({ 
+						behavior: 'smooth', 
+						block: 'center' 
+					});
 				}
-			}, 200);
-		}, 100);
+			}
+		}, 50);
 	});
 
 	onDestroy(() => {
