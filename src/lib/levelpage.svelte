@@ -17,11 +17,15 @@
 
   let currentLevel;
   let solvedTasks = [];
+  let unlockedTasks = [];
 
   onMount(() => {
     currentLevel = levels[levelIndex];
     solvedTasks = new Array(currentLevel.description.length).fill(false);
+    unlockedTasks = new Array(currentLevel.description.length).fill(false);
+    unlockedTasks[0] = true;
 
+    outputID.set(0);
     myVariable.set(currentLevel.initialCode[0]);
     solvedLevel.set(false);
     levelID.set(levelIndex);
@@ -30,6 +34,9 @@
 
   $: if ($solvedLevel && $outputID >= 0) {
     solvedTasks[$outputID] = true;
+    if ($outputID + 1 < unlockedTasks.length) {
+      unlockedTasks[$outputID + 1] = true;
+    }
     checkLevelCompletion();
   }
 
@@ -45,7 +52,7 @@
 
     outputID.set(currentTask);
     myVariable.set(currentLevel.initialCode[currentTask]);
-    solvedLevel.set(false);
+    solvedLevel.set(solvedTasks[currentTask]);
     showOutput.set(false);
   }
 
@@ -54,6 +61,7 @@
 
     outputID.set(currentTask);
     myVariable.set(currentLevel.initialCode[currentTask]);
+    solvedLevel.set(solvedTasks[currentTask]);
     showOutput.set(false);
   }
 
@@ -77,16 +85,16 @@
       <p>{currentLevel.hints[$outputID]}</p>
     {/if}
 
-    {#if $solvedLevel}
-      <div>
-        {#if $outputID > 0}
-          <button on:click={previousTask}>Zurück</button>
-        {/if}
-        {#if $outputID + 1 < currentLevel.description.length}
-          <button on:click={nextTask}>Weiter</button>
-        {/if}
-      </div>
-    {/if}
+<div>
+  {#if $outputID > 0}
+    <button on:click={previousTask}>Zurück</button>
+  {/if}
+
+  {#if $solvedLevel && $outputID + 1 < currentLevel.description.length && unlockedTasks[$outputID + 1]}
+    <button on:click={nextTask}>Weiter</button>
+  {/if}
+</div>
+
   {/if}
 </main>
 
