@@ -6,13 +6,16 @@
 	import { page } from '$app/stores';
 	import Mascot from '../mascot/Mascot.svelte';
 
-	// Mascot State Management
+	// Mascot Status
 	let emotion = 'neutral';
 	let message = 'Willkommen!';
+
 	let inactivityTimer;
 	let currentNeutralState = 'neutral';
+
+	let iconLoadStates = {};
 	
-	// Level-Daten (bestehend)
+	// Level-Daten
 	const levelData = [
 		{ id: 1, x: 60, y: 12, icon: 'polarbear', name: 'Polarbaer', size: 'medium' },
 		{ id: 2, x: 22, y: 22, icon: 'tent', name: 'Zelt', size: 'medium' },
@@ -27,76 +30,38 @@
 	];
 
 	const bonusLevelData = [
-		{ 
-			id: 1, 
-			x: 50, 
-			y: 42, 
-			icon: '⚙️', 
-			name: 'Bonus 1', 
-			description: 'Canvas-Programmierung',
-			unlockAfter: 3,
-			route: '/levels/bonusLevel/bonus1'
-		},
-		{ 
-			id: 2, 
-			x: 59, 
-			y: 65, 
-			icon: '⚙️', 
-			name: 'Bonus 2', 
-			description: 'Programmiere den Roboter',
-			unlockAfter: 6,
-			route: '/levels/bonusLevel/bonus2'
-		},
-		{ 
-			id: 3, 
-			x: 45, 
-			y: 87.5, 
-			icon: '⚙️', 
-			name: 'Bonus 3', 
-			description: 'For- und While-Schleifen meistern',
-			unlockAfter: 8,
-			route: '/levels/bonusLevel/bonus3'
-		},
-		{ 
-			id: 4, 
-			x: 55, 
-			y: 92.5, 
-			icon: '⚙️', 
-			name: 'Bonus 4', 
-			description: 'If/Else',
-			unlockAfter: 9,
-			route: '/levels/bonusLevel/bonus4'
-		}
+		{ id: 1, x: 50, y: 42, icon: '⚙️', name: 'Bonus 1', unlockAfter: 3, route: '/levels/bonusLevel/bonus1'}
 	];
 
-	let iconLoadStates = {};
-
+	// checkt, welche Level freigeschaltet sind
 	function isLevelUnlocked(levelId) {
 		return $gameMode === 'free' || $unlockedLevels.includes(levelId);
 	}
 
+	// checkt, welche Bonus-Level freigeschaltet sind
 	function isBonusLevelUnlocked(bonusId) {
-		return $bonusLevelsUnlocked.includes(bonusId);
+		return $gameMode === 'free' || $bonusLevelsUnlocked.includes(bonusId);
 	}
 
-	// Maskottchen
+	// resetted Inaktivitätstimer, wenn man z.B. über Level hovert
 	function updateMascot(newEmotion, newMessage) {
 		emotion = newEmotion;
 		message = newMessage;
 		resetInactivityTimer();
 	}
 
+	// Idle-Pinu: Wechselt zwischen neutral-Posen wenn User 10s nichts macht
 	function resetInactivityTimer() {
     clearTimeout(inactivityTimer);
     inactivityTimer = setTimeout(() => {
-        if (emotion === 'neutral' || emotion === 'neutral2') {
-            currentNeutralState = currentNeutralState === 'neutral' ? 'neutral2' : 'neutral';
-            updateMascot(currentNeutralState, getRandomIdleMessage());
-        }
-    }, 5000);
-}
+        	if (emotion === 'neutral' || emotion === 'neutral2' || emotion === 'think') {
+				currentNeutralState = currentNeutralState === 'neutral' ? 'neutral2' : 'neutral';
+				updateMascot(currentNeutralState, getRandomIdleMessage());
+        	}
+    	}, 10000);
+	}
 
-	// Message Arrays
+	// Messages
 	const welcomeMessages = [
 		'Yo, wieder da! 🐧',
 		'Bock zu coden?',
@@ -112,7 +77,6 @@
 		'Die Level warten auf dich!',
 		'Watschel watschel... langweilig hier! 😴',
 		'Flossen bereit? Lass uns eintauchen!',
-		'Eis-kalte Coding-Skills kommen!',
 		'Rutsch ins Coden wie ein Pinguin! 🧊',
 		'Kein Stress, lass dir Zeit!',
 		'Watschel rüber und wähl ein Level!',
@@ -122,18 +86,17 @@
 	const hoverMessages = [
 		'braucht deine Skills!',
 		'sieht chill aus! 🧊',
-		'ist bereit für Fisch-Action! 🐟',
 		'braucht deine Pinguin-Power!',
-		'sieht eis-genial aus!',
-		'wartet auf die Rutschpartie!',
+		'sieht genial aus!',
+		'wartet auf Rutschpartie!',
 		'ist bereit!',
-		'braucht Pinguin-Magie! ✨'
+		'braucht uns! ✨'
 	];
 
 	const bonusHoverMessages = [
 		'ist ein geheimes Abenteuer! ✨',
 		'ist voller Überraschungen!',
-		'ist bereit für Bonus-Action! 💫',
+		'ist bereit für Action! 💫',
 		'ist ein Bonus-Level'
 	];
 
@@ -151,14 +114,14 @@
 	}
 
 	function LevelJoin(levelId) {
-	// Speichere das besuchte Level (nur valide Level-IDs)
-	if (browser && levelId && typeof levelId === 'number' && levelId >= 1 && levelId <= 10) {
-		sessionStorage.setItem('lastVisitedLevel', levelId.toString());
-	}
-	
+		// Speichere das besuchte Level (nur valide Level-IDs) für AutoScroll
+		if (browser && levelId && typeof levelId === 'number' && levelId >= 1 && levelId <= 10) {
+			sessionStorage.setItem('lastVisitedLevel', levelId.toString());
+		}
+		//Navigation mit Delay
 		setTimeout(() => {
-        	goto(`/levels/level${levelId}`);
-    	}, 200);
+			goto(`/levels/level${levelId}`);
+		}, 200);
 	}
 
 	function BonusLevelJoin(bonusLevel) {
@@ -167,24 +130,16 @@
     	}, 200);
 	}
 
+	// Level Hover für Maskottchen Message
 	function onLevelHover(level) {		
 		const hoverMessage = getRandomMessage(hoverMessages);
 		updateMascot('think', `Level ${level.id} ${hoverMessage}`);
 	}
 
+	// Bonus-Level Hover für Maskottchen Message
 	function onBonusLevelHover(bonusLevel) {
 		const hoverMessage = getRandomMessage(bonusHoverMessages);
 		updateMascot('think', `${bonusLevel.name} ${hoverMessage}`);
-	}
-
-	function onLevelLeave() {
-		const leaveMessages = [
-			'Watschel rum! 🐧',
-			'Such dir dein Eis-Abenteuer!',
-			'Wähl dein Coding-Schicksal!',
-			'Flossen-Entscheidung steht an!'
-		];
-		updateMascot(currentNeutralState, getRandomMessage(leaveMessages));
 	}
 
 	// Path Linien
@@ -291,7 +246,7 @@
 				</div>
 				<!-- BONUS PROGRESS -->
 				{#if $bonusLevelsUnlocked.length > 0}
-					<span class="bonus-progress-text">✨ {$bonusLevelsUnlocked.length}/4 Bonus entdeckt</span>
+					<span class="bonus-progress-text">✨ {$bonusLevelsUnlocked.length}/1 Bonus entdeckt</span>
 				{/if}
 			</div>
 		{/if}
@@ -325,7 +280,6 @@
 				data-level="{level.id}"
 				on:click={() => LevelJoin(level.id)}
 				on:mouseenter={() => onLevelHover(level)}
-				on:mouseleave={onLevelLeave}
 				title="{level.name}"
 				disabled={!isLevelUnlocked(level.id)}
 			>
@@ -362,8 +316,7 @@
 					data-bonus-level="{bonusLevel.id}"
 					on:click={() => BonusLevelJoin(bonusLevel)}
 					on:mouseenter={() => onBonusLevelHover(bonusLevel)}
-					on:mouseleave={onLevelLeave}
-					title="{bonusLevel.name} - {bonusLevel.description}"
+					title="{bonusLevel.name}"
 				>
 					<div class="bonus-icon">
 						{bonusLevel.icon}

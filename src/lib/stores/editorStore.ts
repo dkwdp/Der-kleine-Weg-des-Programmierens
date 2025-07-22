@@ -18,9 +18,6 @@ export const bonusLevelsUnlocked = writable([]);
 // Bonus-Level Freischaltungs-Bedingungen
 const bonusUnlockRequirements = {
     1: 4,
-    2: 7,   
-    3: 9,   
-    4: 10 
 };
 
 // localStorage nur im Browser verwenden
