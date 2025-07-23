@@ -1,6 +1,6 @@
 <script>
 	import { goto } from '$app/navigation';
-	import { gameMode, unlockedLevels, bonusLevelsUnlocked } from '$lib/stores/editorStore';
+	import { gameMode, unlockedLevels, bonusLevelsUnlocked, max_levels } from '$lib/stores/editorStore';
 	import { browser } from '$app/environment';
 	import { onMount, onDestroy } from 'svelte';
 	import { page } from '$app/stores';
@@ -18,10 +18,16 @@
 		{ id: 8, x: 20, y: 85, icon: 'kid', name: 'Kind', size: 'small' },
 		{ id: 9, x: 70, y: 90, icon: 'flower', name: 'Blume', size: 'small' },
 		{ id: 10, x: 43, y: 95, icon: 'fish', name: 'Fisch', size: 'small' },
+		// das hier drunter ist test level 11
+		// { id: 11, x: 60, y: 95, icon: 'x', name: 'x', size: 'small' },
+
 	];
 
 	const bonusLevelData = [
-		{ id: 1, x: 50, y: 42, icon: '⚙️', name: 'Bonus 1', unlockAfter: 3, route: '/levels/bonusLevel/bonus1'}
+		{ id: 1, x: 50, y: 42, icon: '⚙️', name: 'Bonus 1', unlockAfter: 3, route: '/levels/bonusLevel/bonus1'},
+		// Beispiel zweites Bonus Level
+		// { id: 2, x: , y: , icon: '⚙️', name: 'Bonus 2', unlockAfter: 7, route: '/levels/bonusLevel/bonus2'}
+
 	];
 
 	// Messages
@@ -137,7 +143,7 @@
 	
 	function LevelJoin(levelId) {
 		// Speichere das besuchte Level (nur valide Level-IDs) für AutoScroll
-		if (browser && levelId && typeof levelId === 'number' && levelId >= 1 && levelId <= 10) {
+		if (browser && levelId && typeof levelId === 'number' && levelId >= 1 && levelId <= max_levels) {
 			sessionStorage.setItem('lastVisitedLevel', levelId.toString());
 		}
 		//Navigation mit Delay
@@ -164,38 +170,45 @@
 		updateMascot('think', `${bonusLevel.name} ${hoverMessage}`);
 	}
 	
-	onMount(() => {
-		// Maskottchen Initialisierung
+	// Anstatt einer großen onMount Funktion, teile sie auf:
+
+	function initializeMascot() {
 		const welcomeMsg = getWelcomeMessage();
 		emotion = 'neutral';
 		message = welcomeMsg;
 		resetInactivityTimer();
+	}
 
-		// Autoscroll zum letzten oder höchsten freigeschalteten Level
-		setTimeout(() => {
-			let targetLevel;
-			
-			// schaut woher der User kommt
-			const lastVisitedLevel = browser ? sessionStorage.getItem('lastVisitedLevel') : null;
-			const cameFromLevel = $page.url.searchParams.get('from') || lastVisitedLevel;
-			
-			// String zu Zahl konvertieren
-			const parsedLevel = cameFromLevel ? parseInt(cameFromLevel, 10) : null;
-			
-			if (parsedLevel && !isNaN(parsedLevel) && isLevelUnlocked(parsedLevel)) {
-				targetLevel = parsedLevel;
-				if (browser) sessionStorage.removeItem('lastVisitedLevel');
-			} else {
-				targetLevel = $unlockedLevels.length === 0 ? 1 : Math.max(...$unlockedLevels);
-			}
-			
-			const levelButton = document.querySelector(`[data-level="${targetLevel}"]`);
-			if (levelButton) {
-				levelButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
-			}
-		}, 50);
+	function handleAutoScroll() {
+		let targetLevel;
+		
+		// woher der User kommt
+		const lastVisitedLevel = browser ? sessionStorage.getItem('lastVisitedLevel') : null;
+		const cameFromLevel = $page.url.searchParams.get('from') || lastVisitedLevel;
+		
+		// String zu Zahl konvertieren
+		const parsedLevel = cameFromLevel ? parseInt(cameFromLevel, 10) : null;
+		
+		if (parsedLevel && !isNaN(parsedLevel) && isLevelUnlocked(parsedLevel)) {
+			targetLevel = parsedLevel;
+			if (browser) sessionStorage.removeItem('lastVisitedLevel');
+		} else {
+			targetLevel = $unlockedLevels.length === 0 ? 1 : Math.max(...$unlockedLevels);
+		}
+		
+		const levelButton = document.querySelector(`[data-level="${targetLevel}"]`);
+		if (levelButton) {
+			levelButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+		}
+	}
+
+	onMount(() => {
+		initializeMascot();
+		
+		// Auto-scroll mit kleiner Verzögerung
+		setTimeout(handleAutoScroll, 50);
 	});
-
+	
 	onDestroy(() => {
 		clearTimeout(inactivityTimer);
 	});
@@ -223,13 +236,13 @@
 		<!-- Progress Widget -->
 		{#if $gameMode === 'progressive'}
 			<div class="progress-widget">
-				<span class="progress-text">{$unlockedLevels.length}/10 Level freigeschaltet</span>
+				<span class="progress-text">{$unlockedLevels.length}/{max_levels} Level freigeschaltet</span>
 				<div class="progress-bar">
-					<div class="progress-fill" style="width: {($unlockedLevels.length / 10) * 100}%"></div>
+					<div class="progress-fill" style="width: {($unlockedLevels.length / max_levels) * 100}%"></div>
 				</div>
 				<!-- Bonus Progress -->
 				{#if $bonusLevelsUnlocked.length > 0}
-					<span class="bonus-progress-text">✨ {$bonusLevelsUnlocked.length}/1 Bonus entdeckt</span>
+					<span class="bonus-progress-text">✨ {$bonusLevelsUnlocked.length}/{bonusLevelData.length} Bonus entdeckt</span>
 				{/if}
 			</div>
 		{/if}

@@ -1,6 +1,6 @@
 <script>
   import { goto } from '$app/navigation';
-  import { gameMode, unlockLevelsUpTo } from '$lib/stores/editorStore';
+  import { gameMode, unlockLevelsUpTo, level_range } from '$lib/stores/editorStore';
   
   let selectedLevel = 1;
   
@@ -17,6 +17,29 @@
     goto('/map');
   }
 </script>
+
+<div class="page-container">
+  <div class="image-container">
+    <img src="/homescreen_resized.png" alt="Adventure Background" class="homescreen-image" />
+    
+    <div class="buttons">
+      <div>
+        <select bind:value={selectedLevel} class="level-select">
+          {#each level_range.reverse() as level}            
+            <option value={level}>Level {level}</option>
+          {/each}
+        </select>
+        <button on:click={startProgressionMode}>
+          Reiseziel setzen
+        </button>
+      </div>
+      
+      <button class="free-mode-button" on:click={startFreeMode}>
+        - Freier Modus -
+      </button>
+    </div>
+  </div>
+</div>
 
 <style>
   :global(body) {
@@ -113,26 +136,3 @@
     box-shadow: 0 8px 25px rgba(39, 174, 96, 0.5);
   }
 </style>
-
-<div class="page-container">
-  <div class="image-container">
-    <img src="/homescreen_resized.png" alt="Adventure Background" class="homescreen-image" />
-    
-    <div class="buttons">
-      <div>
-        <select bind:value={selectedLevel} class="level-select">
-          {#each Array.from({length: 10}, (_, i) => 10 - i) as level}
-            <option value={level}>Level {level}</option>
-          {/each}
-        </select>
-        <button on:click={startProgressionMode}>
-          Reiseziel setzen
-        </button>
-      </div>
-      
-      <button class="free-mode-button" on:click={startFreeMode}>
-        - Freier Modus -
-      </button>
-    </div>
-  </div>
-</div>
