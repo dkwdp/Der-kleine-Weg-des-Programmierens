@@ -331,7 +331,7 @@
 		border-radius: 20px;
 		padding: 1.5rem 2.5rem; 
 		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.05); 
-		z-index: 25; 
+		z-index: 1; 
 	}
 
 	.map-header-overlay h1 { 
@@ -354,7 +354,7 @@
 		display: flex; 
 		flex-direction: column; 
 		gap: 0.5rem; 
-		z-index: 20; 
+		z-index: 2; 
 	}
 
 	.progress-text { 
@@ -402,7 +402,6 @@
 
 	.level-button, .bonus-level-button { 
 		position: absolute; 
-		z-index: 10; 
 		transform: translate(-50%, -50%); 
 		background: transparent; 
 		border: none; 
@@ -433,173 +432,263 @@
 		filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.8)); 
 	}
 
+	.level-button.locked { 
+		filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.2)) grayscale(90%) brightness(0.7); 
+		cursor: not-allowed; 
+		pointer-events: none; 
+	}
+
+	.level-button.unlocked:hover, .bonus-level-button:hover { 
+		transform: translate(-50%, -50%) scale(1.05); 
+	}
 	
-
+	.bonus-level-button:hover { 
+		transform: translate(-50%, -50%) scale(1.1); 
+		filter: drop-shadow(0 8px 25px rgba(212, 175, 55, 0.8)); 
+	}
 	
+	.level-button.unlocked:active, .bonus-level-button:active { 
+		transition: all 0.1s ease; 
+		transform: translate(-50%, -50%) scale(1.15); 
+	}
 
-	.level-button.locked { filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.2)) grayscale(100%) brightness(0.5); cursor: not-allowed; pointer-events: none; }
-	.level-button.unlocked:hover, .bonus-level-button:hover { transform: translate(-50%, -50%) scale(1.05); }
-	.level-button.unlocked:hover { filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5)); }
-	.bonus-level-button:hover { transform: translate(-50%, -50%) scale(1.15); filter: drop-shadow(0 8px 25px rgba(212, 175, 55, 0.8)); }
-	.level-button.unlocked:active, .bonus-level-button:active { transition: all 0.1s ease; }
-	.level-button.unlocked:active { transform: translate(-50%, -50%) scale(1.15); }
-	.bonus-level-button:active { transform: translate(-50%, -50%) scale(1.25); }
+	.level-icon { 
+		width: 100%; 
+		height: 100%; 
+		object-fit: contain; 
+		transition: var(--transition-smooth); 
+	}
+	
+	.level-number-overlay, .lock-overlay { 
+		position: absolute; 
+		top: 50%; 
+		left: 50%; 
+	}
+	
+	.level-number-overlay { 
+		transform: translate(-50%, -50%); 
+		font-size: clamp(10px, 1.5vw, 16px); 
+		color: white; 
+		font-family: 'Arial Black', sans-serif; 
+		text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 3px rgba(0, 0, 0, 1); 
+		transition: var(--transition-smooth); 
+	}
+	
+	.lock-overlay { 
+		transform: translate(-50%, -63%); 
+		font-size: clamp(20px, 2vw, 40px); 
+	}
 
-	.level-icon { width: 100%; height: 100%; object-fit: contain; transition: var(--transition-smooth); }
-	.level-number-overlay, .lock-overlay { position: absolute; top: 50%; left: 50%; pointer-events: none; }
-	.level-number-overlay { transform: translate(-50%, -50%); font-size: clamp(10px, 1.5vw, 16px); color: white; font-family: 'Arial Black', sans-serif; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 3px rgba(0, 0, 0, 1); z-index: 1; transition: var(--transition-smooth); }
-	.lock-overlay { transform: translate(-50%, -63%); font-size: clamp(20px, 2vw, 40px); z-index: 2; }
-	.level-number-only { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; color: white; font-family: 'Arial Black', sans-serif; background: #4facfe; border-radius: clamp(12px, 2vw, 22px); border: clamp(3px, 0.5vw, 6px) solid rgba(255, 255, 255, 0.8); text-shadow: 0 0 4px rgba(0, 0, 0, 1); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); transition: var(--transition-smooth); }
+	.level-number-only { 
+		width: 100%; 
+		height: 100%; 
+		display: flex; 
+		justify-content: center; 
+		align-items: center; 
+		color: white; 
+		font-family: 'Arial Black', sans-serif; 
+		background: #4facfe; 
+		border-radius: clamp(12px, 2vw, 22px); 
+		border: clamp(3px, 0.5vw, 4px) solid rgba(255, 255, 255, 0.8); 
+		text-shadow: 0 0 4px rgba(0, 0, 0, 1); 
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); 
+		transition: var(--transition-smooth); 
+	}
 
-	.level-button.large .level-number-only { font-size: clamp(24px, 4vw, 45px); }
-	.level-button.medium .level-number-only { font-size: clamp(20px, 3vw, 32px); }
-	.level-button.small .level-number-only { font-size: clamp(16px, 2.5vw, 24px); }
+	.level-button.large .level-number-only { 
+		font-size: clamp(24px, 4vw, 45px); 
+	}
 
-	.bonus-icon { font-size: clamp(24px, 3vw, 48px); z-index: 2; animation: bonusPulse 2s ease-in-out infinite; }
-	.bonus-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 120%; height: 120%; background: radial-gradient(circle, rgba(212, 175, 55, 0.3) 0%, transparent 70%); border-radius: 50%; animation: bonusGlow 3s ease-in-out infinite; z-index: 1; }
+	.level-button.medium .level-number-only { 
+		font-size: clamp(20px, 3vw, 32px); 
+	}
 
-	@keyframes bonusPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
-	@keyframes bonusGlow { 0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.2); } }
-	.bonus-level-button:hover .bonus-icon { animation-duration: 1s; }
+	.level-button.small .level-number-only { 
+		font-size: clamp(16px, 2.5vw, 24px); 
+	}
+
+	.bonus-icon { 
+		font-size: clamp(24px, 3vw, 48px); 
+		animation: bonusPulse 2s ease-in-out infinite; 
+	}
+
+	.bonus-glow { 
+		position: absolute; 
+		top: 50%; 
+		left: 50%; 
+		transform: translate(-50%, -50%); 
+		width: 120%; 
+		height: 120%; 
+		background: radial-gradient(circle, rgba(212, 175, 55, 0.3) 0%, transparent 70%); 
+		border-radius: 50%; 
+		animation: bonusGlow 2s ease-in-out infinite; 
+	}
+
+	@keyframes bonusPulse 
+	{ 
+		50% { transform: scale(1.1); } 
+	}
+
+	@keyframes bonusGlow 
+	{ 
+		50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.2); } 
+	}
 	
 	.snowflake {
 		position: absolute;
 		color: #ffffff;
-		animation: snowshake 6s ease-in-out infinite;	
+		z-index: 1;
 	}
 
-	/* Kurze Schneeflocken - verschwinden mittendrin */
+	/* Kurzlebige Schneeflocken */
 	@keyframes snowfall-short {
 		0% { top: -10%; opacity: 0; }
 		5% { opacity: 1; }
-		50% { opacity: 1; }
-		65% { top: 65%; opacity: 0; }
-		100% { top: 65%; opacity: 0; }
+		50% { top: 65%; opacity: 0; }
+		100% { top: 100%; opacity: 0; }
 	}
 
-	/* Lange Schneeflocken - schaffen es bis zum Ende */
+	/* Langlebrige Schneeflocken */
 	@keyframes snowfall-long {
 		0% { top: -10%; opacity: 0; }
 		5% { opacity: 1; }
 		92% { opacity: 1; }
-		100% { top: 100%; opacity: 0; }
+		100% { top: 100%; opacity: 1; }
 	}
 
 	@keyframes snowshake {
 		0%, 100% { transform: translateX(0px) rotate(0deg); }
-		25% { transform: translateX(30px) rotate(90deg); }
-		50% { transform: translateX(-20px) rotate(180deg); }
-		75% { transform: translateX(40px) rotate(270deg); }
+		25% { transform: translateX(30px) rotate(30deg); }
+		50% { transform: translateX(-20px) rotate(60deg); }
+		75% { transform: translateX(40px) rotate(90deg); }
 	}
 
 	/* Schneeflocken mit verschiedenen Lebenszeiten und negativen Delays */
 	.snowflake:nth-child(1) { 
 		left: 8%; 
-		font-size: 0.8em; 
+		font-size: 2em; 
 		animation: snowfall-short 35s linear infinite, snowshake 6s ease-in-out infinite;
-		animation-delay: -15s, -2.2s; 
+		animation-delay: -15s; 
 	}
 
 	.snowflake:nth-child(2) { 
 		left: 23%; 
 		font-size: 1.3em; 
-		animation: snowfall-long 35s linear infinite, snowshake 6s ease-in-out infinite;
-		animation-delay: -8s, -0.5s; 
+		animation: snowfall-long 15s linear infinite , snowshake 16s ease-in-out infinite;
 	}
 
 	.snowflake:nth-child(3) { 
 		left: 67%; 
-		font-size: 0.9em; 
-		animation: snowfall-short 35s linear infinite, snowshake 6s ease-in-out infinite;
-		animation-delay: -22s, -4.8s; 
+		font-size: 1em; 
+		animation: snowfall-short 25s linear infinite, snowshake 12s ease-in-out infinite;
+		animation-delay: -1s; 
 	}
 
 	.snowflake:nth-child(4) { 
 		left: 41%; 
 		font-size: 1.1em; 
-		animation: snowfall-long 35s linear infinite, snowshake 6s ease-in-out infinite;
-		animation-delay: -5s, -1.3s; 
+		animation: snowfall-long 35s linear infinite, snowshake 14s ease-in-out infinite;
+		animation-delay: -2s; 
 	}
 
 	.snowflake:nth-child(5) { 
 		left: 89%; 
-		font-size: 0.7em; 
-		animation: snowfall-short 35s linear infinite, snowshake 6s ease-in-out infinite;
-		animation-delay: -28s, -3.1s; 
+		font-size: 2em; 
+		animation: snowfall-short 55s linear infinite, snowshake 8s ease-in-out infinite;
+		animation-delay: -3s; 
 	}
 
 	.snowflake:nth-child(6) { 
 		left: 15%; 
 		font-size: 1.4em; 
 		animation: snowfall-long 35s linear infinite, snowshake 6s ease-in-out infinite;
-		animation-delay: -12s, -5.7s; 
+		animation-delay: -4s; 
 	}
 
 	.snowflake:nth-child(7) { 
 		left: 56%; 
-		font-size: 0.6em; 
-		animation: snowfall-short 35s linear infinite, snowshake 6s ease-in-out infinite;
-		animation-delay: -30s, -2.2s; 
+		font-size: 1.4em; 
+		animation: snowfall-short 25s linear infinite, snowshake 10s ease-in-out infinite;
+		animation-delay: -5s; 
 	}
 
 	.snowflake:nth-child(8) { 
 		left: 78%; 
 		font-size: 1.2em; 
-		animation: snowfall-long 35s linear infinite, snowshake 6s ease-in-out infinite;
-		animation-delay: -18s, -0.8s; 
+		animation: snowfall-long 35s linear infinite, snowshake 14s ease-in-out infinite;
+		animation-delay: -6s; 
 	}
 
 	.snowflake:nth-child(9) { 
 		left: 34%; 
-		font-size: 0.9em; 
-		animation: snowfall-short 35s linear infinite, snowshake 6s ease-in-out infinite;
-		animation-delay: -25s, -4.1s; 
+		font-size: 1.3em; 
+		animation: snowfall-short 45s linear infinite, snowshake 6s ease-in-out infinite;
+		animation-delay: -7s; 
 	}
 
 	.snowflake:nth-child(10) { 
 		left: 92%; 
-		font-size: 0.8em; 
+		font-size: 1.7em; 
 		animation: snowfall-long 35s linear infinite, snowshake 6s ease-in-out infinite;
-		animation-delay: -7s, -1.5s; 
+		animation-delay: -8s; 
 	}
 
 	.snowflake:nth-child(11) { 
-		left: 19%; 
+		left: 75%; 
 		font-size: 1.5em; 
-		animation: snowfall-short 35s linear infinite, snowshake 6s ease-in-out infinite;
-		animation-delay: -33s, -3.1s; 
+		animation: snowfall-short 15s linear infinite, snowshake 7s ease-in-out infinite;
+		animation-delay: -9s; 
 	}
 
 	.snowflake:nth-child(12) { 
 		left: 73%; 
-		font-size: 0.7em; 
+		font-size: 2em; 
 		animation: snowfall-long 35s linear infinite, snowshake 6s ease-in-out infinite;
-		animation-delay: -14s, -5.7s; 
+		animation-delay: -10s; 
 	}
 
 	.snowflake:nth-child(13) { 
 		left: 45%; 
 		font-size: 1.0em; 
 		animation: snowfall-short 35s linear infinite, snowshake 6s ease-in-out infinite;
-		animation-delay: -20s, -2.9s; 
+		animation-delay: -11s; 
 	}
 
 	.snowflake:nth-child(14) { 
 		left: 61%; 
 		font-size: 0.5em; 
-		animation: snowfall-long 35s linear infinite, snowshake 6s ease-in-out infinite;
-		animation-delay: -26s, -0.4s; 
+		animation: snowfall-long 25s linear infinite, snowshake 6s ease-in-out infinite;
+		animation-delay: -12s; 
 	}
 
 	.snowflake:nth-child(15) { 
 		left: 27%; 
-		font-size: 1.3em; 
+		font-size: 2.2em; 
 		animation: snowfall-short 35s linear infinite, snowshake 6s ease-in-out infinite;
-		animation-delay: -10s, -4.6s; 
+		animation-delay: -13s; 
 	}
-	.bonus-level-button:hover .bonus-glow { animation-duration: 1.5s; }
 
-	.home-button { position: fixed; bottom: 40px; left: 40px; width: 225px; color: white; border-radius: 25px; font-size: 16px; font-weight: 600; background: rgba(255, 255, 255, 0.3); border: 3px solid rgba(255, 255, 255, 0.2); padding: 0.6rem; z-index: 20; transition: var(--transition-smooth); }
-	.home-button:hover { transform: translateY(-5px); box-shadow: 0 6px 20px rgba(52, 152, 219, 0.1); }
-	.home-button:active { transform: translateY(0); box-shadow: 0 2px 10px rgba(52, 152, 219, 0.3); }
+	.home-button { 
+		position: fixed; 
+		bottom: 40px; 
+		left: 40px; 
+		width: 225px; 
+		color: white; 
+		border-radius: 25px; 
+		font-size: 16px; 
+		font-weight: 600; 
+		background: rgba(255, 255, 255, 0.2); 
+		border: 3px solid rgba(255, 255, 255, 0.2); 
+		padding: 0.6rem; 
+		z-index: 2; 
+		transition: var(--transition-smooth); 
+	}
+	
+	.home-button:hover { 
+		transform: translate(10%, 20%) scale(1.05); 
+	}
+
+	.home-button:active { 
+		transform: translate(10%, 20%) scale(1.20); 
+	}
 </style>
