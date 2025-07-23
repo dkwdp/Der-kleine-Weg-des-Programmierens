@@ -82,7 +82,6 @@
 	}
 
 	// -- Helper-Funktionen --
-	
 	// checkt, ob Level freigeschaltet sind
 	function isLevelUnlocked(levelId) {
 		return $gameMode === 'free' || $unlockedLevels.includes(levelId);
@@ -208,6 +207,15 @@
 	<div class="map-container">
 		<img src="/map.png" alt="Adventure Map" class="map-image" />
 		
+		<!-- Schnee-Animation -->
+		<div class="snowflakes" aria-hidden="true">
+			{#each Array(15) as _, i}
+				<div class="snowflake">
+					{['❅', '❆', '❄', '❅', '❆'][i % 5]}
+				</div>
+			{/each}
+		</div>
+		
 		<div class="map-header-overlay">
 			<h1>Willkommen im Coder-Dojo Abenteuerpfad!</h1>
 		</div>
@@ -307,47 +315,99 @@
 </div>
 
 <style>
+	/* Css Variablen */
+	:root {
+		--shadow-light: 0 4px 15px rgba(0, 0, 0, 0.2);
+		--shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.4);
+		--shadow-heavy: 0 15px 40px rgba(0, 0, 0, 0.6);
+		--transition-smooth: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+		--transition-quick: all 0.1s ease;
+		--glass-bg: rgba(255, 255, 255, 0.3);
+		--glass-border: 1px solid rgba(255, 255, 255, 0.15);
+		--text-outline: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 3px rgba(0, 0, 0, 1);
+		--bonus-gold: #d4af37;
+	}
+
 	:global(html, body) {
 		margin: 0;
 		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-		overflow: auto;
 		overscroll-behavior: none;
 	}
 
-	.page-container {
+	.snowflakes {
+		position: absolute;
+		top: 0;
+		left: 0;
 		width: 100%;
-		min-height: 100vh;
+		height: 100%;
+		pointer-events: none;
+		z-index: 12;
+		overflow: hidden; 
 	}
 
+	.snowflake {
+		position: absolute;
+		top: -10%;
+		color: #fff;
+		font-family: Arial;
+		text-shadow: 0 0 1px #000;
+		user-select: none;
+		cursor: default;
+		animation: snowfall 35s linear infinite, snowshake 6s ease-in-out infinite;
+	}
+
+	@keyframes snowfall {
+		0% { top: -10%; opacity: 0; }
+		5% { opacity: 1; }
+		95% { opacity: 1; }
+		100% { top: 100%; opacity: 0; }
+	}
+
+	@keyframes snowshake {
+		0%, 100% { transform: translateX(0px) rotate(0deg); }
+		25% { transform: translateX(30px) rotate(90deg); }
+		50% { transform: translateX(-20px) rotate(180deg); }
+		75% { transform: translateX(40px) rotate(270deg); }
+	}
+
+	/* Chaotische Schneeflocken - verschiedene Größen, Positionen und Timing */
+	.snowflake:nth-child(1) { left: 8%; font-size: 0.8em; animation-delay: 0s, 1.2s; }
+	.snowflake:nth-child(2) { left: 23%; font-size: 1.3em; animation-delay: 3s, 0.5s; }
+	.snowflake:nth-child(3) { left: 67%; font-size: 0.9em; animation-delay: 7s, 2.8s; }
+	.snowflake:nth-child(4) { left: 41%; font-size: 1.1em; animation-delay: 12s, 0.3s; }
+	.snowflake:nth-child(5) { left: 89%; font-size: 0.7em; animation-delay: 2s, 4.1s; }
+	.snowflake:nth-child(6) { left: 15%; font-size: 1.4em; animation-delay: 18s, 1.7s; }
+	.snowflake:nth-child(7) { left: 56%; font-size: 0.6em; animation-delay: 5s, 3.2s; }
+	.snowflake:nth-child(8) { left: 78%; font-size: 1.2em; animation-delay: 25s, 0.8s; }
+	.snowflake:nth-child(9) { left: 34%; font-size: 0.9em; animation-delay: 9s, 2.1s; }
+	.snowflake:nth-child(10) { left: 92%; font-size: 0.8em; animation-delay: 14s, 4.5s; }
+	.snowflake:nth-child(11) { left: 19%; font-size: 1.5em; animation-delay: 21s, 1.1s; }
+	.snowflake:nth-child(12) { left: 73%; font-size: 0.7em; animation-delay: 1s, 3.7s; }
+	.snowflake:nth-child(13) { left: 45%; font-size: 1.0em; animation-delay: 16s, 0.9s; }
+	.snowflake:nth-child(14) { left: 61%; font-size: 0.5em; animation-delay: 29s, 2.4s; }
+	.snowflake:nth-child(15) { left: 27%; font-size: 1.3em; animation-delay: 8s, 1.6s; }
+
+	/* ===== MAP LAYOUT ===== */
 	.map-container {
 		position: relative;
-		width: 100%;
-		min-height: 100vh;
-		min-width: 1200px;
 	}
 
 	.map-image {
 		width: 100%;
-		min-height: 100vh;
-		object-fit: cover;
 		display: block;
 	}
 
-	/* Header */
 	.map-header-overlay {
 		position: absolute;
 		top: 30px;
 		left: 50%;
 		transform: translateX(-50%);
 		text-align: center;
-		z-index: 100;
-		pointer-events: none;
-		background: rgba(255, 255, 255, 0.15);
 		backdrop-filter: blur(10px);
-		border: 1px solid rgba(255, 255, 255, 0.2);
 		border-radius: 20px;
 		padding: 1.5rem 2.5rem;
 		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.05);
+		z-index: 25; /* Über Schneeflocken */
 	}
 
 	.map-header-overlay h1 {
@@ -359,15 +419,14 @@
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	}
 
+	/* ===== PROGRESS WIDGET ===== */
 	.progress-widget {
 		position: fixed;
 		bottom: 105px;
 		left: 40px;
-		pointer-events: none;
-		padding: 1rem 1rem;
-		background: rgba(255, 255, 255, 0.1);
+		padding: 1rem;
 		backdrop-filter: blur(8px);
-		border: 1px solid rgba(255, 255, 255, 0.15);
+		border: var(--glass-border);
 		border-radius: 15px;
 		display: flex;
 		flex-direction: column;
@@ -375,15 +434,27 @@
 		z-index: 20;
 	}
 
-	.progress-text {
-		font-size: 0.9rem;
-		color: #000000;
+	.progress-text, .bonus-progress-text {
 		font-weight: 600;
-		text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
-		background: rgba(255, 255, 255, 0.4);
 		padding: 0.3rem 0.8rem;
 		border-radius: 12px;
 		border: 1px solid rgba(255, 255, 255, 0.4);
+		text-align: center;
+	}
+
+	.progress-text {
+		font-size: 0.9rem;
+		color: #000000;
+		text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+		background: rgba(255, 255, 255, 0.4);
+	}
+
+	.bonus-progress-text {
+		font-size: 0.8rem;
+		color: var(--bonus-gold);
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+		background: rgba(212, 175, 55, 0.2);
+		border-color: rgba(212, 175, 55, 0.4);
 	}
 
 	.progress-bar {
@@ -401,19 +472,7 @@
 		border-radius: 4px;
 	}
 
-	.bonus-progress-text {
-		font-size: 0.8rem;
-		color: #d4af37;
-		font-weight: 600;
-		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-		background: rgba(212, 175, 55, 0.2);
-		padding: 0.2rem 0.6rem;
-		border-radius: 10px;
-		border: 1px solid rgba(212, 175, 55, 0.4);
-		text-align: center;
-	}
-
-	/* Path Linien */
+	/* ===== PATH LINES ===== */
 	.path-lines-svg {
 		position: absolute;
 		top: 0;
@@ -421,47 +480,141 @@
 		width: 100%;
 		height: 100%;
 		pointer-events: none;
-		z-index: 1;
 	}
 
-	/* Level Buttons */
-	.level-button {
+	/* ===== GEMEINSAME BUTTON STYLES ===== */
+	.level-button, .bonus-level-button {
 		position: absolute;
+		top: 50%;
+		left: 50%;
 		transform: translate(-50%, -50%);
 		background: transparent;
 		border: none;
-		display: flex;
-		justify-content: center;
-		align-items: center;
 		cursor: pointer;
-		padding: 2px;
-		transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 		user-select: none;
-		filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.4));
+		transition: var(--transition-smooth);
+	}
+
+	.level-button {
+		filter: var(--shadow-medium);
 		z-index: 10;
 	}
 
 	.bonus-level-button {
+		display: flex;
+		align-items: center;
+		z-index: 15;
+		filter: drop-shadow(0 6px 20px rgba(212, 175, 55, 0.6));
+		transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	}
+
+	/* ===== LEVEL BUTTON SIZES ===== */
+	.level-button.large {
+		width: clamp(180px, 20vw, 400px);
+		height: clamp(180px, 20vw, 400px);
+		filter: var(--shadow-heavy);
+	}
+
+	.level-button.medium {
+		width: clamp(120px, 12vw, 250px);
+		height: clamp(120px, 12vw, 250px);
+		filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
+	}
+
+	.level-button.small {
+		width: clamp(80px, 8vw, 150px);
+		height: clamp(80px, 8vw, 150px);
+		filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.4));
+	}
+
+	/* ===== BUTTON STATES ===== */
+	.level-button.locked {
+		filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.2)) grayscale(100%) brightness(0.5);
+		cursor: not-allowed;
+		pointer-events: none;
+	}
+
+	.level-button.unlocked:hover, .bonus-level-button:hover {
+		transform: translate(-50%, -50%) scale(1.05);
+	}
+
+	.level-button.unlocked:hover {
+		filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5));
+	}
+
+	.bonus-level-button:hover {
+		transform: translate(-50%, -50%) scale(1.15);
+		filter: drop-shadow(0 8px 25px rgba(212, 175, 55, 0.8));
+	}
+
+	.level-button.unlocked:active, .bonus-level-button:active {
+		transition: var(--transition-quick);
+	}
+
+	.level-button.unlocked:active {
+		transform: translate(-50%, -50%) scale(1.15);
+	}
+
+	.bonus-level-button:active {
+		transform: translate(-50%, -50%) scale(1.25);
+	}
+
+	/* ===== LEVEL ICONS & OVERLAYS ===== */
+	.level-icon {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		transition: var(--transition-smooth);
+	}
+
+	.level-number-overlay, .lock-overlay {
 		position: absolute;
+		top: 50%;
+		left: 50%;
+		pointer-events: none;
+	}
+
+	.level-number-overlay {
 		transform: translate(-50%, -50%);
-		background: transparent;
-		border: none;
-		width: clamp(50px, 6vw, 100px);
-		height: clamp(50px, 6vw, 100px);
+		font-size: clamp(10px, 1.5vw, 16px);
+		color: white;
+		font-family: 'Arial Black', sans-serif;
+		text-shadow: var(--text-outline);
+		z-index: 1;
+		transition: var(--transition-smooth);
+	}
+
+	.lock-overlay {
+		transform: translate(-50%, -63%);
+		font-size: clamp(20px, 2vw, 40px);
+		z-index: 2;
+	}
+
+	.level-number-only {
+		width: 100%;
+		height: 100%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		cursor: pointer;
-		transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-		user-select: none;
-		z-index: 15;
-		filter: drop-shadow(0 6px 20px rgba(212, 175, 55, 0.6));
+		color: white;
+		font-family: 'Arial Black', sans-serif;
+		background: #4facfe;
+		border-radius: clamp(12px, 2vw, 22px);
+		border: clamp(3px, 0.5vw, 6px) solid rgba(255, 255, 255, 0.8);
+		text-shadow: 0 0 4px rgba(0, 0, 0, 1);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+		transition: var(--transition-smooth);
 	}
 
+	/* SIZE-SPECIFIC FONT SIZES */
+	.level-button.large .level-number-only { font-size: clamp(24px, 4vw, 45px); }
+	.level-button.medium .level-number-only { font-size: clamp(20px, 3vw, 32px); }
+	.level-button.small .level-number-only { font-size: clamp(16px, 2.5vw, 24px); }
+
+	/* ===== BONUS LEVEL STYLES ===== */
 	.bonus-icon {
 		font-size: clamp(24px, 3vw, 48px);
 		z-index: 2;
-		position: relative;
 		animation: bonusPulse 2s ease-in-out infinite;
 	}
 
@@ -478,6 +631,7 @@
 		z-index: 1;
 	}
 
+	/* BONUS ANIMATIONS */
 	@keyframes bonusPulse {
 		0%, 100% { transform: scale(1); }
 		50% { transform: scale(1.1); }
@@ -494,115 +648,10 @@
 		}
 	}
 
-	.bonus-level-button:hover {
-		transform: translate(-50%, -50%) scale(1.15);
-		filter: drop-shadow(0 8px 25px rgba(212, 175, 55, 0.8));
-	}
+	.bonus-level-button:hover .bonus-icon { animation-duration: 1s; }
+	.bonus-level-button:hover .bonus-glow { animation-duration: 1.5s; }
 
-	.bonus-level-button:hover .bonus-icon {
-		animation-duration: 1s;
-	}
-
-	.bonus-level-button:hover .bonus-glow {
-		animation-duration: 1.5s;
-	}
-
-	.bonus-level-button:active {
-		transform: translate(-50%, -50%) scale(1.25);
-		transition: all 0.1s ease;
-	}
-
-	.level-button.large {
-		width: clamp(180px, 20vw, 400px);
-		height: clamp(180px, 20vw, 400px);
-		filter: drop-shadow(0 15px 40px rgba(0, 0, 0, 0.6));
-	}
-
-	.level-button.medium {
-		width: clamp(120px, 12vw, 250px);
-		height: clamp(120px, 12vw, 250px);
-		filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
-	}
-
-	.level-button.small {
-		width: clamp(80px, 8vw, 150px);
-		height: clamp(80px, 8vw, 150px);
-		filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.4));
-	}
-
-	.level-button.locked {
-		filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.2)) grayscale(100%) brightness(0.5);
-		cursor: not-allowed;
-		pointer-events: none;
-	}
-
-	.level-icon {
-		width: 100%;
-		height: 100%;
-		object-fit: contain;
-		transition: all 0.3s ease;
-	}
-
-	.level-number-overlay {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		font-size: clamp(10px, 1.5vw, 16px);
-		color: white;
-		font-family: 'Arial Black', sans-serif;
-		text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 3px rgba(0, 0, 0, 1);
-		pointer-events: none;
-		z-index: 1;
-		transition: all 0.3s ease;
-	}
-
-	.lock-overlay {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -63%);
-		font-size: clamp(20px, 2vw, 40px);
-		z-index: 2;
-		pointer-events: none;
-	}
-
-	.level-number-only {
-		width: 100%;
-		height: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		color: white;
-		font-family: 'Arial Black', sans-serif;
-		background: #4facfe;
-		border-radius: clamp(12px, 2vw, 22px);
-		border: clamp(3px, 0.5vw, 6px) solid rgba(255, 255, 255, 0.8);
-		text-shadow: 0 0 4px rgba(0, 0, 0, 1);
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-		transition: all 0.3s ease;
-	}
-
-	.level-button.large .level-number-only {
-		font-size: clamp(24px, 4vw, 45px);
-	}
-	.level-button.medium .level-number-only {
-		font-size: clamp(20px, 3vw, 32px);
-	}
-	.level-button.small .level-number-only {
-		font-size: clamp(16px, 2.5vw, 24px);
-	}
-
-	.level-button.unlocked:hover {
-		transform: translate(-50%, -50%) scale(1.05);
-		filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5));
-	}
-
-	.level-button.unlocked:active {
-		transform: translate(-50%, -50%) scale(1.15);
-		transition: all 0.1s ease;
-	}
-
+	/* ===== HOME BUTTON ===== */
 	.home-button {
 		position: fixed;
 		bottom: 40px;
@@ -612,11 +661,11 @@
 		border-radius: 25px;
 		font-size: 16px;
 		font-weight: 600;
-		transition: all 0.3s ease;
-		background: rgba(255, 255, 255, 0.3);
+		background: var(--glass-bg);
 		border: 3px solid rgba(255, 255, 255, 0.2);
 		padding: 0.6rem;
 		z-index: 20;
+		transition: var(--transition-smooth);
 	}
 
 	.home-button:hover {
