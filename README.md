@@ -211,8 +211,8 @@ Füge die Freischaltungs-Bedingung in `src/lib/stores/editorStore.ts` hinzu:
 
 ```javascript
 const bonusUnlockRequirements = {
-    1: 3,  // Bonus-Level 1 wird nach Level 3 freigeschaltet
-    2: 7,  // Bonus-Level 2 wird nach Level 7 freigeschaltet
+    1: 3,  // Bonus-Level 1 wird nach Level 2 freigeschaltet
+    2: 7,  // Bonus-Level 2 wird nach Level 6 freigeschaltet
     // Neue Bonus-Level hier hinzufügen
 };
 ```
@@ -235,11 +235,3 @@ src/routes/levels/bonusLevel/bonus[id]/+page.svelte
 5. **Lösung:**  Level kann erfolgreich gelöst werden
 6. **Progression:**  Nächstes Level wird nach Lösung freigeschaltet
 7. **Responsive:**  Level funktioniert auf verschiedenen Bildschirmgrößen
-
-### Freischaltung testen:
-
-```javascript
-// Im Browser-Entwicklungstool (F12 → Console) eingeben:
-localStorage.setItem('unlockedLevels', JSON.stringify([1,2,3,4,5])); // Level 1-5 freischalten
-location.reload(); // Seite neu laden
-```

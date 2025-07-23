@@ -21,8 +21,10 @@ export const bonusLevelsUnlocked = writable([]);
 
 // Bonus-Level Freischaltungs-Bedingungen
 const bonusUnlockRequirements = {
-    1: 3,
-    // Beispiel für zweites Boni Level, dass sich nach dem 7. Level freischaltet (Wichtig: Im map svelte auch hinzufügen)
+    // wenn Level 7 fertig ist, zeigt sich Bonus Level 1 zwischen Level 7 und 8
+    1: 8,
+    // Beispiel für zweites Boni Level, dass sich nach dem 6. Level freischaltet 
+    // (Wichtig: Im map svelte Bonus Level hinzufügen)
     // 2: 7, 
 };
 
