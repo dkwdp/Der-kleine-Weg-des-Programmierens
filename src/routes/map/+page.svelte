@@ -5,15 +5,6 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { page } from '$app/stores';
 	import Mascot from '../mascot/Mascot.svelte';
-
-	// Mascot Status
-	let emotion = 'neutral';
-	let message = 'Willkommen!';
-
-	let inactivityTimer;
-	let currentNeutralState = 'neutral';
-
-	let iconLoadStates = {};
 	
 	// Level-Daten
 	const levelData = [
@@ -32,34 +23,6 @@
 	const bonusLevelData = [
 		{ id: 1, x: 50, y: 42, icon: '⚙️', name: 'Bonus 1', unlockAfter: 3, route: '/levels/bonusLevel/bonus1'}
 	];
-
-	// checkt, welche Level freigeschaltet sind
-	function isLevelUnlocked(levelId) {
-		return $gameMode === 'free' || $unlockedLevels.includes(levelId);
-	}
-
-	// checkt, welche Bonus-Level freigeschaltet sind
-	function isBonusLevelUnlocked(bonusId) {
-		return $gameMode === 'free' || $bonusLevelsUnlocked.includes(bonusId);
-	}
-
-	// resetted Inaktivitätstimer, wenn man z.B. über Level hovert
-	function updateMascot(newEmotion, newMessage) {
-		emotion = newEmotion;
-		message = newMessage;
-		resetInactivityTimer();
-	}
-
-	// Idle-Pinu: Wechselt zwischen neutral-Posen wenn User 10s nichts macht
-	function resetInactivityTimer() {
-    clearTimeout(inactivityTimer);
-    inactivityTimer = setTimeout(() => {
-        	if (emotion === 'neutral' || emotion === 'neutral2' || emotion === 'think') {
-				currentNeutralState = currentNeutralState === 'neutral' ? 'neutral2' : 'neutral';
-				updateMascot(currentNeutralState, getRandomIdleMessage());
-        	}
-    	}, 10000);
-	}
 
 	// Messages
 	const welcomeMessages = [
@@ -100,7 +63,37 @@
 		'ist ein Bonus-Level'
 	];
 
-	// Hilfsfunktionen
+	// Mascot Status
+	let emotion = 'neutral';
+	let message = 'Willkommen!';
+	let inactivityTimer;
+	let currentNeutralState = 'neutral';
+	let iconLoadStates = {};
+	
+	// automatische Path Lines zwischen den Leveln
+	const pathLines = [];
+	for (let i = 0; i < levelData.length - 1; i++) {
+		pathLines.push({
+			x1: levelData[i].x, 	// aktuelles Level
+			y1: levelData[i].y,
+			x2: levelData[i + 1].x, // Nächstes Level
+			y2: levelData[i + 1].y
+		});
+	}
+
+	// -- Helper-Funktionen --
+	
+	// checkt, ob Level freigeschaltet sind
+	function isLevelUnlocked(levelId) {
+		return $gameMode === 'free' || $unlockedLevels.includes(levelId);
+	}
+
+	// checkt, welche Bonus-Level freigeschaltet sind
+	function isBonusLevelUnlocked(bonusId) {
+		return $gameMode === 'free' || $bonusLevelsUnlocked.includes(bonusId);
+	}
+
+	// Hilfsfunktionen für Messages
 	function getRandomMessage(messageArray) {
 		return messageArray[Math.floor(Math.random() * messageArray.length)];
 	}
@@ -113,44 +106,22 @@
 		return getRandomMessage(welcomeMessages);
 	}
 
-	function LevelJoin(levelId) {
-		// Speichere das besuchte Level (nur valide Level-IDs) für AutoScroll
-		if (browser && levelId && typeof levelId === 'number' && levelId >= 1 && levelId <= 10) {
-			sessionStorage.setItem('lastVisitedLevel', levelId.toString());
-		}
-		//Navigation mit Delay
-		setTimeout(() => {
-			goto(`/levels/level${levelId}`);
-		}, 200);
+	// resetted Inaktivitätstimer, wenn man z.B. über Level hovert
+	function updateMascot(newEmotion, newMessage) {
+		emotion = newEmotion;
+		message = newMessage;
+		resetInactivityTimer();
 	}
 
-	function BonusLevelJoin(bonusLevel) {
-		setTimeout(() => {
-        	goto(bonusLevel.route);
-    	}, 200);
-	}
-
-	// Level Hover für Maskottchen Message
-	function onLevelHover(level) {		
-		const hoverMessage = getRandomMessage(hoverMessages);
-		updateMascot('think', `Level ${level.id} ${hoverMessage}`);
-	}
-
-	// Bonus-Level Hover für Maskottchen Message
-	function onBonusLevelHover(bonusLevel) {
-		const hoverMessage = getRandomMessage(bonusHoverMessages);
-		updateMascot('think', `${bonusLevel.name} ${hoverMessage}`);
-	}
-
-	// automatische Path Lines zwischen den Leveln
-	const pathLines = [];
-	for (let i = 0; i < levelData.length - 1; i++) {
-		pathLines.push({
-			x1: levelData[i].x, 	// aktuelles Level
-			y1: levelData[i].y,
-			x2: levelData[i + 1].x, // Nächstes Level
-			y2: levelData[i + 1].y
-		});
+	// Idle-Pinu: Wechselt zwischen neutral-Posen wenn User 10s nichts macht
+	function resetInactivityTimer() {
+		clearTimeout(inactivityTimer);
+		inactivityTimer = setTimeout(() => {
+			if (emotion === 'neutral' || emotion === 'neutral2' || emotion === 'think') {
+				currentNeutralState = currentNeutralState === 'neutral' ? 'neutral2' : 'neutral';
+				updateMascot(currentNeutralState, getRandomIdleMessage());
+			}
+		}, 10000);
 	}
 
 	// Icons Fall Back System: error
@@ -165,53 +136,63 @@
 		iconLoadStates = { ...iconLoadStates }; 
 	}
 	
+	function LevelJoin(levelId) {
+		// Speichere das besuchte Level (nur valide Level-IDs) für AutoScroll
+		if (browser && levelId && typeof levelId === 'number' && levelId >= 1 && levelId <= 10) {
+			sessionStorage.setItem('lastVisitedLevel', levelId.toString());
+		}
+		//Navigation mit Delay
+		setTimeout(() => {
+			goto(`/levels/level${levelId}`);
+		}, 200);
+	}
+
+	function BonusLevelJoin(bonusLevel) {
+		setTimeout(() => {
+			goto(bonusLevel.route);
+		}, 200);
+	}
+
+	// Level Hover für Maskottchen Message
+	function onLevelHover(level) {		
+		const hoverMessage = getRandomMessage(hoverMessages);
+		updateMascot('think', `Level ${level.id} ${hoverMessage}`);
+	}
+
+	// Bonus-Level Hover für Maskottchen Message
+	function onBonusLevelHover(bonusLevel) {
+		const hoverMessage = getRandomMessage(bonusHoverMessages);
+		updateMascot('think', `${bonusLevel.name} ${hoverMessage}`);
+	}
+	
 	onMount(() => {
-		// Mascot Setup
+		// Maskottchen Initialisierung
 		const welcomeMsg = getWelcomeMessage();
 		emotion = 'neutral';
 		message = welcomeMsg;
 		resetInactivityTimer();
 
-		
+		// Autoscroll zum letzten oder höchsten freigeschalteten Level
 		setTimeout(() => {
 			let targetLevel;
 			
+			// schaut woher der User kommt
 			const lastVisitedLevel = browser ? sessionStorage.getItem('lastVisitedLevel') : null;
 			const cameFromLevel = $page.url.searchParams.get('from') || lastVisitedLevel;
 			
+			// String zu Zahl konvertieren
 			const parsedLevel = cameFromLevel ? parseInt(cameFromLevel, 10) : null;
 			
 			if (parsedLevel && !isNaN(parsedLevel) && isLevelUnlocked(parsedLevel)) {
 				targetLevel = parsedLevel;
 				if (browser) sessionStorage.removeItem('lastVisitedLevel');
 			} else {
-				if ($unlockedLevels.length === 0) {
-					targetLevel = 1;
-				} else {
-					targetLevel = Math.max(...$unlockedLevels);
-				}
+				targetLevel = $unlockedLevels.length === 0 ? 1 : Math.max(...$unlockedLevels);
 			}
 			
 			const levelButton = document.querySelector(`[data-level="${targetLevel}"]`);
 			if (levelButton) {
-				try {
-					const rect = levelButton.getBoundingClientRect();
-					const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight && 
-									rect.left >= 0 && rect.right <= window.innerWidth;
-					
-					if (!isVisible) {
-						levelButton.scrollIntoView({ 
-							behavior: 'smooth', 
-							block: 'center' 
-						});
-					}
-				} catch (error) {
-					console.warn('Auto-scroll error:', error);
-					levelButton.scrollIntoView({ 
-						behavior: 'smooth', 
-						block: 'center' 
-					});
-				}
+				levelButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
 			}
 		}, 50);
 	});
@@ -231,20 +212,21 @@
 			<h1>Willkommen im Coder-Dojo Abenteuerpfad!</h1>
 		</div>
 
-		<!-- Progress Widget erweitert -->
+		<!-- Progress Widget -->
 		{#if $gameMode === 'progressive'}
 			<div class="progress-widget">
 				<span class="progress-text">{$unlockedLevels.length}/10 Level freigeschaltet</span>
 				<div class="progress-bar">
 					<div class="progress-fill" style="width: {($unlockedLevels.length / 10) * 100}%"></div>
 				</div>
-				<!-- BONUS PROGRESS -->
+				<!-- Bonus Progress -->
 				{#if $bonusLevelsUnlocked.length > 0}
 					<span class="bonus-progress-text">✨ {$bonusLevelsUnlocked.length}/1 Bonus entdeckt</span>
 				{/if}
 			</div>
 		{/if}
 
+		<!-- Path Lines -->
 		<svg class="path-lines-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
 			{#each pathLines as line}
 				<line 
@@ -266,7 +248,8 @@
 		>
 			🏠 Home
 		</button>
-
+		
+		<!-- Level System -->
 		{#each levelData as level}
 			<button 
 				class="level-button {level.size} {isLevelUnlocked(level.id) ? 'unlocked' : 'locked'}"
@@ -277,6 +260,7 @@
 				title="{level.name}"
 				disabled={!isLevelUnlocked(level.id)}
 			>
+				<!-- Icon Fallback System -->
 				{#if iconLoadStates[level.id] === false}
 					<div class="level-number-only">
 						{level.id}
