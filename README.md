@@ -137,13 +137,13 @@ Füge die Level-Inhalte in die `levels.json` Datei hinzu:
 
 ```json
 {
-  "id": "LevelId",
-  "title": [ , ],
-  "description": [ , ],
-  "expectedOutput": [ , ],
-  "initialCode": [ , ],
+  "id": "levelID",
+  "title": ["Erstes Programm", "Zweite Aufgabe"],
+  "description": ["Schreibe dein erstes...", "Jetzt erweitere..."],
+  "expectedOutput": ["Hello World", "Hello Coder"],
+  "initialCode": ["console.log('...')", "console.log('...')"],
   "type": "calculation" ODER "drawing",
-  "hints": [ , ]
+  "hints": ["Tipp 1...", "Tipp 2..."]
 },
 ```
 
@@ -168,7 +168,7 @@ const levelData = [
 
 **5.2 Level-Icon hinzufügen**
 
-1. Füge eine PNG-Datei für das Level-Icon hinzu: `public/icons/[icon-name].png`
+1. Füge eine PNG-Datei für das Level-Icon hinzu: `static/icons/[icon-name].png`
 2. Empfohlene Icon-Größe: 256x256px oder größer
 3. Das Icon sollte transparent sein für beste Darstellung
 
