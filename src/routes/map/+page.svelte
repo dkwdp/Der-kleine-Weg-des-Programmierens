@@ -142,43 +142,37 @@
 		updateMascot('think', `${bonusLevel.name} ${hoverMessage}`);
 	}
 
-	// Path Linien
-	function createPathLines() {
-		let pathLines = [];
-		for (let i = 0; i < levelData.length - 1; i++) {
-			const currentLevel = levelData[i];
-			const nextLevel = levelData[i + 1];
-			
-			pathLines.push({
-				x1: currentLevel.x,
-				y1: currentLevel.y,
-				x2: nextLevel.x,
-				y2: nextLevel.y,
-				id: `path-${currentLevel.id}-${nextLevel.id}`
-			});
-		}
-		return pathLines;
+	// automatische Path Lines zwischen den Leveln
+	const pathLines = [];
+	for (let i = 0; i < levelData.length - 1; i++) {
+		pathLines.push({
+			x1: levelData[i].x, 	// aktuelles Level
+			y1: levelData[i].y,
+			x2: levelData[i + 1].x, // Nächstes Level
+			y2: levelData[i + 1].y
+		});
 	}
 
-	const pathLines = createPathLines();
-
-	// Icons
+	// Icons Fall Back System: error
 	function handleIconError(levelId) {
 		iconLoadStates[levelId] = false;
 		iconLoadStates = { ...iconLoadStates };
 	}
 
+	// Icons Fall Back System: success
 	function handleIconLoad(levelId) {
 		iconLoadStates[levelId] = true;
 		iconLoadStates = { ...iconLoadStates }; 
 	}
 	
 	onMount(() => {
+		// Mascot Setup
 		const welcomeMsg = getWelcomeMessage();
 		emotion = 'neutral';
 		message = welcomeMsg;
 		resetInactivityTimer();
 
+		
 		setTimeout(() => {
 			let targetLevel;
 			
