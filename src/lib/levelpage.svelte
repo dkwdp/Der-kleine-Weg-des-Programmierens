@@ -12,7 +12,6 @@
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
 
-  // diese Prop wird von der Page übergeben
   export let levelIndex;
 
   let currentLevel;
@@ -85,16 +84,15 @@
       <p>{currentLevel.hints[$outputID]}</p>
     {/if}
 
-<div>
-  {#if $outputID > 0}
-    <button on:click={previousTask}>Zurück</button>
-  {/if}
+    <div>
+      {#if $outputID > 0}
+        <button on:click={previousTask}>Zurück</button>
+      {/if}
 
-  {#if $solvedLevel && $outputID + 1 < currentLevel.description.length && unlockedTasks[$outputID + 1]}
-    <button on:click={nextTask}>Weiter</button>
-  {/if}
-</div>
-
+      {#if $solvedLevel && $outputID + 1 < currentLevel.description.length && unlockedTasks[$outputID + 1]}
+        <button on:click={nextTask} class="blink">Weiter</button>
+      {/if}
+    </div>
   {/if}
 </main>
 
@@ -103,9 +101,31 @@
     padding: 20px;
     text-align: center;
   }
+
   button {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    transition: all 0.3s ease;
+  }
+
+  @keyframes blink {
+    0%, 100% {
+      filter: brightness(1);
+      transform: scale(1);
+    }
+    50% {
+      filter: brightness(1.3);
+      transform: scale(1.05);
+    }
+  }
+
+  .blink {
+    animation: blink 1s infinite ease-in-out;
   }
 </style>
