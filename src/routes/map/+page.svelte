@@ -197,17 +197,19 @@
 	<div class="map-container">
 		<img src="/map.png" alt="Adventure Map" class="map-image" />
 		
+		
+
+		<div class="map-header-overlay">
+			<h1>Willkommen im Coder-Dojo Abenteuerpfad!</h1>
+		</div>
+
 		<!-- Schnee-Animation -->
 		<div class="snowflakes" aria-hidden="true">
-			{#each Array(15) as _, i}
+			{#each Array(25) as _, i}
 				<div class="snowflake">
 					{['❅', '❆', '❄', '❅', '❆'][i % 5]}
 				</div>
 			{/each}
-		</div>
-		
-		<div class="map-header-overlay">
-			<h1>Willkommen im Coder-Dojo Abenteuerpfad!</h1>
 		</div>
 
 		<!-- Progress Widget -->
@@ -315,32 +317,53 @@
 	
 	.map-container { 
 		position: relative; 
+		user-select: none;
+		overflow: hidden;
+    	min-height: 100vh;
 	}
 	
 	.map-image { 
 		width: 100%; 
 		display: block; 
 	}
-	
+		
 	.map-header-overlay { 
-		position: absolute; 
-		top: 30px; left: 50%; 
-		transform: translateX(-50%); 
+		position: absolute;
+		top: 40px;
+		left: 22%; 
 		text-align: center; 
-		backdrop-filter: blur(8px); 
-		border-radius: 20px;
-		padding: 1.5rem 2.5rem; 
-		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.05); 
-		z-index: 1; 
+		backdrop-filter: blur(5px); 
+		border: 2px solid rgba(255, 255, 255, 0.2); 
+		border-radius: 25px; 
+		padding: 0.8rem 2rem; 
+		z-index: 2;
 	}
 
 	.map-header-overlay h1 { 
-		font-size: clamp(1.5rem, 3.5vw, 2.2rem); 
-		color: #2c3e50; 
+		font-size: clamp(1.8rem, 4vw, 2.8rem); 
+		background: linear-gradient(
+			45deg,
+			#ffffff 0%,        
+			#cccbcb 25%,       
+			#a5a4a4 50%,       
+			#cecdcd 75%,       
+			#ffffff 100%       
+		);
+		background-size: 200% 200%;
+		background-clip: text;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
 		margin: 0; 
 		font-weight: 700; 
-		letter-spacing: -0.02em; 
-		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+		letter-spacing: -0.03em; 
+		user-select: text;
+		animation: titleShine 8s ease-in-out infinite;
+		-webkit-text-stroke: 1px rgba(0, 0, 0, 0.3);
+	}
+
+	@keyframes titleShine {
+		0%, 100% { background-position: 0% 50%; }
+		50% { background-position: 100% 50%; }
 	}
 
 	.progress-widget { 
@@ -355,6 +378,7 @@
 		flex-direction: column; 
 		gap: 0.5rem; 
 		z-index: 2; 
+		pointer-events: none;
 	}
 
 	.progress-text { 
@@ -362,6 +386,7 @@
 		color: #000000; 
 		text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8); 
 		background: rgba(255, 255, 255, 0.3); 
+		user-select: text;
 	}
 	
 	.bonus-progress-text { 
@@ -369,6 +394,7 @@
 		color: #d4af37; 
 		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); 
 		background: rgba(212, 175, 55, 0.25); 
+		user-select: text;
 	}
 
 	.progress-text, .bonus-progress-text { 
@@ -389,8 +415,10 @@
 
 	.progress-fill { 
 		height: 100%; 
-		background: linear-gradient(90deg, rgb(84, 187, 43) 0%, #4ebd7c 100%); 
-		border-radius: 4px; 
+		background: linear-gradient(90deg, rgb(84, 187, 43) 0%, #4ebd7c 50%, #3ea76b 100%); /* ← VERBESSERT: Mehr Farben */
+		border-radius: 4px;
+		transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* ← NEU: Smooth Transition */
+		box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3); /* ← NEU: Innerer Glanz */
 	}
 
 	.path-lines-svg { 
@@ -534,10 +562,41 @@
 		50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.2); } 
 	}
 	
+
+	.home-button { 
+		position: fixed; 
+		bottom: 40px; 
+		left: 40px; 
+		width: 225px; 
+		color: white; 
+		border-radius: 25px; 
+		font-size: 16px; 
+		font-weight: 600; 
+		background: rgba(255, 255, 255, 0.2); 
+		border: 3px solid rgba(255, 255, 255, 0.2); 
+		padding: 0.6rem; 
+		z-index: 2; 
+		transition: var(--transition-smooth);
+		backdrop-filter: blur(5px);
+	}
+	
+	.home-button:hover { 
+		transform: scale(1.08); 
+		background: rgba(255, 255, 255, 0.3); 
+		border-color: rgba(255, 255, 255, 0.4); 
+	}
+
+	.home-button:active { 
+		transform: scale(1.12);
+		transition: all 0.1s ease;
+	}
+
+	
 	.snowflake {
 		position: absolute;
 		color: #ffffff;
 		z-index: 1;
+		pointer-events: none;
 	}
 
 	/* Kurzlebige Schneeflocken */
@@ -563,132 +622,179 @@
 		75% { transform: translateX(40px) rotate(90deg); }
 	}
 
-	/* Schneeflocken mit verschiedenen Lebenszeiten und negativen Delays */
+	/* Schneeflocken mit verschiedenen Lebenszeiten und Delays */
 	.snowflake:nth-child(1) { 
-		left: 8%; 
-		font-size: 2em; 
-		animation: snowfall-short 35s linear infinite, snowshake 6s ease-in-out infinite;
-		animation-delay: -15s; 
-	}
-
-	.snowflake:nth-child(2) { 
-		left: 23%; 
-		font-size: 1.3em; 
-		animation: snowfall-long 15s linear infinite , snowshake 16s ease-in-out infinite;
-	}
-
-	.snowflake:nth-child(3) { 
-		left: 67%; 
-		font-size: 1em; 
-		animation: snowfall-short 25s linear infinite, snowshake 12s ease-in-out infinite;
-		animation-delay: -1s; 
-	}
-
-	.snowflake:nth-child(4) { 
-		left: 41%; 
-		font-size: 1.1em; 
-		animation: snowfall-long 35s linear infinite, snowshake 14s ease-in-out infinite;
-		animation-delay: -2s; 
-	}
-
-	.snowflake:nth-child(5) { 
-		left: 89%; 
-		font-size: 2em; 
-		animation: snowfall-short 55s linear infinite, snowshake 8s ease-in-out infinite;
+		left: 12%; 
+		font-size: 0.8em; 
+		animation: snowfall-long 28s linear infinite, snowshake 9s ease-in-out infinite;
 		animation-delay: -3s; 
 	}
 
-	.snowflake:nth-child(6) { 
-		left: 15%; 
-		font-size: 1.4em; 
-		animation: snowfall-long 35s linear infinite, snowshake 6s ease-in-out infinite;
-		animation-delay: -4s; 
-	}
-
-	.snowflake:nth-child(7) { 
-		left: 56%; 
-		font-size: 1.4em; 
-		animation: snowfall-short 25s linear infinite, snowshake 10s ease-in-out infinite;
-		animation-delay: -5s; 
-	}
-
-	.snowflake:nth-child(8) { 
-		left: 78%; 
-		font-size: 1.2em; 
-		animation: snowfall-long 35s linear infinite, snowshake 14s ease-in-out infinite;
-		animation-delay: -6s; 
-	}
-
-	.snowflake:nth-child(9) { 
-		left: 34%; 
-		font-size: 1.3em; 
-		animation: snowfall-short 45s linear infinite, snowshake 6s ease-in-out infinite;
-		animation-delay: -7s; 
-	}
-
-	.snowflake:nth-child(10) { 
-		left: 92%; 
-		font-size: 1.7em; 
-		animation: snowfall-long 35s linear infinite, snowshake 6s ease-in-out infinite;
+	.snowflake:nth-child(2) { 
+		left: 67%; 
+		font-size: 1.5em; 
+		animation: snowfall-short 22s linear infinite, snowshake 12s ease-in-out infinite;
 		animation-delay: -8s; 
 	}
 
-	.snowflake:nth-child(11) { 
-		left: 75%; 
-		font-size: 1.5em; 
-		animation: snowfall-short 15s linear infinite, snowshake 7s ease-in-out infinite;
+	.snowflake:nth-child(3) { 
+		left: 89%; 
+		font-size: 0.6em; 
+		animation: snowfall-long 35s linear infinite, snowshake 7s ease-in-out infinite;
+		animation-delay: -15s; 
+	}
+
+	.snowflake:nth-child(4) { 
+		left: 34%; 
+		font-size: 1.2em; 
+		animation: snowfall-short 26s linear infinite, snowshake 11s ease-in-out infinite;
+		animation-delay: -1s; 
+	}
+
+	.snowflake:nth-child(5) { 
+		left: 78%; 
+		font-size: 2.0em; 
+		animation: snowfall-long 31s linear infinite, snowshake 8s ease-in-out infinite;
+		animation-delay: -12s; 
+	}
+
+	.snowflake:nth-child(6) { 
+		left: 13%; 
+		font-size: 0.9em; 
+		animation: snowfall-short 24s linear infinite, snowshake 10s ease-in-out infinite;
+		animation-delay: -6s; 
+	}
+
+	.snowflake:nth-child(7) { 
+		left: 52%; 
+		font-size: 1.8em; 
+		animation: snowfall-long 29s linear infinite, snowshake 13s ease-in-out infinite;
+		animation-delay: -18s; 
+	}
+
+	.snowflake:nth-child(8) { 
+		left: 90%; 
+		font-size: 0.7em; 
+		animation: snowfall-short 33s linear infinite, snowshake 6s ease-in-out infinite;
+		animation-delay: -4s; 
+	}
+
+	.snowflake:nth-child(9) { 
+		left: 19%; 
+		font-size: 1.4em; 
+		animation: snowfall-long 27s linear infinite, snowshake 14s ease-in-out infinite;
 		animation-delay: -9s; 
 	}
 
+	.snowflake:nth-child(10) { 
+		left: 50%; 
+		font-size: 1.1em; 
+		animation: snowfall-short 25s linear infinite, snowshake 8s ease-in-out infinite;
+		animation-delay: -21s; 
+	}
+
+	.snowflake:nth-child(11) { 
+		left: 43%; 
+		font-size: 0.5em; 
+		animation: snowfall-long 32s linear infinite, snowshake 11s ease-in-out infinite;
+		animation-delay: -7s; 
+	}
+
 	.snowflake:nth-child(12) { 
-		left: 73%; 
-		font-size: 2em; 
-		animation: snowfall-long 35s linear infinite, snowshake 6s ease-in-out infinite;
-		animation-delay: -10s; 
+		left: 86%; 
+		font-size: 1.7em; 
+		animation: snowfall-short 21s linear infinite, snowshake 9s ease-in-out infinite;
+		animation-delay: -14s; 
 	}
 
 	.snowflake:nth-child(13) { 
-		left: 45%; 
-		font-size: 1.0em; 
-		animation: snowfall-short 35s linear infinite, snowshake 6s ease-in-out infinite;
-		animation-delay: -11s; 
+		left: 28%; 
+		font-size: 1.3em; 
+		animation: snowfall-long 81s linear infinite, snowshake 7s ease-in-out infinite;
+		animation-delay: -2s; 
 	}
 
 	.snowflake:nth-child(14) { 
 		left: 61%; 
-		font-size: 0.5em; 
-		animation: snowfall-long 25s linear infinite, snowshake 6s ease-in-out infinite;
-		animation-delay: -12s; 
+		font-size: 0.8em; 
+		animation: snowfall-short 34s linear infinite, snowshake 12s ease-in-out infinite;
+		animation-delay: -16s; 
 	}
 
 	.snowflake:nth-child(15) { 
-		left: 27%; 
-		font-size: 2.2em; 
-		animation: snowfall-short 35s linear infinite, snowshake 6s ease-in-out infinite;
+		left: 8%; 
+		font-size: 1.6em; 
+		animation: snowfall-long 26s linear infinite, snowshake 10s ease-in-out infinite;
+		animation-delay: -5s; 
+	}
+
+	.snowflake:nth-child(16) { 
+		left: 76%; 
+		font-size: 0.9em; 
+		animation: snowfall-short 69s linear infinite, snowshake 8s ease-in-out infinite;
+		animation-delay: -11s; 
+	}
+
+	.snowflake:nth-child(17) { 
+		left: 15%; 
+		font-size: 1.9em; 
+		animation: snowfall-long 23s linear infinite, snowshake 13s ease-in-out infinite;
+		animation-delay: -19s; 
+	}
+
+	.snowflake:nth-child(18) { 
+		left: 58%; 
+		font-size: 0.6em; 
+		animation: snowfall-short 31s linear infinite, snowshake 6s ease-in-out infinite;
+		animation-delay: -3s; 
+	}
+
+	.snowflake:nth-child(19) { 
+		left: 92%; 
+		font-size: 1.5em; 
+		animation: snowfall-long 68s linear infinite, snowshake 11s ease-in-out infinite;
 		animation-delay: -13s; 
 	}
 
-	.home-button { 
-		position: fixed; 
-		bottom: 40px; 
-		left: 40px; 
-		width: 225px; 
-		color: white; 
-		border-radius: 25px; 
-		font-size: 16px; 
-		font-weight: 600; 
-		background: rgba(255, 255, 255, 0.2); 
-		border: 3px solid rgba(255, 255, 255, 0.2); 
-		padding: 0.6rem; 
-		z-index: 2; 
-		transition: var(--transition-smooth); 
-	}
-	
-	.home-button:hover { 
-		transform: translate(10%, 20%) scale(1.05); 
+	.snowflake:nth-child(20) { 
+		left: 37%; 
+		font-size: 0.7em; 
+		animation: snowfall-short 29s linear infinite, snowshake 9s ease-in-out infinite;
+		animation-delay: -6s; 
 	}
 
-	.home-button:active { 
-		transform: translate(10%, 20%) scale(1.20); 
+	.snowflake:nth-child(21) { 
+		left: 83%; 
+		font-size: 1.8em; 
+		animation: snowfall-long 70s linear infinite, snowshake 14s ease-in-out infinite;
+		animation-delay: -17s; 
+	}
+
+	.snowflake:nth-child(22) { 
+		left: 22%; 
+		font-size: 1.0em; 
+		animation: snowfall-short 33s linear infinite, snowshake 7s ease-in-out infinite;
+		animation-delay: -4s; 
+	}
+
+	.snowflake:nth-child(23) { 
+		left: 65%; 
+		font-size: 1.4em; 
+		animation: snowfall-long 24s linear infinite, snowshake 10s ease-in-out infinite;
+		animation-delay: -20s; 
+	}
+
+	.snowflake:nth-child(24) { 
+		left: 49%; 
+		font-size: 0.8em; 
+		animation: snowfall-short 90s linear infinite, snowshake 19s ease-in-out infinite;
+		animation-delay: -8s; 
+	}
+
+	.snowflake:nth-child(25) { 
+		left: 11%; 
+		font-size: 1.6em; 
+		animation: snowfall-long 26s linear infinite, snowshake 8s ease-in-out infinite;
+		animation-delay: -10s; 
 	}
 </style>
