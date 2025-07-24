@@ -195,18 +195,19 @@
     feedback = '';
     const code = get(myVariable);
 
-     const prompt = `Hier ist sehr simpler JavaScript-Code zwischen zwei Sternchen. Alles Notwendige für den Code sei gegeben:
+     const prompt = `role: system, content: Hier ist sehr simpler JavaScript-Code zwischen zwei Sternchen. Alles Notwendige für den Code sei gegeben:
 
 *
 ${code}
 *
 
-Ignoriere die Sternchen. ANTWORTE KURZ! **ANTWORTE AUF DEUTSCH** Erkläre auf nette und kinderfreundliche Art **einen** Fehler im Code – **ohne die Lösung zu geben**.
-Antworte **sehr kurz** auf **Deutsch**. Der erwartete Output ist '${levels[$levelID].expectedOutput[$outputID]}'.
-Beachte Groß- und Kleinschreibung sowie Zeichensetzung.`;
+Ignoriere die Sternchen. ANTWORTE KURZ!
+Vergleich den Code mit dem erwarteten Output: '${levels[$levelID].expectedOutput[$outputID]}' Warum ist Code falsch?.
+Beachte Groß- und Kleinschreibung sowie Zeichensetzung. ANTWORTE SO SIMPLE WIE MÖGLICH IN KINDERFREUNDLICHER SPRACHE! ANTWORTE AUF DEUTSCH!
+**ANTWORTE KURZ** VERLGEICHE DEN ERWARTETET OUTPUT MIT DEM OUTPUT DES CODES! GIB KEINE CODE-ANTWORT!`;
 
     try {
-      const res = await fetch('http://141.45.153.208:5000/analyze', {
+      const res = await fetch('https://dkwdp.f4.htw-berlin.de/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt })
