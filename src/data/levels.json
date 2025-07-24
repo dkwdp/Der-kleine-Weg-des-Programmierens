@@ -4,12 +4,12 @@
         "title": [
             "Einführung",
             "'Hello World!'",
-            "Einführung Rechnen mit Zahlen"
+            "Addition von Zahlen"
         ],
         "description": [
             "Lass uns zuerst mit einer kleinen Einführung in deine Lernumgebung beginnen. Hier, wo dieser Text steht, findest du die Aufgabenstellungen. Auf der rechten Seite siehst du deinen Code-Editor. Dort wirst du für alle Level die Aufgaben lösen können.",
             "'Hello World!' ist für viele Programmierer die erste Aufgabe gewesen. Das Ziel ist es, dass du am Ende die Worte 'Hello World!' zurückbekommst. Im Code-Editor siehst du 'console.log(' ')'. Das musst du dir so vorstellen, dass alles, was in diesen Klammern steht, dir am Ende vom Computer zurückgegeben wird. Probiere es aus!",
-            "Schreib eine Rechnung mit zwei Zahlen, welche als Ergebnis vier ausgibt"
+            "Jetzt probieren wir aus, wie der Computer für uns Zahlen addiert! Schreibe zwei Zahlen und addiere diese miteinander, sodass am Ende das Ergebnis 4 herauskommt."
         ],
         "expectedOutput": [
             "undefined",
@@ -108,7 +108,7 @@
             "Hier siehst du Beispiel-Lösungen zu den wichtigsten Rechenarten. Schau sie dir in Ruhe an und probiere aus, wie sich das Ergebnis verändert, wenn du die Zahlen änderst.",
             "Probier mal von der Zahl 10 die 4 abzuziehen und gib das Ergebnis in der Konsole aus.",
             "Am Computer benutzt man nicht den herkömmlichen Punkt um eine Zahl wie fünf mit einer anderen mal zu nehmen. Stattdessen nimmt man das * Symbol. Multiplizier 7 mal 3 in der Konsole.",
-            "Auch hier wird am Computer ein anderes Symbol benutzt. In diesem Fall ist es das / Symbol. Teile 12 durch 3 und gib das Ergebnis wieder in der Konsole aus.",
+            "Auch hier wird am Computer ein anderes Symbol benutzt. In diesem Fall ist es das / Symbol. Teile 12 durch 4 und gib das Ergebnis wieder in der Konsole aus.",
             "Um zu schauen ob eine Zahl größer oder kleiner als eine andere Zahl ist, benutzt man die < und > Symbole. Probier mal aus, ob 10 größer als 2 ist.",
             "Kannst du dich noch an Level zwei mit den Variablen erinnern? Mit Variablen rechnen ist sehr interessant und wichtig. Ich hab dir mal ein Beispiel vorbereitet. Teste daran deine gelernten neuen Symbole so wie du willst."
         ],
@@ -160,7 +160,7 @@
         ],
         "initialCode": [
             "let einkaufsliste = ['Schokolade', 'Kerzen', 'Getränke']\nconsole.log(einkaufsliste)\nconsole.log(einkaufsliste.includes('Kerzen'))\nconsole.log(einkaufsliste.length)",
-            "let einkaufsliste = ['Buch', 'Stift', 'Radiergummi','//Hier kommt der fehlende Teil rein bitte :)' ]\nconsole.log(einkaufsliste)",
+            "let einkaufsliste = ['Buch', 'Stift', 'Radiergummi','Hier kommt der fehlende Teil rein bitte' ]\nconsole.log(einkaufsliste)",
             "let einkaufsliste = ['Buch', 'Stift', 'Radiergummi','Bananen' ]\nconsole.log(einkaufsliste.includes('Milchpackung'))",
             "let einkaufsliste = ['Buch', 'Stift', 'Radiergummi','Bananen' ,'VBucks', 'Cornflakes', 'Milch' ]\nconsole.log(einkaufsliste.) //Hinter dem Punkt in der Klammer muss der neue length Befehl hin"
         ],
@@ -206,8 +206,38 @@
             "Falls du nicht weiterkommst kannst du dir die Lösung auf der ersten Seite anschauen. Beim neuen else if Block wollen wir gucken ob die Variable zahl gleich fünf ist. "
         ]
     },
-    {
+     {
+    
         "id": 7,
+        "title": [
+                    "Wiederholung von if-else Blöcken",
+                    "Brauchst du einen Regenschirm? Ergänz den else-Block.",
+                    "Was machen wir bei Sonnenschein?"
+        ],
+        "description": [
+                    "If-Else Blöcke können schwierig sein. Deshalb schauen wir uns das nochmal an um unser Wissen zu stärken. Hier siehst du wieder einen vollständigen if-else Block, welcher Entscheidet ob du einen Regenschirm mitnehmen musst oder nicht. ",
+                    "Probier nun den else-Block so zu ergänzen, dass 'Du brauchst keinen Regenschirm' ausgegeben wird. ",
+                    "Ergänze nun die if-Schleife so, dass wenn es sonnig ist 'Nimm Sonnencreme mit!' ausgegeben wird, sonst muss 'Jacke anziehen!' ausgegeben werden."
+        ],
+        "expectedOutput": [
+                    "Nimm deinen Regenschirm mit!",
+                    "Du brauchst keinen Regenschirm",
+                    "Nimm Sonnencreme mit!"
+        ],
+        "initialCode": [
+                    "let regnet = true;\nif (regnet) {\n  console.log('Nimm deinen Regenschirm mit!');\n} else {\n  console.log('Du brauchst keinen Schirm.');\n}",
+                    "let regnet = false;\nif (regnet) {\n  console.log('Nimm deinen Regenschirm mit!');\n} else {\n  // Ergänze hier den fehlenden Code!\n}",
+                    "let sonnig = true;\nif (sonnig) {\n  // Ergänze hier den fehlenden Code!\n} else {\n  console.log('Jacke anziehen!');\n}"
+        ],
+        "type":     "calculation",
+        "hints": [
+                    "Falls du im weiteren Level Hilfe brauchst kannst du immer auf diesen Punkt zurückkommen :)",
+                    "Schreib im else-Block ein console.log und gib den richtigen Text ein",
+                    "Wenn du nicht weiterkommst kannst du auf mit dem Zurück-Button dir die funktionierenden Blöcke anschauen."
+        ]
+    },
+    {
+        "id": 8,
         "title": [
             "So funktionieren Schleifen (aber nicht die Schuhschleifen!)",
             "Zähle von 0 bis 8 mit deiner eigenen while-Schleife",
@@ -241,7 +271,41 @@
         ]
     },
     {
-        "id": 8,
+        "id": 9,
+        "title": [
+                    "Wiederholung zu While-Schleifen",
+                    "Zähle von 2 bis 5 und ergänze den Endwert",
+                    "Wiederholung zu den for-Schleifen",
+                    "Schreibe deine eigene for-Schleife, welche von 2 bis 6 zählt in zweier Schritten. "
+        ],
+        "description": [
+                    "Wie du weißt sind While-Schleifen wie kleine Uhren die so lange laufen, bis ein Ziel erreicht ist. Schau dir diese vollständige Schleife gut an, wir werden gleich probieren diese neu zu bauen. ",
+                    "Hier soll von 2 bis 5 gezählt werden. Ergänze den Endwert so, dass die Schleife bei 5 aufhört.",
+                    "Die for-Schleife ist nun vollständig abgebildet. Schau dir an wie sie funktioniert und wenn du bereit bist gehe zum nächsten Level.", 
+                    "Schreibe eine for-Schleife, welche bei 2 startet und bei 6 (also inklusive 6) endet und immer in zweier Schritten hochzählt. Gib danach die Zahlen in der Konsole aus."
+        ],
+        "expectedOutput": [
+                    "0\n1\n2\n3",
+                    "2\n3\n4\n5",
+                    "1\n2\n3\n4",
+                    "2\n4\n6"
+        ],
+        "initialCode": [
+                    "let zahl = 0;\nwhile (zahl <= 3) {\n  console.log(zahl);\n  zahl++;\n}",
+                    "let zahl = 2;\nwhile (zahl <= ) {\n  console.log(zahl);\n  zahl++;\n}",
+                    "for (let zahl = 1; zahl <= 4; zahl++) {\n  console.log(zahl);\n}",
+                    "for (let zahl  ; zahl <= ; zahl  ) { \n  console.log(zahl);\n}"
+        ],
+        "type":     "calculation",
+        "hints": [
+                    "Du kannst dir das Beispiel immer wieder anschauen, wenn du nicht weiterweißt.",
+                    "Die Schleife soll stoppen, wenn die Zahl größer als 5 ist. Mit dem Zurück-Button kannst du dir eine funktionierende while-Schleife anschauen.",
+                    "Der Aufbau der Schleife sieht zwar etwas kompliziert aus aber so kann man sich das ganz einfach einprägen. Erst der Startwert, dann Endwert und dann die Schrittweite.",
+                    "Denk dran; eine for Schleife hat immer einen Startwert,Endwert und eine angegebene Schrittweite. Um die Schrittweite auf zwei zu setzen kannst du Schrittweise += 2 schreiben."
+        ]
+    },
+    {
+        "id": 10,
         "title": [
             "Anfänge mit Funktionen - Was ist das?",
             "So funktionieren Funktionen",
@@ -275,62 +339,22 @@
         ]
     },
     {
-    
-        "id": 9,
+        "id": 100,
         "title": [
-                    "Was ist if/else?",
-                    "Mini-Level: Alter prüfen",
-                    "Mini-Level: Farben vergleichen"
+            "Bonus Zeichen Level"
         ],
         "description": [
-                    "Stell dir vor, dein Computer ist ein kleiner Roboter, der gerne Fragen beantwortet. Du sagst ihm: „Wenn es draußen regnet, ziehe ich meine Regenjacke an. Sonst ziehe ich mein T-Shirt an.“ Das ist ein Beispiel für eine Entscheidung. Dein Roboter prüft, ob es regnet – das ist das „if“ (Wenn). Wenn es wirklich regnet, macht er das Erste. Wenn nicht, macht er das Zweite – das ist das „else“ (Sonst).",
-                    "Ist jemand alt genug fürs Kino? Ergänze die Bedingung so, dass die Ausgabe stimmt.",
-                    "Lerne, wie du Farben vergleichst."
-        ],
-        "expectedOutput": [
-                    "Ich ziehe meine Regenjacke an",
-                    "Du bist erwachsen!",
-                    "Cool!"
+            "Das ist ein Bonus Level, indem du Zeichnen kannst, Probiere dich einfach aus"
         ],
         "initialCode": [
-                    "let regen = true;\nif (regen) {\n  console.log(\"Ich ziehe meine Regenjacke an\");\n} else {\n  console.log(\"Ich ziehe mein T-Shirt an\");\n}",
-                    "let alter = 15;\nif (alter >= 18) {\n  console.log('Du bist erwachsen!');\n} else {\n  console.log('Du bist noch ein Kind');\n}",
-                    "let farbe = 'rot';\nif (farbe === 'blau') {\n  console.log('Cool!');\n} else {\n  console.log('Hmm');\n}"
+            "background('blue');\ncircle(150,150,100);"
         ],
-        "type":     "calculation",
+        "type": "drawing",
         "hints": [
-                    "Was bedeutet das?\nif heißt: „Wenn etwas stimmt“.\nelse heißt: „Wenn es nicht stimmt, mach etwas anderes",
-                    "Beachte Groß- und Kleinschreibung bei Strings!",
-                    "Ein if-else-Zweig braucht immer eine Bedingung in Klammern"
-        ]
-    },
-    {
-        "id": 10,
-        "title": [
-                    "Was ist eine for-Schleife?",
-                    "Mini-Level: Zahlen zählen",
-                    "Mini-Level: Quadratzahlen"
-        ],
-        "description": [
-                    "Eine for Schleife wiederholt etwas. Beispiel: for (let i = 0; i < 5; i++) { console.log(i); }",
-                    "Zähle die Zahlen von 1 bis 4 und gib die Zahlen aus.",
-                    "Gib die Quadratzahlen von 1 bis 5 aus."
-        ],
-        "expectedOutput": [
-                    "0\n1\n2\n3\n4",
-                    "1\n2\n3\n4",
-                    "1\n4\n9\n16\n25"
-        ],
-        "initialCode": [
-                    "for (let i = 0; i < 5; i++) {\n  console.log(i);\n}",
-                    "for (let i = 0; i <= 0; i++) {\n  console.log();\n}",
-                    "for (let i = 0; i <= 0; i++) {\n  console.log();\n}"
-        ],
-        "type":     "calculation",
-        "hints": [
-                    "Die Schleife läuft mit i = 0 bis i < 5.",
-                    "Nutze console.log, um jede Zahl zu drucken.",
-                    "Multipliziere i mit sich selbst: i * i."
+            "Die Koordinaten beginnen oben links bei (0,0)",
+            "Der Canvas ist 400px breit und 400px hoch ",
+            "Verfügbare Farben: 'red', 'blue', 'green', 'yellow', 'purple', etc."
         ]
     }
+
 ]
