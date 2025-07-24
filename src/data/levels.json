@@ -56,7 +56,7 @@
             "Drück auf den Ausführen Knopf und finde heraus was passiert.",
             "Falls du nicht weiter kommst, drück den Zurück-Button und schau dir nochmal die Lösung an :).",
             "Mit dem let Befehl kannst du jeden Wert speichern den du willst. In unserem Fall brauchen wir die fünf .",
-            "Was wir jetzt versuchen ist das gleiche wie beim letzten Level. Wir wollen nur die zahl zu einer spasszahl ändern und ihr einen anderen Wert geben."
+            "Was wir jetzt versuchen ist das Gleiche wie beim letzten Level. Wir wollen nur die zahl zu einer spasszahl ändern und ihr einen anderen Wert geben."
         ]
     },
     {
@@ -65,7 +65,7 @@
             "Datentypen entdecken"
         ],
         "description": [
-            "Zahlen hast du schon kennengelernt! Aber Computer können auch Texte und Ja/Nein-Werte speichern. Für jede Sorte von diesen Infos gibt es eine eigene Kiste, welche das Speichert. Das nennen wir Datentypen. Schau dir ruhig das Beispiel an!",
+                "Zahlen hast du schon kennengelernt! Aber Computer können auch Texte und Ja/Nein-Werte speichern. Für jede Sorte von diesen Infos gibt es eine eigene Kiste, die das Speichert. Das nennen wir Datentypen. Schau dir ruhig das Beispiel an!",
             "Speichere in einer Variable den Namen unseres Maskottchens und gib ihn aus. (Hinweis: Der Pinguin heißt Pinu!)",
             "Jetzt speichern wir, ob etwas wahr ist. Speichere in einer Variable namens istSonnig den Wert true (ohne Anführungszeichen!) und gib sie in der Konsole aus.",
             "Kommazahlen funktionieren auch. Lege eine Variable temperatur an und gib z.B. 22.5 als Wert aus.",
@@ -150,7 +150,7 @@
             "In diesem Level lernst du eine Liste, wie zum Beispiel eine Einkaufsliste, zu erstellen. Außerdem benutzt du neue Funktionen, um zu schauen wie viele Sachen auf deiner Liste drauf sind und ob manche Sachen überhaupt drauf sind.",
             "Ich hab dir mal meine Einkaufsliste vorbereitet. Leider hab ich vergessen meine Bananen einzutragen. Kannst du das für mich machen?",
             "Die Liste sieht schonmal sehr gut aus. Nun wollen wir mit dem includes Befehl mal schauen ob die Bananen auch wirklich auf der Liste stehen. Leider hab ich in meinem jetzigen Code nur nachgeschaut ob die Milchpackung auch wirklich drin steht. Kannst du das für mich zu Bananen ändern?",
-            "Wow diese Liste ist ja viel länger als ich dachte. Ich bin zu Faul das nachzuzählen. Kannst du mir die Länge der Liste ausgeben? Dafür gibts einen coolen Befehl namens length. Den fügen wir genau so wie den includes Befehl hinten an die Konsole ran."
+            "Wow diese Liste ist ja viel länger als ich dachte. Ich bin zu faul das nachzuzählen. Kannst du mir die Länge der Liste ausgeben? Dafür gibts einen coolen Befehl namens length. Den fügen wir genau so wie den includes Befehl hinten an die Konsole ran."
         ],
         "expectedOutput": [
             "Schokolade,Kerzen,Getränke\ntrue\n3",
@@ -344,7 +344,7 @@
             "Bonus Zeichen Level"
         ],
         "description": [
-            "Das ist ein Bonus Level, indem du Zeichnen kannst, Probiere dich einfach aus"
+            "Das ist ein Bonus Level, in dem du Zeichnen kannst, Probiere dich einfach aus"
         ],
         "initialCode": [
             "background('blue');\ncircle(150,150,100);"
