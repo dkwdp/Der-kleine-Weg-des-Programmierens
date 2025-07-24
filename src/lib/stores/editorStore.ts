@@ -1,5 +1,7 @@
 import { writable } from 'svelte/store';
 import { browser } from '$app/environment';
+import levels from '../../data/levels.json';
+
 
 // Stores
 export const myVariable = writable("# Initial code");
@@ -8,6 +10,8 @@ export const solvedLevel = writable(false);
 export const levelID = writable(0);
 export const outputID = writable(0);
 export const showOutput = writable(false)
+export const max_levels = levels.length;
+export const level_range = Array.from({length: max_levels}, (_, i) => i + 1);
 
 // Level-System Stores
 export const unlockedLevels = writable([1]); 
@@ -17,10 +21,11 @@ export const bonusLevelsUnlocked = writable([]);
 
 // Bonus-Level Freischaltungs-Bedingungen
 const bonusUnlockRequirements = {
-    1: 4,
-    2: 7,   
-    3: 9,   
-    4: 10 
+    // wenn Level 7 fertig ist, zeigt sich Bonus Level 1 zwischen Level 7 und 8
+    1: 8,
+    // Beispiel für zweites Boni Level, dass sich nach dem 6. Level freischaltet 
+    // (Wichtig: Im map svelte Bonus Level hinzufügen)
+    // 2: 7, 
 };
 
 // localStorage nur im Browser verwenden
@@ -78,7 +83,7 @@ if (browser) {
 export function unlockNextLevel(currentLevel: number) {
     unlockedLevels.update(levels => {
         const nextLevel = currentLevel + 1;
-        if (nextLevel <= 10 && !levels.includes(nextLevel)) {
+        if (nextLevel <= max_levels && !levels.includes(nextLevel)) {
             const newLevels = [...levels, nextLevel];
             console.log(`Level ${nextLevel} freigeschaltet!`, newLevels);
             
@@ -92,7 +97,7 @@ export function unlockNextLevel(currentLevel: number) {
 
 export function unlockLevelsUpTo(targetLevel: number) {
     const levelsToUnlock = [];
-    for (let i = 1; i <= targetLevel && i <= 10; i++) {
+    for (let i = 1; i <= targetLevel && i <= max_levels; i++) {
         levelsToUnlock.push(i);
     }
     unlockedLevels.set(levelsToUnlock);

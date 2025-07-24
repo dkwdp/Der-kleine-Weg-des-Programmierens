@@ -1,18 +1,12 @@
 <script>
 	import { goto } from '$app/navigation';
-	import { gameMode, unlockedLevels, bonusLevelsUnlocked } from '$lib/stores/editorStore';
+	import { gameMode, unlockedLevels, bonusLevelsUnlocked, max_levels } from '$lib/stores/editorStore';
 	import { browser } from '$app/environment';
 	import { onMount, onDestroy } from 'svelte';
 	import { page } from '$app/stores';
 	import Mascot from '../mascot/Mascot.svelte';
-
-	// Mascot State Management
-	let emotion = 'neutral';
-	let message = 'Willkommen!';
-	let inactivityTimer;
-	let currentNeutralState = 'neutral';
 	
-	// Level-Daten (bestehend)
+	// Level-Daten
 	const levelData = [
 		{ id: 1, x: 60, y: 12, icon: 'polarbear', name: 'Polarbaer', size: 'medium' },
 		{ id: 2, x: 22, y: 22, icon: 'tent', name: 'Zelt', size: 'medium' },
@@ -27,76 +21,10 @@
 	];
 
 	const bonusLevelData = [
-		{ 
-			id: 1, 
-			x: 50, 
-			y: 42, 
-			icon: '⚙️', 
-			name: 'Bonus 1', 
-			description: 'Canvas-Programmierung',
-			unlockAfter: 3,
-			route: '/levels/bonusLevel/bonus1'
-		},
-		{ 
-			id: 2, 
-			x: 59, 
-			y: 65, 
-			icon: '⚙️', 
-			name: 'Bonus 2', 
-			description: 'Programmiere den Roboter',
-			unlockAfter: 6,
-			route: '/levels/bonusLevel/bonus2'
-		},
-		{ 
-			id: 3, 
-			x: 45, 
-			y: 87.5, 
-			icon: '⚙️', 
-			name: 'Bonus 3', 
-			description: 'For- und While-Schleifen meistern',
-			unlockAfter: 8,
-			route: '/levels/bonusLevel/bonus3'
-		},
-		{ 
-			id: 4, 
-			x: 55, 
-			y: 92.5, 
-			icon: '⚙️', 
-			name: 'Bonus 4', 
-			description: 'If/Else',
-			unlockAfter: 9,
-			route: '/levels/bonusLevel/bonus4'
-		}
+		{ id: 1, x: 33, y: 79, icon: '✨', name: 'Bonus 1', route: '/levels/bonusLevel/bonus1'},
 	];
 
-	let iconLoadStates = {};
-
-	function isLevelUnlocked(levelId) {
-		return $gameMode === 'free' || $unlockedLevels.includes(levelId);
-	}
-
-	function isBonusLevelUnlocked(bonusId) {
-    return $bonusLevelsUnlocked.includes(bonusId);
-}
-
-	// Maskottchen
-	function updateMascot(newEmotion, newMessage) {
-		emotion = newEmotion;
-		message = newMessage;
-		resetInactivityTimer();
-	}
-
-	function resetInactivityTimer() {
-		clearTimeout(inactivityTimer);
-		inactivityTimer = setTimeout(() => {
-			if (emotion === 'neutral' || emotion === 'neutral2') {
-				currentNeutralState = currentNeutralState === 'neutral' ? 'neutral2' : 'neutral';
-				updateMascot(currentNeutralState, getRandomIdleMessage());
-			}
-		}, 7000);
-	}
-
-	// Message Arrays
+	// Messages
 	const welcomeMessages = [
 		'Yo, wieder da! 🐧',
 		'Bock zu coden?',
@@ -112,7 +40,6 @@
 		'Die Level warten auf dich!',
 		'Watschel watschel... langweilig hier! 😴',
 		'Flossen bereit? Lass uns eintauchen!',
-		'Eis-kalte Coding-Skills kommen!',
 		'Rutsch ins Coden wie ein Pinguin! 🧊',
 		'Kein Stress, lass dir Zeit!',
 		'Watschel rüber und wähl ein Level!',
@@ -122,22 +49,47 @@
 	const hoverMessages = [
 		'braucht deine Skills!',
 		'sieht chill aus! 🧊',
-		'ist bereit für Fisch-Action! 🐟',
 		'braucht deine Pinguin-Power!',
-		'sieht eis-genial aus!',
-		'wartet auf die Rutschpartie!',
+		'sieht genial aus!',
+		'wartet auf Rutschpartie!',
 		'ist bereit!',
-		'braucht Pinguin-Magie! ✨'
+		'braucht uns! ✨'
 	];
 
 	const bonusHoverMessages = [
 		'ist ein geheimes Abenteuer! ✨',
 		'ist voller Überraschungen!',
-		'ist bereit für Bonus-Action! 💫',
+		'ist bereit für Action! 💫',
 		'ist ein Bonus-Level'
 	];
 
-	// Hilfsfunktionen
+	// Mascot Status
+	let emotion = 'neutral';
+	let message = 'Willkommen!';
+	let inactivityTimer;
+	let currentNeutralState = 'neutral';
+	let iconLoadStates = {};
+	
+	// automatische Path Lines zwischen den Leveln
+	const pathLines = [];
+	for (let i = 0; i < levelData.length - 1; i++) {
+		pathLines.push({
+			x1: levelData[i].x,
+			y1: levelData[i].y,
+			x2: levelData[i + 1].x,
+			y2: levelData[i + 1].y
+		});
+	}
+
+	// Helper-Funktionen
+	function isLevelUnlocked(levelId) {
+		return $gameMode === 'free' || $unlockedLevels.includes(levelId);
+	}
+
+	function isBonusLevelUnlocked(bonusId) {
+		return $gameMode === 'free' || $bonusLevelsUnlocked.includes(bonusId);
+	}
+
 	function getRandomMessage(messageArray) {
 		return messageArray[Math.floor(Math.random() * messageArray.length)];
 	}
@@ -150,21 +102,45 @@
 		return getRandomMessage(welcomeMessages);
 	}
 
-	function LevelJoin(levelId) {
-	// Speichere das besuchte Level (nur valide Level-IDs)
-	if (browser && levelId && typeof levelId === 'number' && levelId >= 1 && levelId <= 10) {
-		sessionStorage.setItem('lastVisitedLevel', levelId.toString());
+	function updateMascot(newEmotion, newMessage) {
+		emotion = newEmotion;
+		message = newMessage;
+		resetInactivityTimer();
+	}
+
+	function resetInactivityTimer() {
+		clearTimeout(inactivityTimer);
+		inactivityTimer = setTimeout(() => {
+			if (emotion === 'neutral' || emotion === 'neutral2' || emotion === 'think') {
+				currentNeutralState = currentNeutralState === 'neutral' ? 'neutral2' : 'neutral';
+				updateMascot(currentNeutralState, getRandomIdleMessage());
+			}
+		}, 10000);
+	}
+
+	function handleIconError(levelId) {
+		iconLoadStates[levelId] = false;
+		iconLoadStates = { ...iconLoadStates };
+	}
+
+	function handleIconLoad(levelId) {
+		iconLoadStates[levelId] = true;
+		iconLoadStates = { ...iconLoadStates }; 
 	}
 	
+	function LevelJoin(levelId) {
+		if (browser && levelId && typeof levelId === 'number' && levelId >= 1 && levelId <= max_levels) {
+			sessionStorage.setItem('lastVisitedLevel', levelId.toString());
+		}
 		setTimeout(() => {
-        	goto(`/levels/level${levelId}`);
-    	}, 200);
+			goto(`/levels/level${levelId}`);
+		}, 200);
 	}
 
 	function BonusLevelJoin(bonusLevel) {
 		setTimeout(() => {
-        	goto(bonusLevel.route);
-    	}, 200);
+			goto(bonusLevel.route);
+		}, 200);
 	}
 
 	function onLevelHover(level) {		
@@ -177,100 +153,39 @@
 		updateMascot('think', `${bonusLevel.name} ${hoverMessage}`);
 	}
 
-	function onLevelLeave() {
-		const leaveMessages = [
-			'Watschel rum! 🐧',
-			'Such dir dein Eis-Abenteuer!',
-			'Wähl dein Coding-Schicksal!',
-			'Flossen-Entscheidung steht an!'
-		];
-		updateMascot(currentNeutralState, getRandomMessage(leaveMessages));
-	}
-
-	// Path Linien
-	function createPathLines() {
-		let pathLines = [];
-		for (let i = 0; i < levelData.length - 1; i++) {
-			const currentLevel = levelData[i];
-			const nextLevel = levelData[i + 1];
-			
-			pathLines.push({
-				x1: currentLevel.x,
-				y1: currentLevel.y,
-				x2: nextLevel.x,
-				y2: nextLevel.y,
-				id: `path-${currentLevel.id}-${nextLevel.id}`
-			});
-		}
-		return pathLines;
-	}
-
-	const pathLines = createPathLines();
-
-	// Icons
-	function handleIconError(levelId) {
-		iconLoadStates[levelId] = false;
-		iconLoadStates = { ...iconLoadStates };
-	}
-
-	function handleIconLoad(levelId) {
-		iconLoadStates[levelId] = true;
-		iconLoadStates = { ...iconLoadStates }; 
-	}
-	
-	// Initialisierung
-	onMount(() => {
+	function initializeMascot() {
 		const welcomeMsg = getWelcomeMessage();
 		emotion = 'neutral';
 		message = welcomeMsg;
 		resetInactivityTimer();
+	}
 
-		// Auto-Scroll - nur wenn Level nicht sichtbar ist
-		setTimeout(() => {
-			let targetLevel;
-			
-			const lastVisitedLevel = browser ? sessionStorage.getItem('lastVisitedLevel') : null;
-			const cameFromLevel = $page.url.searchParams.get('from') || lastVisitedLevel;
-			
-			const parsedLevel = cameFromLevel ? parseInt(cameFromLevel, 10) : null;
-			
-			if (parsedLevel && !isNaN(parsedLevel) && isLevelUnlocked(parsedLevel)) {
-				targetLevel = parsedLevel;
-				if (browser) sessionStorage.removeItem('lastVisitedLevel');
-			} else {
-				if ($unlockedLevels.length === 0) {
-					targetLevel = 1;
-				} else {
-					targetLevel = Math.max(...$unlockedLevels);
-				}
-			}
-			
-			setTimeout(() => {
-				const levelButton = document.querySelector(`[data-level="${targetLevel}"]`);
-				if (levelButton) {
-					try {
-						const rect = levelButton.getBoundingClientRect();
-						const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight && 
-										rect.left >= 0 && rect.right <= window.innerWidth;
-						
-						if (!isVisible) {
-							levelButton.scrollIntoView({ 
-								behavior: 'smooth', 
-								block: 'center' 
-							});
-						}
-					} catch (error) {
-						console.warn('Auto-scroll error:', error);
-						levelButton.scrollIntoView({ 
-							behavior: 'smooth', 
-							block: 'center' 
-						});
-					}
-				}
-			}, 200);
-		}, 100);
+	function handleAutoScroll() {
+		let targetLevel;
+		
+		const lastVisitedLevel = browser ? sessionStorage.getItem('lastVisitedLevel') : null;
+		const cameFromLevel = $page.url.searchParams.get('from') || lastVisitedLevel;
+		
+		const parsedLevel = cameFromLevel ? parseInt(cameFromLevel, 10) : null;
+		
+		if (parsedLevel && !isNaN(parsedLevel) && isLevelUnlocked(parsedLevel)) {
+			targetLevel = parsedLevel;
+			if (browser) sessionStorage.removeItem('lastVisitedLevel');
+		} else {
+			targetLevel = $unlockedLevels.length === 0 ? 1 : Math.max(...$unlockedLevels);
+		}
+		
+		const levelButton = document.querySelector(`[data-level="${targetLevel}"]`);
+		if (levelButton) {
+			levelButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+		}
+	}
+
+	onMount(() => {
+		initializeMascot();
+		setTimeout(handleAutoScroll, 50);
 	});
-
+	
 	onDestroy(() => {
 		clearTimeout(inactivityTimer);
 	});
@@ -282,24 +197,35 @@
 	<div class="map-container">
 		<img src="/map.png" alt="Adventure Map" class="map-image" />
 		
+		
+
 		<div class="map-header-overlay">
 			<h1>Willkommen im Coder-Dojo Abenteuerpfad!</h1>
 		</div>
 
-		<!-- Progress Widget erweitert -->
+		<!-- Schnee-Animation -->
+		<div class="snowflakes" aria-hidden="true">
+			{#each Array(25) as _, i}
+				<div class="snowflake">
+					{['❅', '❆', '❄', '❅', '❆'][i % 5]}
+				</div>
+			{/each}
+		</div>
+
+		<!-- Progress Widget -->
 		{#if $gameMode === 'progressive'}
 			<div class="progress-widget">
-				<span class="progress-text">{$unlockedLevels.length}/10 Level freigeschaltet</span>
+				<span class="progress-text">{$unlockedLevels.length}/{max_levels} Level freigeschaltet</span>
 				<div class="progress-bar">
-					<div class="progress-fill" style="width: {($unlockedLevels.length / 10) * 100}%"></div>
+					<div class="progress-fill" style="width: {($unlockedLevels.length / max_levels) * 100}%"></div>
 				</div>
-				<!-- BONUS PROGRESS -->
 				{#if $bonusLevelsUnlocked.length > 0}
-					<span class="bonus-progress-text">✨ {$bonusLevelsUnlocked.length}/4 Bonus entdeckt</span>
+					<span class="bonus-progress-text">✨ {$bonusLevelsUnlocked.length}/{bonusLevelData.length} Bonus entdeckt</span>
 				{/if}
 			</div>
 		{/if}
 
+		<!-- Path Lines -->
 		<svg class="path-lines-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
 			{#each pathLines as line}
 				<line 
@@ -321,7 +247,8 @@
 		>
 			🏠 Home
 		</button>
-
+		
+		<!-- Level System -->
 		{#each levelData as level}
 			<button 
 				class="level-button {level.size} {isLevelUnlocked(level.id) ? 'unlocked' : 'locked'}"
@@ -329,7 +256,6 @@
 				data-level="{level.id}"
 				on:click={() => LevelJoin(level.id)}
 				on:mouseenter={() => onLevelHover(level)}
-				on:mouseleave={onLevelLeave}
 				title="{level.name}"
 				disabled={!isLevelUnlocked(level.id)}
 			>
@@ -366,8 +292,7 @@
 					data-bonus-level="{bonusLevel.id}"
 					on:click={() => BonusLevelJoin(bonusLevel)}
 					on:mouseenter={() => onBonusLevelHover(bonusLevel)}
-					on:mouseleave={onLevelLeave}
-					title="{bonusLevel.name} - {bonusLevel.description}"
+					title="{bonusLevel.name}"
 				>
 					<div class="bonus-icon">
 						{bonusLevel.icon}
@@ -380,325 +305,496 @@
 </div>
 
 <style>
+	:root {
+		--transition-smooth: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	}
+
 	:global(html, body) {
 		margin: 0;
 		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-		overflow: auto;
-		overscroll-behavior: none;
 	}
 
-	.page-container {
-		width: 100%;
-		min-height: 100vh;
-	}
-
-	.map-container {
-		position: relative;
-		width: 100%;
-		min-height: 100vh;
-		min-width: 1200px;
-	}
-
-	.map-image {
-		width: 100%;
-		min-height: 100vh;
-		object-fit: cover;
-		display: block;
-	}
-
-	/* Header */
-	.map-header-overlay {
-		position: absolute;
-		top: 30px;
-		left: 50%;
-		transform: translateX(-50%);
-		text-align: center;
-		z-index: 100;
-		pointer-events: none;
-		background: rgba(255, 255, 255, 0.15);
-		backdrop-filter: blur(10px);
-		border: 1px solid rgba(255, 255, 255, 0.2);
-		border-radius: 20px;
-		padding: 1.5rem 2.5rem;
-		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.05);
-	}
-
-	.map-header-overlay h1 {
-		font-size: clamp(1.5rem, 3.5vw, 2.2rem);
-		color: #2c3e50;
-		margin: 0;
-		font-weight: 700;
-		letter-spacing: -0.02em;
-		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	}
-
-	.progress-widget {
-		position: fixed;
-		bottom: 105px;
-		left: 40px;
-		pointer-events: none;
-		padding: 1rem 1rem;
-		background: rgba(255, 255, 255, 0.1);
-		backdrop-filter: blur(8px);
-		border: 1px solid rgba(255, 255, 255, 0.15);
-		border-radius: 15px;
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-		z-index: 20;
-	}
-
-	.progress-text {
-		font-size: 0.9rem;
-		color: #000000;
-		font-weight: 600;
-		text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
-		background: rgba(255, 255, 255, 0.4);
-		padding: 0.3rem 0.8rem;
-		border-radius: 12px;
-		border: 1px solid rgba(255, 255, 255, 0.4);
-	}
-
-	.progress-bar {
-		width: 190px;
-		height: 10px;
-		background: rgba(0, 0, 0, 0.1);
-		border-radius: 4px;
+	
+	.map-container { 
+		position: relative; 
+		user-select: none;
 		overflow: hidden;
-		border: 1px solid rgba(255, 255, 255, 0.2);
+    	min-height: 100vh;
+	}
+	
+	.map-image { 
+		width: 100%; 
+		display: block; 
+	}
+		
+	.map-header-overlay { 
+		position: absolute;
+		top: 40px;
+		left: 22%; 
+		text-align: center; 
+		backdrop-filter: blur(5px); 
+		border: 2px solid rgba(255, 255, 255, 0.2); 
+		border-radius: 25px; 
+		padding: 0.8rem 2rem; 
+		z-index: 2;
 	}
 
-	.progress-fill {
-		height: 100%;
-		background: linear-gradient(90deg, #27ae60 0%, #2ecc71 100%);
+	.map-header-overlay h1 { 
+		font-size: clamp(1.8rem, 4vw, 2.8rem); 
+		background: linear-gradient(
+			45deg,
+			#ffffff 0%,        
+			#cccbcb 25%,       
+			#a5a4a4 50%,       
+			#cecdcd 75%,       
+			#ffffff 100%       
+		);
+		background-size: 200% 200%;
+		background-clip: text;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		margin: 0; 
+		font-weight: 700; 
+		letter-spacing: -0.03em; 
+		user-select: text;
+		animation: titleShine 8s ease-in-out infinite;
+		-webkit-text-stroke: 1px rgba(0, 0, 0, 0.3);
+	}
+
+	@keyframes titleShine {
+		0%, 100% { background-position: 0% 50%; }
+		50% { background-position: 100% 50%; }
+	}
+
+	.progress-widget { 
+		position: fixed; 
+		bottom: 105px; 
+		left: 40px; 
+		padding: 1rem; 
+		backdrop-filter: blur(5px); 
+		border: 1px solid rgba(255, 255, 255, 0.15); 
+		border-radius: 15px; 
+		display: flex; 
+		flex-direction: column; 
+		gap: 0.5rem; 
+		z-index: 2; 
+		pointer-events: none;
+	}
+
+	.progress-text { 
+		font-size: 0.9rem; 
+		color: #000000; 
+		text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8); 
+		background: rgba(255, 255, 255, 0.3); 
+		user-select: text;
+	}
+	
+	.bonus-progress-text { 
+		font-size: 0.8rem; 
+		color: #d4af37; 
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); 
+		background: rgba(212, 175, 55, 0.25); 
+		user-select: text;
+	}
+
+	.progress-text, .bonus-progress-text { 
+		font-weight: 600; 
+		padding: 0.3rem; 
+		border-radius: 12px; 
+		border: 1px solid rgba(255, 255, 255, 0.3); 
+		text-align: center; 
+	}
+	
+	.progress-bar { 
+		width: 190px; 
+		height: 10px; 
+		background: rgba(0, 0, 0, 0.1); 
+		border-radius: 4px; 
+		border: 1px solid rgba(255, 255, 255, 0.2); 
+	}
+
+	.progress-fill { 
+		height: 100%; 
+		background: linear-gradient(90deg, rgb(84, 187, 43) 0%, #4ebd7c 50%, #3ea76b 100%); /* ← VERBESSERT: Mehr Farben */
 		border-radius: 4px;
+		transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* ← NEU: Smooth Transition */
+		box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3); /* ← NEU: Innerer Glanz */
 	}
 
-	.bonus-progress-text {
-		font-size: 0.8rem;
-		color: #d4af37;
-		font-weight: 600;
-		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-		background: rgba(212, 175, 55, 0.2);
-		padding: 0.2rem 0.6rem;
-		border-radius: 10px;
-		border: 1px solid rgba(212, 175, 55, 0.4);
-		text-align: center;
+	.path-lines-svg { 
+		position: absolute; 
+		top: 0; 
+		width: 100%; 
+		height: 100%
 	}
 
-	/* Path Linien */
-	.path-lines-svg {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		pointer-events: none;
-		z-index: 1;
+	.level-button, .bonus-level-button { 
+		position: absolute; 
+		transform: translate(-50%, -50%); 
+		background: transparent; 
+		border: none; 
+		cursor: pointer; 
+		transition: var(--transition-smooth); 
 	}
 
-	/* Level Buttons */
-	.level-button {
-		position: absolute;
-		transform: translate(-50%, -50%);
-		background: transparent;
-		border: none;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		cursor: pointer;
-		padding: 2px;
-		transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-		user-select: none;
-		filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.4));
-		z-index: 10;
+	.bonus-level-button { 
+		filter: drop-shadow(0 15px 10px rgba(226, 184, 45, 0.8)); 
+		transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
 	}
 
-	.bonus-level-button {
-		position: absolute;
-		transform: translate(-50%, -50%);
-		background: transparent;
-		border: none;
-		width: clamp(50px, 6vw, 100px);
-		height: clamp(50px, 6vw, 100px);
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		cursor: pointer;
-		transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-		user-select: none;
-		z-index: 15;
-		filter: drop-shadow(0 6px 20px rgba(212, 175, 55, 0.6));
+	.level-button.small { 
+		width: clamp(80px, 8vw, 150px); 
+		height: clamp(80px, 8vw, 150px); 
+		filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.6)); 
 	}
 
-	.bonus-icon {
-		font-size: clamp(24px, 3vw, 48px);
-		z-index: 2;
-		position: relative;
-		animation: bonusPulse 2s ease-in-out infinite;
+	.level-button.medium { 
+		width: clamp(120px, 12vw, 250px); 
+		height: clamp(120px, 12vw, 250px); 
+		filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.8)); 
 	}
 
-	.bonus-glow {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		width: 120%;
-		height: 120%;
-		background: radial-gradient(circle, rgba(212, 175, 55, 0.3) 0%, transparent 70%);
-		border-radius: 50%;
-		animation: bonusGlow 3s ease-in-out infinite;
-		z-index: 1;
+	.level-button.large { 
+		width: clamp(180px, 20vw, 400px); 
+		height: clamp(180px, 20vw, 400px); 
+		filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.8)); 
 	}
 
-	@keyframes bonusPulse {
-		0%, 100% { transform: scale(1); }
-		50% { transform: scale(1.1); }
+	.level-button.locked { 
+		filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.2)) grayscale(90%) brightness(0.7); 
+		cursor: not-allowed; 
+		pointer-events: none; 
 	}
 
-	@keyframes bonusGlow {
-		0%, 100% { 
-			opacity: 0.5; 
-			transform: translate(-50%, -50%) scale(1);
-		}
-		50% { 
-			opacity: 0.8; 
-			transform: translate(-50%, -50%) scale(1.2);
-		}
+	.level-button.unlocked:hover, .bonus-level-button:hover { 
+		transform: translate(-50%, -50%) scale(1.05); 
+	}
+	
+	.bonus-level-button:hover { 
+		transform: translate(-50%, -50%) scale(1.1); 
+		filter: drop-shadow(0 8px 25px rgba(212, 175, 55, 0.8)); 
+	}
+	
+	.level-button.unlocked:active, .bonus-level-button:active { 
+		transition: all 0.1s ease; 
+		transform: translate(-50%, -50%) scale(1.15); 
 	}
 
-	.bonus-level-button:hover {
-		transform: translate(-50%, -50%) scale(1.15);
-		filter: drop-shadow(0 8px 25px rgba(212, 175, 55, 0.8));
+	.level-icon { 
+		width: 100%; 
+		height: 100%; 
+		object-fit: contain; 
+		transition: var(--transition-smooth); 
+	}
+	
+	.level-number-overlay, .lock-overlay { 
+		position: absolute; 
+		top: 50%; 
+		left: 50%; 
+	}
+	
+	.level-number-overlay { 
+		transform: translate(-50%, -50%); 
+		font-size: clamp(10px, 1.5vw, 16px); 
+		color: white; 
+		font-family: 'Arial Black', sans-serif; 
+		text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 3px rgba(0, 0, 0, 1); 
+		transition: var(--transition-smooth); 
+	}
+	
+	.lock-overlay { 
+		transform: translate(-50%, -63%); 
+		font-size: clamp(20px, 2vw, 40px); 
 	}
 
-	.bonus-level-button:hover .bonus-icon {
-		animation-duration: 1s;
+	.level-number-only { 
+		width: 100%; 
+		height: 100%; 
+		display: flex; 
+		justify-content: center; 
+		align-items: center; 
+		color: white; 
+		font-family: 'Arial Black', sans-serif; 
+		background: #4facfe; 
+		border-radius: clamp(12px, 2vw, 22px); 
+		border: clamp(3px, 0.5vw, 4px) solid rgba(255, 255, 255, 0.8); 
+		text-shadow: 0 0 4px rgba(0, 0, 0, 1); 
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); 
+		transition: var(--transition-smooth); 
 	}
 
-	.bonus-level-button:hover .bonus-glow {
-		animation-duration: 1.5s;
+	.level-button.large .level-number-only { 
+		font-size: clamp(24px, 4vw, 45px); 
 	}
 
-	.bonus-level-button:active {
-		transform: translate(-50%, -50%) scale(1.25);
+	.level-button.medium .level-number-only { 
+		font-size: clamp(20px, 3vw, 32px); 
+	}
+
+	.level-button.small .level-number-only { 
+		font-size: clamp(16px, 2.5vw, 24px); 
+	}
+
+	.bonus-icon { 
+		font-size: clamp(24px, 3vw, 48px); 
+		animation: bonusPulse 2s ease-in-out infinite; 
+	}
+
+	.bonus-glow { 
+		position: absolute; 
+		top: 50%; 
+		left: 50%; 
+		transform: translate(-50%, -50%); 
+		width: 120%; 
+		height: 120%; 
+		background: radial-gradient(circle, rgba(212, 175, 55, 0.3) 0%, transparent 70%); 
+		border-radius: 50%; 
+		animation: bonusGlow 2s ease-in-out infinite; 
+	}
+
+	@keyframes bonusPulse 
+	{ 
+		50% { transform: scale(1.1); } 
+	}
+
+	@keyframes bonusGlow 
+	{ 
+		50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.2); } 
+	}
+	
+
+	.home-button { 
+		position: fixed; 
+		bottom: 40px; 
+		left: 40px; 
+		width: 225px; 
+		color: white; 
+		border-radius: 25px; 
+		font-size: 16px; 
+		font-weight: 600; 
+		background: rgba(255, 255, 255, 0.2); 
+		border: 3px solid rgba(255, 255, 255, 0.2); 
+		padding: 0.6rem; 
+		z-index: 2; 
+		transition: var(--transition-smooth);
+		backdrop-filter: blur(5px);
+	}
+	
+	.home-button:hover { 
+		transform: scale(1.08); 
+		background: rgba(255, 255, 255, 0.3); 
+		border-color: rgba(255, 255, 255, 0.4); 
+	}
+
+	.home-button:active { 
+		transform: scale(1.12);
 		transition: all 0.1s ease;
 	}
 
-	.level-button.large {
-		width: clamp(180px, 20vw, 400px);
-		height: clamp(180px, 20vw, 400px);
-		filter: drop-shadow(0 15px 40px rgba(0, 0, 0, 0.6));
-	}
-
-	.level-button.medium {
-		width: clamp(120px, 12vw, 250px);
-		height: clamp(120px, 12vw, 250px);
-		filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
-	}
-
-	.level-button.small {
-		width: clamp(80px, 8vw, 150px);
-		height: clamp(80px, 8vw, 150px);
-		filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.4));
-	}
-
-	.level-button.locked {
-		filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.2)) grayscale(100%) brightness(0.5);
-		cursor: not-allowed;
-		pointer-events: none;
-	}
-
-	.level-icon {
-		width: 100%;
-		height: 100%;
-		object-fit: contain;
-		transition: all 0.3s ease;
-	}
-
-	.level-number-overlay {
+	
+	.snowflake {
 		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		font-size: clamp(10px, 1.5vw, 16px);
-		color: white;
-		font-family: 'Arial Black', sans-serif;
-		text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 3px rgba(0, 0, 0, 1);
-		pointer-events: none;
+		color: #ffffff;
 		z-index: 1;
-		transition: all 0.3s ease;
-	}
-
-	.lock-overlay {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -63%);
-		font-size: clamp(20px, 2vw, 40px);
-		z-index: 2;
 		pointer-events: none;
 	}
 
-	.level-number-only {
-		width: 100%;
-		height: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		color: white;
-		font-family: 'Arial Black', sans-serif;
-		background: #4facfe;
-		border-radius: clamp(12px, 2vw, 22px);
-		border: clamp(3px, 0.5vw, 6px) solid rgba(255, 255, 255, 0.8);
-		text-shadow: 0 0 4px rgba(0, 0, 0, 1);
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-		transition: all 0.3s ease;
+	/* Kurzlebige Schneeflocken */
+	@keyframes snowfall-short {
+		0% { top: -10%; opacity: 0; }
+		5% { opacity: 1; }
+		50% { top: 65%; opacity: 0; }
+		100% { top: 100%; opacity: 0; }
 	}
 
-	.level-button.large .level-number-only {
-		font-size: clamp(24px, 4vw, 45px);
-	}
-	.level-button.medium .level-number-only {
-		font-size: clamp(20px, 3vw, 32px);
-	}
-	.level-button.small .level-number-only {
-		font-size: clamp(16px, 2.5vw, 24px);
+	/* Langlebrige Schneeflocken */
+	@keyframes snowfall-long {
+		0% { top: -10%; opacity: 0; }
+		5% { opacity: 1; }
+		92% { opacity: 1; }
+		100% { top: 100%; opacity: 1; }
 	}
 
-	.level-button.unlocked:hover {
-		transform: translate(-50%, -50%) scale(1.05);
-		filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5));
+	@keyframes snowshake {
+		0%, 100% { transform: translateX(0px) rotate(0deg); }
+		25% { transform: translateX(30px) rotate(30deg); }
+		50% { transform: translateX(-20px) rotate(60deg); }
+		75% { transform: translateX(40px) rotate(90deg); }
 	}
 
-	.level-button.unlocked:active {
-		transform: translate(-50%, -50%) scale(1.15);
-		transition: all 0.1s ease;
+	/* Schneeflocken mit verschiedenen Lebenszeiten und Delays */
+	.snowflake:nth-child(1) { 
+		left: 12%; 
+		font-size: 0.8em; 
+		animation: snowfall-long 28s linear infinite, snowshake 9s ease-in-out infinite;
+		animation-delay: -3s; 
 	}
 
-	.home-button {
-		position: fixed;
-		bottom: 40px;
-		left: 40px;
-		width: 225px;
-		color: white;
-		border-radius: 25px;
-		font-size: 16px;
-		font-weight: 600;
-		transition: all 0.3s ease;
-		background: rgba(255, 255, 255, 0.3);
-		border: 3px solid rgba(255, 255, 255, 0.2);
-		padding: 0.6rem;
-		z-index: 20;
+	.snowflake:nth-child(2) { 
+		left: 67%; 
+		font-size: 1.5em; 
+		animation: snowfall-short 22s linear infinite, snowshake 12s ease-in-out infinite;
+		animation-delay: -8s; 
 	}
 
-	.home-button:hover {
-		transform: translateY(-5px);
-		box-shadow: 0 6px 20px rgba(52, 152, 219, 0.1);
+	.snowflake:nth-child(3) { 
+		left: 89%; 
+		font-size: 0.6em; 
+		animation: snowfall-long 35s linear infinite, snowshake 7s ease-in-out infinite;
+		animation-delay: -15s; 
 	}
 
-	.home-button:active {
-		transform: translateY(0);
-		box-shadow: 0 2px 10px rgba(52, 152, 219, 0.3);
+	.snowflake:nth-child(4) { 
+		left: 34%; 
+		font-size: 1.2em; 
+		animation: snowfall-short 26s linear infinite, snowshake 11s ease-in-out infinite;
+		animation-delay: -1s; 
+	}
+
+	.snowflake:nth-child(5) { 
+		left: 78%; 
+		font-size: 2.0em; 
+		animation: snowfall-long 31s linear infinite, snowshake 8s ease-in-out infinite;
+		animation-delay: -12s; 
+	}
+
+	.snowflake:nth-child(6) { 
+		left: 13%; 
+		font-size: 0.9em; 
+		animation: snowfall-short 24s linear infinite, snowshake 10s ease-in-out infinite;
+		animation-delay: -6s; 
+	}
+
+	.snowflake:nth-child(7) { 
+		left: 52%; 
+		font-size: 1.8em; 
+		animation: snowfall-long 29s linear infinite, snowshake 13s ease-in-out infinite;
+		animation-delay: -18s; 
+	}
+
+	.snowflake:nth-child(8) { 
+		left: 90%; 
+		font-size: 0.7em; 
+		animation: snowfall-short 33s linear infinite, snowshake 6s ease-in-out infinite;
+		animation-delay: -4s; 
+	}
+
+	.snowflake:nth-child(9) { 
+		left: 19%; 
+		font-size: 1.4em; 
+		animation: snowfall-long 27s linear infinite, snowshake 14s ease-in-out infinite;
+		animation-delay: -9s; 
+	}
+
+	.snowflake:nth-child(10) { 
+		left: 50%; 
+		font-size: 1.1em; 
+		animation: snowfall-short 25s linear infinite, snowshake 8s ease-in-out infinite;
+		animation-delay: -21s; 
+	}
+
+	.snowflake:nth-child(11) { 
+		left: 43%; 
+		font-size: 0.5em; 
+		animation: snowfall-long 32s linear infinite, snowshake 11s ease-in-out infinite;
+		animation-delay: -7s; 
+	}
+
+	.snowflake:nth-child(12) { 
+		left: 86%; 
+		font-size: 1.7em; 
+		animation: snowfall-short 21s linear infinite, snowshake 9s ease-in-out infinite;
+		animation-delay: -14s; 
+	}
+
+	.snowflake:nth-child(13) { 
+		left: 28%; 
+		font-size: 1.3em; 
+		animation: snowfall-long 81s linear infinite, snowshake 7s ease-in-out infinite;
+		animation-delay: -2s; 
+	}
+
+	.snowflake:nth-child(14) { 
+		left: 61%; 
+		font-size: 0.8em; 
+		animation: snowfall-short 34s linear infinite, snowshake 12s ease-in-out infinite;
+		animation-delay: -16s; 
+	}
+
+	.snowflake:nth-child(15) { 
+		left: 8%; 
+		font-size: 1.6em; 
+		animation: snowfall-long 26s linear infinite, snowshake 10s ease-in-out infinite;
+		animation-delay: -5s; 
+	}
+
+	.snowflake:nth-child(16) { 
+		left: 76%; 
+		font-size: 0.9em; 
+		animation: snowfall-short 69s linear infinite, snowshake 8s ease-in-out infinite;
+		animation-delay: -11s; 
+	}
+
+	.snowflake:nth-child(17) { 
+		left: 15%; 
+		font-size: 1.9em; 
+		animation: snowfall-long 23s linear infinite, snowshake 13s ease-in-out infinite;
+		animation-delay: -19s; 
+	}
+
+	.snowflake:nth-child(18) { 
+		left: 58%; 
+		font-size: 0.6em; 
+		animation: snowfall-short 31s linear infinite, snowshake 6s ease-in-out infinite;
+		animation-delay: -3s; 
+	}
+
+	.snowflake:nth-child(19) { 
+		left: 92%; 
+		font-size: 1.5em; 
+		animation: snowfall-long 68s linear infinite, snowshake 11s ease-in-out infinite;
+		animation-delay: -13s; 
+	}
+
+	.snowflake:nth-child(20) { 
+		left: 37%; 
+		font-size: 0.7em; 
+		animation: snowfall-short 29s linear infinite, snowshake 9s ease-in-out infinite;
+		animation-delay: -6s; 
+	}
+
+	.snowflake:nth-child(21) { 
+		left: 83%; 
+		font-size: 1.8em; 
+		animation: snowfall-long 70s linear infinite, snowshake 14s ease-in-out infinite;
+		animation-delay: -17s; 
+	}
+
+	.snowflake:nth-child(22) { 
+		left: 22%; 
+		font-size: 1.0em; 
+		animation: snowfall-short 33s linear infinite, snowshake 7s ease-in-out infinite;
+		animation-delay: -4s; 
+	}
+
+	.snowflake:nth-child(23) { 
+		left: 65%; 
+		font-size: 1.4em; 
+		animation: snowfall-long 24s linear infinite, snowshake 10s ease-in-out infinite;
+		animation-delay: -20s; 
+	}
+
+	.snowflake:nth-child(24) { 
+		left: 49%; 
+		font-size: 0.8em; 
+		animation: snowfall-short 90s linear infinite, snowshake 19s ease-in-out infinite;
+		animation-delay: -8s; 
+	}
+
+	.snowflake:nth-child(25) { 
+		left: 11%; 
+		font-size: 1.6em; 
+		animation: snowfall-long 26s linear infinite, snowshake 8s ease-in-out infinite;
+		animation-delay: -10s; 
 	}
 </style>
