@@ -133,6 +133,7 @@
 
   async function runJavaScript() {
     const code = get(myVariable);
+    if(isCodeSafe(code)){
     try {
       let captured = "";
       const originalLog = console.log;
@@ -172,6 +173,7 @@
       message = 'Versuch es nochmal!';
     }
   }
+  }
 
   let isOpen = false;
 
@@ -183,17 +185,31 @@
     isOpen = false;
   }
 
+  //code nach verbotenen Befehlen überprüfen
+  function isCodeSafe(code){
+    let codeSafe = true;
+    for(let i = 0; i < bannedCode.length; i++){
+      if(code.toLowerCase().includes(bannedCode[i])){
+        codeSafe = false;
+        break;
+      }
+    }
+    return codeSafe
+  }
+
   let loading = false;
   let error = '';
   let code = '';
   let feedback = '';
+  let bannedCode = ["getelementsby", "alert", "getelementby"];
 
   async function submitCode() {
+    const code = get(myVariable);
+    if(isCodeSafe(code)){
     if (codeOutput == levels[$levelID].expectedOutput[$outputID]) return;
     loading = true;
     error = '';
     feedback = '';
-    const code = get(myVariable);
 
      const prompt = `role: system, content: Hier ist sehr simpler JavaScript-Code zwischen zwei Sternchen. Alles Notwendige für den Code sei gegeben:
 
@@ -208,6 +224,7 @@ Beachte Groß- und Kleinschreibung sowie Zeichensetzung. ANTWORTE SO SIMPLE WIE 
 
     try {
       const res = await fetch('https://dkwdp.f4.htw-berlin.de/analyze', {
+        //const res = await fetch('http://141.45.153.208:5000/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt })
@@ -227,8 +244,8 @@ Beachte Groß- und Kleinschreibung sowie Zeichensetzung. ANTWORTE SO SIMPLE WIE 
       loading = false;
     }
   }
+  }
 
-  // versuch
 </script>
 
 <main>
