@@ -2,24 +2,22 @@ import { writable } from 'svelte/store';
 import { browser } from '$app/environment';
 import levels from '../../data/levels.json';
 
-
-// Stores
 export const myVariable = writable("# Initial code");
 export const isCurrentLevelDrawing = writable(false);
 export const solvedLevel = writable(false);
 export const levelID = writable(0);
 export const outputID = writable(0);
 export const showOutput = writable(false)
+
 export const max_levels = levels.length;
 export const level_range = Array.from({length: max_levels}, (_, i) => i + 1);
 
 // Level-System Stores
 export const unlockedLevels = writable([1]); 
 export const gameMode = writable('progressive');
-
 export const bonusLevelsUnlocked = writable([]);
 
-// Bonus-Level Freischaltungs-Bedingungen
+// Bonus-Level Freischalt-Bedingungen
 const bonusUnlockRequirements = {
     // wenn Level 7 fertig ist, zeigt sich Bonus Level 1 zwischen Level 7 und 8
     1: 8,
@@ -30,7 +28,6 @@ const bonusUnlockRequirements = {
 
 // localStorage nur im Browser verwenden
 if (browser) {
-    // Gespeicherte Werte aus dem localStorage (Browserspeicher) laden
     try {
         const savedLevels = localStorage.getItem('unlockedLevels');
         const savedMode = localStorage.getItem('gameMode');
@@ -49,7 +46,7 @@ if (browser) {
         console.error('Fehler beim Laden:', e);
     }
     
-    // Automatisch speichern bei Änderungen im Store für Level
+    // Auto-Save: freigeschaltete Levels
     unlockedLevels.subscribe(levels => {
         try {
             localStorage.setItem('unlockedLevels', JSON.stringify(levels));
@@ -59,7 +56,7 @@ if (browser) {
         }
     });
     
-     // Automatisch speichern bei Änderungen im Store für Game Mode
+    // Auto-Save: Game Modus
     gameMode.subscribe(mode => {
         try {
             localStorage.setItem('gameMode', JSON.stringify(mode));
@@ -68,7 +65,7 @@ if (browser) {
         }
     });
     
-    // Automatisch speichern bei Änderungen im Store vom Bonus Level
+    // Auto-Save: Bonus Levels
     bonusLevelsUnlocked.subscribe(bonusLevels => {
         try {
             localStorage.setItem('bonusLevelsUnlocked', JSON.stringify(bonusLevels));
@@ -79,7 +76,7 @@ if (browser) {
     });
 }
 
-// Bestehende Hilfsfunktionen
+// Level Unlock
 export function unlockNextLevel(currentLevel: number) {
     unlockedLevels.update(levels => {
         const nextLevel = currentLevel + 1;
@@ -87,6 +84,7 @@ export function unlockNextLevel(currentLevel: number) {
             const newLevels = [...levels, nextLevel];
             console.log(`Level ${nextLevel} freigeschaltet!`, newLevels);
             
+            // Check für Bonus Level
             checkAndUnlockBonusLevels(currentLevel);
             
             return newLevels;
@@ -95,6 +93,7 @@ export function unlockNextLevel(currentLevel: number) {
     });
 }
 
+// Level Unlock für mehrere Level
 export function unlockLevelsUpTo(targetLevel: number) {
     const levelsToUnlock = [];
     for (let i = 1; i <= targetLevel && i <= max_levels; i++) {
@@ -102,7 +101,7 @@ export function unlockLevelsUpTo(targetLevel: number) {
     }
     unlockedLevels.set(levelsToUnlock);
     
-
+    // Reset Bonus Levels
     bonusLevelsUnlocked.set([]);
     checkAndUnlockBonusLevels(targetLevel);
 }
