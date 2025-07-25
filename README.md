@@ -34,6 +34,8 @@ npm run dev
 Die Anwendung ist dann unter `http://localhost:5173` verfügbar.
 
 ## Projektstruktur
+<details>
+<summary>Gesamte Projekstruktur anzeigen</summary>
 
 ```
 Der-kleine-Weg-des-Programmierens/
@@ -97,6 +99,7 @@ Der-kleine-Weg-des-Programmierens/
 ├── svelte.config.js
 └── vite.config.js
 ```
+</details>
 
 ## Neue Level hinzufügen
 

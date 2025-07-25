@@ -347,12 +347,13 @@
             "Das ist ein Bonus Level, in dem du Zeichnen kannst, Probiere dich einfach aus"
         ],
         "initialCode": [
-            "background('blue');\ncircle(150,150,100);"
+            "background(255);\nfill('blue');\nnoStroke();\ncircle(p.mouseX, p.mouseY, 50);"
         ],
         "type": "drawing",
         "hints": [
             "Die Koordinaten beginnen oben links bei (0,0)",
             "Der Canvas ist 400px breit und 400px hoch ",
+            "Der Blaue Kreis folgt gerade deinem Mauszeiger.",
             "Verfügbare Farben: 'red', 'blue', 'green', 'yellow', 'purple', etc."
         ]
     }
