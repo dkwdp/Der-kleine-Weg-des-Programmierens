@@ -344,7 +344,7 @@
             "Bonus Zeichen Level"
         ],
         "description": [
-            "Das ist ein Bonus Level, in dem du Zeichnen kannst, Probiere dich einfach aus"
+            "Das ist ein Bonus Level, in dem du Zeichnen kannst. Probiere dich einfach aus!"
         ],
         "initialCode": [
             "background(255);\nfill('blue');\nnoStroke();\ncircle(p.mouseX, p.mouseY, 50);"
