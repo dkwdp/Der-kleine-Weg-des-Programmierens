@@ -17,7 +17,7 @@
             "4"
         ],
         "initialCode": [
-            "// Hier kommt dein Code hin!",
+            "// Hier kommt dein Code hin!\n//Drücke auf ausführen um weiter zu kommen",
             "console.log('')",
             "console.log()"
         ],
