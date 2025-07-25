@@ -9,7 +9,7 @@ export const levelID = writable(0);
 export const outputID = writable(0);
 export const showOutput = writable(false)
 
-export const max_levels = levels.length;
+export const max_levels = levels.length - 1; // nur temporärer fix für showtime
 export const level_range = Array.from({length: max_levels}, (_, i) => i + 1);
 
 // Level-System Stores
