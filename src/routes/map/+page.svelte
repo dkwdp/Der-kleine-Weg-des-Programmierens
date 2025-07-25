@@ -20,6 +20,7 @@
 		{ id: 10, x: 43, y: 95, icon: 'fish', name: 'Fisch', size: 'small' },
 	];
 
+	// Bonus Level Daten
 	const bonusLevelData = [
 		{ id: 1, x: 33, y: 79, icon: '✨', name: 'Bonus 1', route: '/levels/bonusLevel/bonus1'},
 	];
@@ -102,12 +103,14 @@
 		return getRandomMessage(welcomeMessages);
 	}
 
+	// Mascot Update
 	function updateMascot(newEmotion, newMessage) {
 		emotion = newEmotion;
 		message = newMessage;
 		resetInactivityTimer();
 	}
 
+	// Inaktivitäts Timer
 	function resetInactivityTimer() {
 		clearTimeout(inactivityTimer);
 		inactivityTimer = setTimeout(() => {
@@ -118,6 +121,7 @@
 		}, 10000);
 	}
 
+	// Icon Loading Handler
 	function handleIconError(levelId) {
 		iconLoadStates[levelId] = false;
 		iconLoadStates = { ...iconLoadStates };
@@ -128,6 +132,7 @@
 		iconLoadStates = { ...iconLoadStates }; 
 	}
 	
+	// Level Navigation
 	function LevelJoin(levelId) {
 		if (browser && levelId && typeof levelId === 'number' && levelId >= 1 && levelId <= max_levels) {
 			sessionStorage.setItem('lastVisitedLevel', levelId.toString());
@@ -137,12 +142,14 @@
 		}, 200);
 	}
 
+	// Bonus Level Navigation
 	function BonusLevelJoin(bonusLevel) {
 		setTimeout(() => {
 			goto(bonusLevel.route);
 		}, 200);
 	}
 
+	// Hover Events
 	function onLevelHover(level) {		
 		const hoverMessage = getRandomMessage(hoverMessages);
 		updateMascot('think', `Level ${level.id} ${hoverMessage}`);
@@ -153,6 +160,7 @@
 		updateMascot('think', `${bonusLevel.name} ${hoverMessage}`);
 	}
 
+	// Mascot Initialisierung
 	function initializeMascot() {
 		const welcomeMsg = getWelcomeMessage();
 		emotion = 'neutral';
@@ -160,6 +168,7 @@
 		resetInactivityTimer();
 	}
 
+	// Auto Scroll zu letztem Level
 	function handleAutoScroll() {
 		let targetLevel;
 		
@@ -181,6 +190,7 @@
 		}
 	}
 
+	// Lifecycle Events
 	onMount(() => {
 		initializeMascot();
 		setTimeout(handleAutoScroll, 50);
@@ -191,14 +201,15 @@
 	});
 </script>
 
+<!-- Mascot Component -->
 <Mascot {emotion} {message} />
 
 <div class="page-container">
 	<div class="map-container">
+		<!-- Hintergrund Map -->
 		<img src="/map.png" alt="Adventure Map" class="map-image" />
 		
-		
-
+		<!-- Header Overlay -->
 		<div class="map-header-overlay">
 			<h1>Willkommen im Coder-Dojo Abenteuerpfad!</h1>
 		</div>
@@ -240,6 +251,7 @@
 			{/each}
 		</svg>
 		
+		<!-- Home Button -->
 		<button 
 			class="home-button"
 			on:click={() => goto('/')}
@@ -248,7 +260,7 @@
 			🏠 Home
 		</button>
 		
-		<!-- Level System -->
+		<!-- Level Buttons -->
 		{#each levelData as level}
 			<button 
 				class="level-button {level.size} {isLevelUnlocked(level.id) ? 'unlocked' : 'locked'}"
@@ -259,6 +271,7 @@
 				title="{level.name}"
 				disabled={!isLevelUnlocked(level.id)}
 			>
+				<!-- Icon oder Fallback -->
 				{#if iconLoadStates[level.id] === false}
 					<div class="level-number-only">
 						{level.id}
@@ -276,6 +289,7 @@
 					</div>
 				{/if}
 				
+				<!-- Lock Overlay -->
 				{#if !isLevelUnlocked(level.id)}
 					<div class="lock-overlay">
 						🔒
@@ -284,6 +298,7 @@
 			</button>
 		{/each}
 
+		<!-- Bonus Level Buttons -->
 		{#each bonusLevelData as bonusLevel}
 			{#if isBonusLevelUnlocked(bonusLevel.id)}
 				<button 
@@ -305,6 +320,7 @@
 </div>
 
 <style>
+	/* CSS Variablen */
 	:root {
 		--transition-smooth: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 	}
@@ -312,9 +328,9 @@
 	:global(html, body) {
 		margin: 0;
 		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		 overscroll-behavior: none;
 	}
 
-	
 	.map-container { 
 		position: relative; 
 		user-select: none;
@@ -327,45 +343,29 @@
 		display: block; 
 	}
 		
+	/* Header Overlay */
 	.map-header-overlay { 
 		position: absolute;
-		top: 40px;
-		left: 22%; 
-		text-align: center; 
-		backdrop-filter: blur(5px); 
-		border: 2px solid rgba(255, 255, 255, 0.2); 
-		border-radius: 25px; 
-		padding: 0.8rem 2rem; 
+		top: 30px;
+		left: 50%;
+		transform: translateX(-50%);
+		text-align: center;
 		z-index: 2;
+		background: rgba(255, 255, 255, 0.15);
+		backdrop-filter: blur(10px);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		border-radius: 20px;
+		padding: 1.5rem 2.5rem;
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.05);
 	}
 
 	.map-header-overlay h1 { 
-		font-size: clamp(1.8rem, 4vw, 2.8rem); 
-		background: linear-gradient(
-			45deg,
-			#ffffff 0%,        
-			#cccbcb 25%,       
-			#a5a4a4 50%,       
-			#cecdcd 75%,       
-			#ffffff 100%       
-		);
-		background-size: 200% 200%;
-		background-clip: text;
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		margin: 0; 
-		font-weight: 700; 
-		letter-spacing: -0.03em; 
-		user-select: text;
-		animation: titleShine 8s ease-in-out infinite;
-		-webkit-text-stroke: 1px rgba(0, 0, 0, 0.3);
+		font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+		color: #2c3e50;
+		margin: 0;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	}
-
-	@keyframes titleShine {
-		0%, 100% { background-position: 0% 50%; }
-		50% { background-position: 100% 50%; }
-	}
-
+	
 	.progress-widget { 
 		position: fixed; 
 		bottom: 105px; 
@@ -415,12 +415,13 @@
 
 	.progress-fill { 
 		height: 100%; 
-		background: linear-gradient(90deg, rgb(84, 187, 43) 0%, #4ebd7c 50%, #3ea76b 100%); /* ← VERBESSERT: Mehr Farben */
+		background: linear-gradient(90deg, rgb(84, 187, 43) 0%, #4ebd7c 50%, #3ea76b 100%);
 		border-radius: 4px;
-		transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* ← NEU: Smooth Transition */
-		box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3); /* ← NEU: Innerer Glanz */
+		transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+		box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3);
 	}
 
+	/* Path Lines */
 	.path-lines-svg { 
 		position: absolute; 
 		top: 0; 
@@ -428,6 +429,7 @@
 		height: 100%
 	}
 
+	/* Level Buttons */
 	.level-button, .bonus-level-button { 
 		position: absolute; 
 		transform: translate(-50%, -50%); 
@@ -442,6 +444,7 @@
 		transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
 	}
 
+	/* Level Button Sizes */
 	.level-button.small { 
 		width: clamp(80px, 8vw, 150px); 
 		height: clamp(80px, 8vw, 150px); 
@@ -460,6 +463,7 @@
 		filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.8)); 
 	}
 
+	/* Button Status */
 	.level-button.locked { 
 		filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.2)) grayscale(90%) brightness(0.7); 
 		cursor: not-allowed; 
@@ -480,6 +484,7 @@
 		transform: translate(-50%, -50%) scale(1.15); 
 	}
 
+	/* Level Icons */
 	.level-icon { 
 		width: 100%; 
 		height: 100%; 
@@ -487,6 +492,7 @@
 		transition: var(--transition-smooth); 
 	}
 	
+	/* Overlays */
 	.level-number-overlay, .lock-overlay { 
 		position: absolute; 
 		top: 50%; 
@@ -507,6 +513,7 @@
 		font-size: clamp(20px, 2vw, 40px); 
 	}
 
+	/* Fallback Number */
 	.level-number-only { 
 		width: 100%; 
 		height: 100%; 
@@ -523,6 +530,7 @@
 		transition: var(--transition-smooth); 
 	}
 
+	/* Font Sizes für different Sizes */
 	.level-button.large .level-number-only { 
 		font-size: clamp(24px, 4vw, 45px); 
 	}
@@ -535,6 +543,7 @@
 		font-size: clamp(16px, 2.5vw, 24px); 
 	}
 
+	/* Bonus Level Styles */
 	.bonus-icon { 
 		font-size: clamp(24px, 3vw, 48px); 
 		animation: bonusPulse 2s ease-in-out infinite; 
@@ -552,6 +561,7 @@
 		animation: bonusGlow 2s ease-in-out infinite; 
 	}
 
+	/* Bonus Animations */
 	@keyframes bonusPulse 
 	{ 
 		50% { transform: scale(1.1); } 
@@ -562,7 +572,7 @@
 		50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.2); } 
 	}
 	
-
+	/* Home Button */
 	.home-button { 
 		position: fixed; 
 		bottom: 40px; 
@@ -591,7 +601,7 @@
 		transition: all 0.1s ease;
 	}
 
-	
+	/* Schneeflocken */
 	.snowflake {
 		position: absolute;
 		color: #ffffff;
@@ -599,7 +609,7 @@
 		pointer-events: none;
 	}
 
-	/* Kurzlebige Schneeflocken */
+	/* Schnee Animationen */
 	@keyframes snowfall-short {
 		0% { top: -10%; opacity: 0; }
 		5% { opacity: 1; }
@@ -607,7 +617,6 @@
 		100% { top: 100%; opacity: 0; }
 	}
 
-	/* Langlebrige Schneeflocken */
 	@keyframes snowfall-long {
 		0% { top: -10%; opacity: 0; }
 		5% { opacity: 1; }
@@ -622,7 +631,7 @@
 		75% { transform: translateX(40px) rotate(90deg); }
 	}
 
-	/* Schneeflocken mit verschiedenen Lebenszeiten und Delays */
+	/* Individual Schneeflocken Animationen */
 	.snowflake:nth-child(1) { 
 		left: 12%; 
 		font-size: 0.8em; 

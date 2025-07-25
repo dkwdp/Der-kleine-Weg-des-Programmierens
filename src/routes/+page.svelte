@@ -4,13 +4,13 @@
   
   let selectedLevel = 1;
   
-  // Funktion für freien Modus
+  // Freien Modus
   function startFreeMode() {
     gameMode.set('free');
     goto('/map');
   }
   
-  // Funktion für Level-Auswahl
+  // Level-Auswahl
   function startProgressionMode() {
     gameMode.set('progressive');
     unlockLevelsUpTo(selectedLevel);
@@ -20,20 +20,24 @@
 
 <div class="page-container">
   <div class="image-container">
+    <!-- Background Image -->
     <img src="/homescreen_resized.png" alt="Adventure Background" class="homescreen-image" />
     
     <div class="buttons">
       <div>
+        <!-- Level Selection -->
         <select bind:value={selectedLevel} class="level-select">
           {#each level_range.reverse() as level}            
             <option value={level}>Level {level}</option>
           {/each}
         </select>
+        <!-- Progression Mode Button -->
         <button on:click={startProgressionMode}>
           Reiseziel setzen
         </button>
       </div>
       
+      <!-- Free Mode Button -->
       <button class="free-mode-button" on:click={startFreeMode}>
         - Freier Modus -
       </button>
@@ -42,6 +46,7 @@
 </div>
 
 <style>
+  /* Global Body Reset */
   :global(body) {
     margin: 0;
     overscroll-behavior: none;
@@ -106,6 +111,7 @@
     letter-spacing: 0.5px;
   }
 
+  /* Button Hover States */
   button:hover {
     background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
     transform: translateY(-3px);
@@ -122,6 +128,7 @@
     box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
   }
 
+  /* Free Mode Button Special Styles */
   .free-mode-button:focus {
       box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
   }
