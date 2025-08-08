@@ -226,15 +226,3 @@ Erstelle die entsprechende Route-Struktur:
 ```
 src/routes/levels/bonusLevel/bonus[id]/+page.svelte
 ```
-
-## Testing neuer Level
-
-### Checkliste vor dem Deployment:
-
-1. **Level ist sichtbar:**  Level erscheint auf der Karte
-2. **Icon lädt:**  Level-Icon wird korrekt angezeigt (Fallback funktioniert)
-3. **Navigation:**  Klick auf Level führt zur richtigen Seite
-4. **Inhalte:**  Titel, Beschreibung, Code sind korrekt
-5. **Lösung:**  Level kann erfolgreich gelöst werden
-6. **Progression:**  Nächstes Level wird nach Lösung freigeschaltet
-7. **Responsive:**  Level funktioniert auf verschiedenen Bildschirmgrößen
